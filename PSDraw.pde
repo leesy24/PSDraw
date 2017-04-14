@@ -8,10 +8,11 @@ final boolean PRINT = false;
 final int SCREEN_WIDTH = 1024;
 final int SCREEN_HEIGHT = 768;
 
-// Define binary data filename and path 
-//final String FILENAME = "data.bin";
-//final String FILENAME = "/tmp/data.bin";
-final String FILENAME = "C:\\work\\git\\PSDemoProgram\\Release-windows\\data.bin";
+// Get OS Name
+final String OS=System.getProperty("os.name");
+
+// Define default binary data filename and path 
+String FILENAME = "data.bin";
 
 // Define data array to load binary data
 byte data[]; 
@@ -32,6 +33,15 @@ void settings() {
 // There can only be one setup() function for each program
 //  and it shouldn't be called again after its initial execution.
 void setup() {
+  if (OS.equals("Linux")) {
+    // Define binary data filename and path 
+    FILENAME = "/tmp/data.bin";
+  }
+  else {
+    // Define binary data filename and path 
+    FILENAME = "C:\\work\\git\\PSDemoProgram\\Release-windows\\data.bin";
+  }
+
   // To set the background on the first frame of animation. 
   background(0);
   // Sets the color used to draw lines and borders around shapes. 
