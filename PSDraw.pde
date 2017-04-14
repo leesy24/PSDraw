@@ -9,6 +9,12 @@ int SCREEN_HEIGHT;
 // Define just font height variables.
 int FONT_HEIGHT;
 
+// Define just text area margin variables.
+int TEXT_MARGIN;
+
+// Define zoom factor variables.
+int ZOOM_FACTOR = 100;
+
 // Get OS Name
 final String OS = System.getProperty("os.name");
 
@@ -20,6 +26,15 @@ byte data[];
 
 // Define old time stamp to check time stamp changed for detecting data changed or not
 long old_time_stamp = -1;
+
+int button_1_x, button_1_y;      // Position of square button 1
+int button_1_width, button_1_height;     // Diameter of rect
+boolean button_1_over = false;
+int button_2_x, button_2_y;      // Position of square button 2
+int button_2_width, button_2_height;     // Diameter of rect
+boolean button_2_over = false;
+color button_highlight;
+color button_color, button_base_color;
 
 // The setup() function is run once, when the program starts.
 // It's used to define initial enviroment properties such as screen size
@@ -50,15 +65,28 @@ void setup() {
 
   // To set the background on the first frame of animation. 
   background(0);
-  // Sets the color used to draw lines and borders around shapes. 
-  stroke(255);
   // Specifies the number of frames to be displayed every second. 
   frameRate(30);
   
+  TEXT_MARGIN = SCREEN_WIDTH / 100;
+
   // Set font height of text to follow screen Height
   FONT_HEIGHT = SCREEN_HEIGHT / 80;
   textSize(FONT_HEIGHT);
- 
+
+  button_1_width = FONT_HEIGHT * 3;
+  button_1_height = FONT_HEIGHT * 3;
+  button_1_x = TEXT_MARGIN;
+  button_1_y = SCREEN_HEIGHT - button_1_height - TEXT_MARGIN;
+  
+  button_2_width = FONT_HEIGHT * 3;
+  button_2_height = FONT_HEIGHT * 3;
+  button_2_x = TEXT_MARGIN;
+  button_2_y = SCREEN_HEIGHT - button_2_height - button_1_height - TEXT_MARGIN;
+
+  button_color = color(0);
+  button_highlight = color(51);
+  button_base_color = color(102);
 }
 
 // Called directly after setup()
@@ -153,19 +181,43 @@ void draw() {
     time_stamp = get_int32_bytes(data, i);
     if (PRINT) println("index=" + i + ",time stamp=" + time_stamp);
     i = i + 4;
-
+/*
     // Check time_stamp is changed
     if (old_time_stamp == time_stamp) {
       if (PRINT) println("Time stamp is not changed!:" + time_stamp);
       return;
     }
     old_time_stamp = time_stamp;
+*/
   }
   
   // Ready to draw from here!
-
   // To clear the display window at the beginning of each frame,
   background(0);
+
+  update(mouseX, mouseY);
+
+  if (button_1_over) {
+    fill( button_highlight);
+  } else {
+    fill( button_color);
+  }
+  rect(button_1_x, button_1_y, button_1_width, button_1_height);
+  fill(255);
+  text("-", button_1_x + FONT_HEIGHT, button_1_y + FONT_HEIGHT*2);
+  
+  if (button_2_over) {
+    fill( button_highlight);
+  } else {
+    fill( button_color);
+  }
+  rect(button_2_x, button_2_y, button_2_width, button_2_height);
+  fill(255);
+  text("+", button_2_x + FONT_HEIGHT, button_2_y + FONT_HEIGHT*2);
+  
+  // Sets the color used to draw lines and borders around shapes.
+  fill(255);
+  stroke(255);
 
   if (n_params >= 3) {
     // Get Scan start direction.
@@ -194,7 +246,7 @@ void draw() {
   if (n_params >= 6) {
     // Get Incremental count
     // : a direction provided by an external incremental encoder.
-    // : In PAC sensors with more than one scan lines, “Incremental count” contains the number of the scan line.
+    // : In PAC sensors with more than one scan lines, ?�Incremental count??contains the number of the scan line.
     i_encoder = get_int32_bytes(data, i);
     if (PRINT) println("index=" + i + ",encoder value=" + i_encoder);
     i = i + 4;
@@ -242,26 +294,26 @@ void draw() {
   i = i + 4;
 
   string = "Scan number:" + i_scan;
-  text(string, 10, 10 + FONT_HEIGHT * 1);
+  text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 1);
   string = "Time stamp:" + time_stamp;
   //text(string, SCREEN_WIDTH - int(textWidth(string)) - 10, 10 + FONT_HEIGHT);
-  text(string, 10, 10 + FONT_HEIGHT * 2);
+  text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 2);
   string = "Scan start direction:" + scan_angle_start;
-  text(string, 10, 10 + FONT_HEIGHT * 3);
+  text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 3);
   string = "Scan angle range:" + scan_angle_range;
-  text(string, 10, 10 + FONT_HEIGHT * 4);
+  text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 4);
   string = "Number of echoes:" + n_echos;
-  text(string, 10, 10 + FONT_HEIGHT * 5);
+  text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 5);
   string = "Encoder count:" + i_encoder;
-  text(string, 10, 10 + FONT_HEIGHT * 6);
+  text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 6);
   string = "System temperature:" + temperature;
-  text(string, 10, 10 + FONT_HEIGHT * 7);
+  text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 7);
   string = "System status:" + status;
-  text(string, 10, 10 + FONT_HEIGHT * 8);
+  text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 8);
   string = "Data content:" + content;
-  text(string, 10, 10 + FONT_HEIGHT * 9);
+  text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 9);
   string = "Number of points:" + n_points;
-  text(string, 10, 10 + FONT_HEIGHT * 10);
+  text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 10);
 
   for (int j = 0; j < n_points; j++) {
     // Get Distance
@@ -279,7 +331,7 @@ void draw() {
     }
     else {
       //println("index=" + i + ",point=", j, ",distance=" + distance);
-      point(j * SCREEN_WIDTH / n_points, distance/100);
+      point(j * SCREEN_WIDTH / n_points, distance / ZOOM_FACTOR);
     }
     i = i + 4;
 
@@ -299,6 +351,37 @@ void draw() {
   if (PRINT) println("index=" + i + ",crc=" + crc);
   //i = i + 4;
 } 
+
+void update(int x, int y) {
+  if ( overRect(button_1_x, button_1_y, button_1_width, button_1_height) ) {
+    button_1_over = true;
+    button_2_over = false;
+  } else if ( overRect(button_2_x, button_2_y, button_2_width, button_2_height) ) {
+    button_2_over = true;
+    button_1_over = false;
+  } else {
+    button_1_over = button_2_over = false;
+  }
+}
+
+void mousePressed() {
+  if (button_1_over) {
+    ZOOM_FACTOR += 10;
+  }
+  if (button_2_over) {
+    ZOOM_FACTOR -= 10;
+    if (ZOOM_FACTOR <= 0) ZOOM_FACTOR = 1;
+  }
+}
+
+boolean overRect(int x, int y, int width, int height)  {
+  if (mouseX >= x && mouseX <= x+width && 
+      mouseY >= y && mouseY <= y+height) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 // Get 32bits data by network byte order(bigendian)
 int get_int32_bytes(byte data[], int i) {
