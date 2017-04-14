@@ -6,6 +6,9 @@ final boolean PRINT = false;
 int SCREEN_WIDTH;
 int SCREEN_HEIGHT;
 
+// Define just font height variables.
+int FONT_HEIGHT;
+
 // Get OS Name
 final String OS = System.getProperty("os.name");
 
@@ -51,6 +54,11 @@ void setup() {
   stroke(255);
   // Specifies the number of frames to be displayed every second. 
   frameRate(30);
+  
+  // Set font height of text to follow screen Height
+  FONT_HEIGHT = SCREEN_HEIGHT / 80;
+  textSize(FONT_HEIGHT);
+ 
 }
 
 // Called directly after setup()
@@ -62,20 +70,21 @@ void draw() {
   String func;
   int len;
   int n_params;
-  int i_scan;
-  int time_stamp;
-  float scan_angle_start;
-  float scan_angle_range;
-  int n_echos;
-  int i_encoder;
-  float temperature;
-  int status;
+  int i_scan = 0;
+  int time_stamp = 0;
+  float scan_angle_start = 0;
+  float scan_angle_range = 0;
+  int n_echos = 0;
+  int i_encoder = 0;
+  float temperature = 0;
+  int status = 0;
   int content = 0;
-  int n_points;
+  int n_points = 0;
   int distance;
   int pulse_width;
   int crc;
   int i = 0; // index for navigating data.
+  String string;
 
   // Check file exists to avoid exception error on loadBytes().
   File file = new File(FILENAME);
@@ -231,6 +240,28 @@ void draw() {
   n_points = get_int32_bytes(data, i);
   if (PRINT) println("index=" + i + ",number of points=" + n_points);
   i = i + 4;
+
+  string = "Scan number:" + i_scan;
+  text(string, 10, 10 + FONT_HEIGHT * 1);
+  string = "Time stamp:" + time_stamp;
+  //text(string, SCREEN_WIDTH - int(textWidth(string)) - 10, 10 + FONT_HEIGHT);
+  text(string, 10, 10 + FONT_HEIGHT * 2);
+  string = "Scan start direction:" + scan_angle_start;
+  text(string, 10, 10 + FONT_HEIGHT * 3);
+  string = "Scan angle range:" + scan_angle_range;
+  text(string, 10, 10 + FONT_HEIGHT * 4);
+  string = "Number of echoes:" + n_echos;
+  text(string, 10, 10 + FONT_HEIGHT * 5);
+  string = "Encoder count:" + i_encoder;
+  text(string, 10, 10 + FONT_HEIGHT * 6);
+  string = "System temperature:" + temperature;
+  text(string, 10, 10 + FONT_HEIGHT * 7);
+  string = "System status:" + status;
+  text(string, 10, 10 + FONT_HEIGHT * 8);
+  string = "Data content:" + content;
+  text(string, 10, 10 + FONT_HEIGHT * 9);
+  string = "Number of points:" + n_points;
+  text(string, 10, 10 + FONT_HEIGHT * 10);
 
   for (int j = 0; j < n_points; j++) {
     // Get Distance
