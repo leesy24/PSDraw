@@ -60,7 +60,8 @@ void setup() {
   // Assume Windows OS 
   else {
     // Define binary data filename and path for Windows OS
-    FILENAME = "C:\\work\\git\\PSDemoProgram\\Release-windows\\data.bin";
+    //FILENAME = "C:\\work\\git\\PSDemoProgram\\Release-windows\\data.bin";
+    FILENAME = "C:\\Temp\\data.bin";
   }
 
   // To set the background on the first frame of animation. 
@@ -204,7 +205,8 @@ void draw() {
   }
   rect(button_1_x, button_1_y, button_1_width, button_1_height);
   fill(255);
-  text("-", button_1_x + FONT_HEIGHT, button_1_y + FONT_HEIGHT*2);
+  string = "-";
+  text(string, button_1_x + button_1_width / 2 - int(textWidth(string)) / 2 , button_1_y + button_1_height / 2 + FONT_HEIGHT / 2);
   
   if (button_2_over) {
     fill( button_highlight);
@@ -213,7 +215,8 @@ void draw() {
   }
   rect(button_2_x, button_2_y, button_2_width, button_2_height);
   fill(255);
-  text("+", button_2_x + FONT_HEIGHT, button_2_y + FONT_HEIGHT*2);
+  string = "+";
+  text(string, button_2_x + button_2_width / 2 - int(textWidth(string)) / 2 , button_2_y + button_2_height / 2 + FONT_HEIGHT / 2);
   
   // Sets the color used to draw lines and borders around shapes.
   fill(255);
@@ -246,7 +249,6 @@ void draw() {
   if (n_params >= 6) {
     // Get Incremental count
     // : a direction provided by an external incremental encoder.
-    // : In PAC sensors with more than one scan lines, ?œIncremental count??contains the number of the scan line.
     i_encoder = get_int32_bytes(data, i);
     if (PRINT) println("index=" + i + ",encoder value=" + i_encoder);
     i = i + 4;
