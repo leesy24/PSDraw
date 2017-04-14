@@ -13,7 +13,7 @@ int FONT_HEIGHT;
 int TEXT_MARGIN;
 
 // Define zoom factor variables.
-int ZOOM_FACTOR = 100;
+float ZOOM_FACTOR = 100;
 
 // Get OS Name
 final String OS = System.getProperty("os.name");
@@ -69,7 +69,7 @@ void setup() {
   // Specifies the number of frames to be displayed every second. 
   frameRate(30);
   
-  TEXT_MARGIN = SCREEN_WIDTH / 100;
+  TEXT_MARGIN = SCREEN_WIDTH / 200;
 
   // Set font height of text to follow screen Height
   FONT_HEIGHT = SCREEN_HEIGHT / 80;
@@ -317,6 +317,15 @@ void draw() {
   string = "Number of points:" + n_points;
   text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 10);
 
+  for (int j = 100; j < SCREEN_HEIGHT; j += 100) {
+    stroke(128);
+    line(0, j, SCREEN_WIDTH, j);
+    stroke(255);
+    string = (ZOOM_FACTOR / 100.0 * float(j) / 100.0) + "m";
+    text(string, SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN, j);
+  }
+
+  stroke(255);
   for (int j = 0; j < n_points; j++) {
     // Get Distance
     // : units are 1/10 mm.
@@ -368,12 +377,13 @@ void update(int x, int y) {
 
 void mousePressed() {
   if (button_1_over) {
-    ZOOM_FACTOR += 10;
+    ZOOM_FACTOR = int(ZOOM_FACTOR + ZOOM_FACTOR / 10.0);
   }
   if (button_2_over) {
-    ZOOM_FACTOR -= 10;
-    if (ZOOM_FACTOR <= 0) ZOOM_FACTOR = 1;
+    ZOOM_FACTOR = int(ZOOM_FACTOR - ZOOM_FACTOR / 10.0);
+    if (ZOOM_FACTOR < 10.0) ZOOM_FACTOR = 10.0;
   }
+  /*if (PRINT)*/ println("ZOOM_FACTOR=" + ZOOM_FACTOR);
 }
 
 boolean overRect(int x, int y, int width, int height)  {
