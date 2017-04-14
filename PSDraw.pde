@@ -33,12 +33,14 @@ void settings() {
 // There can only be one setup() function for each program
 //  and it shouldn't be called again after its initial execution.
 void setup() {
+  // Check OS
   if (OS.equals("Linux")) {
-    // Define binary data filename and path 
+    // Define binary data filename and path for Linux OS
     FILENAME = "/tmp/data.bin";
   }
+  // Assume Windows OS 
   else {
-    // Define binary data filename and path 
+    // Define binary data filename and path for Windows OS
     FILENAME = "C:\\work\\git\\PSDemoProgram\\Release-windows\\data.bin";
   }
 
