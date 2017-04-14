@@ -2,14 +2,12 @@
 //final boolean PRINT = true; 
 final boolean PRINT = false; 
 
-// Define screen width and height.
-//final int screen_width = 640;
-//final int SCREEN_HEIGHT = 480;
-final int SCREEN_WIDTH = 1024;
-final int SCREEN_HEIGHT = 768;
+// Define just screen width and height variables.
+int SCREEN_WIDTH;
+int SCREEN_HEIGHT;
 
 // Get OS Name
-final String OS=System.getProperty("os.name");
+final String OS = System.getProperty("os.name");
 
 // Define default binary data filename and path 
 String FILENAME = "data.bin";
@@ -17,15 +15,8 @@ String FILENAME = "data.bin";
 // Define data array to load binary data
 byte data[]; 
 
-// Define old time stamp to check time stamp changed
+// Define old time stamp to check time stamp changed for detecting data changed or not
 long old_time_stamp = -1;
-
-// The settings() function is new with Processing 3.0. It's not needed in most sketches.
-// It's only useful when it's absolutely necessary to define the parameters to size() with a variable. 
-void settings() {
-  // Defines the dimension of the display window width and height in units of pixels.
-  size(SCREEN_WIDTH, SCREEN_HEIGHT);
-}
 
 // The setup() function is run once, when the program starts.
 // It's used to define initial enviroment properties such as screen size
@@ -33,6 +24,16 @@ void settings() {
 // There can only be one setup() function for each program
 //  and it shouldn't be called again after its initial execution.
 void setup() {
+  // fullScreen() opens a sketch using the full size of the computer's display.
+  // This function must be the first line in setup().
+  // The size() and fullScreen() functions cannot both be used in the same program,
+  //  just choose one.
+  fullScreen();
+
+  // Assign full screen width and height
+  SCREEN_WIDTH = width;
+  SCREEN_HEIGHT = height;
+
   // Check OS
   if (OS.equals("Linux")) {
     // Define binary data filename and path for Linux OS
