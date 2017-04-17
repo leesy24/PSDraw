@@ -319,9 +319,9 @@ void draw() {
     line(SCREEN_WIDTH / 2 + j, TEXT_MARGIN + FONT_HEIGHT, SCREEN_WIDTH / 2 + j, SCREEN_HEIGHT);
     line(SCREEN_WIDTH / 2 - j, TEXT_MARGIN + FONT_HEIGHT, SCREEN_WIDTH / 2 - j, SCREEN_HEIGHT);
     stroke(128);
-    string = "+" + (ZOOM_FACTOR / 100.0 * float(j) / 100.0) + "m";
+    string = "+" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
     text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0) + j, TEXT_MARGIN + FONT_HEIGHT);
-    string = "-" + (ZOOM_FACTOR / 100.0 * float(j) / 100.0) + "m";
+    string = "-" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
     text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0) - j, TEXT_MARGIN + FONT_HEIGHT);
   }
   
@@ -329,7 +329,7 @@ void draw() {
     stroke(64);
     line(0, j, SCREEN_WIDTH, j);
     stroke(128);
-    string = (ZOOM_FACTOR / 100.0 * float(j) / 100.0) + "m";
+    string = (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
     text(string, SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN, j);
   }
 
@@ -427,14 +427,18 @@ void update() {
 
 void mousePressed() {
   if (button_1_over) {
-    if (ZOOM_FACTOR < 100.0) ZOOM_FACTOR += 10.0;
-    else ZOOM_FACTOR = int(ZOOM_FACTOR + ZOOM_FACTOR / 10.0) / 10 * 10; 
+    if (ZOOM_FACTOR <= 3000.0) {
+      if (ZOOM_FACTOR < 100.0) ZOOM_FACTOR += 10.0;
+      else ZOOM_FACTOR = int(ZOOM_FACTOR + ZOOM_FACTOR / 10.0 + 5.0) / 10 * 10;
+    }
   }
   if (button_2_over) {
-    ZOOM_FACTOR = int(ZOOM_FACTOR - ZOOM_FACTOR / 10.0) / 10 * 10;
-    if (ZOOM_FACTOR < 10.0) ZOOM_FACTOR = 10.0;
+    if (ZOOM_FACTOR > 10.0) {
+      if (ZOOM_FACTOR < 100.0) ZOOM_FACTOR -= 10.0;
+      else ZOOM_FACTOR = int(ZOOM_FACTOR - ZOOM_FACTOR / 10.0 + 5.0) / 10 * 10;
+    }
   }
-  if (PRINT) println("ZOOM_FACTOR=" + ZOOM_FACTOR);
+  /*if (PRINT)*/ println("ZOOM_FACTOR=" + ZOOM_FACTOR);
 }
 
 boolean overRect(int x, int y, int width, int height)  {
