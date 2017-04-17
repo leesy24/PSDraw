@@ -205,7 +205,10 @@ void draw() {
   // To clear the display window at the beginning of each frame,
   background(0);
 
-  update(mouseX, mouseY);
+  update();
+
+  // Sets the color used to draw lines and borders around shapes.
+  stroke(255);
 
   if (button_1_over) {
     fill( button_highlight);
@@ -226,10 +229,9 @@ void draw() {
   fill(255);
   string = "+";
   text(string, button_2_x + button_2_width / 2 - int(textWidth(string)) / 2 , button_2_y + button_2_height / 2 + FONT_HEIGHT / 2);
-  
-  // Sets the color used to draw lines and borders around shapes.
-  fill(255);
-  stroke(255);
+
+  string = "Zoom";
+  text(string, button_2_x + button_2_width / 2 - int(textWidth(string)) / 2 , button_2_y - FONT_HEIGHT / 2);
 
   if (n_params >= 3) {
     // Get Scan start direction.
@@ -304,6 +306,36 @@ void draw() {
   if (PRINT) println("index=" + i + ",number of points=" + n_points);
   i = i + 4;
 
+  // Sets the color used to draw lines and borders around shapes.
+  fill(255);
+
+  stroke(64);
+  line(SCREEN_WIDTH / 2, TEXT_MARGIN + FONT_HEIGHT, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
+  stroke(128);
+  string = "0m";
+  text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), TEXT_MARGIN + FONT_HEIGHT);
+  for (int j = 100; j < SCREEN_WIDTH / 2; j += 100) {
+    stroke(64);
+    line(SCREEN_WIDTH / 2 + j, TEXT_MARGIN + FONT_HEIGHT, SCREEN_WIDTH / 2 + j, SCREEN_HEIGHT);
+    line(SCREEN_WIDTH / 2 - j, TEXT_MARGIN + FONT_HEIGHT, SCREEN_WIDTH / 2 - j, SCREEN_HEIGHT);
+    stroke(128);
+    string = "+" + (ZOOM_FACTOR / 100.0 * float(j) / 100.0) + "m";
+    text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0) + j, TEXT_MARGIN + FONT_HEIGHT);
+    string = "-" + (ZOOM_FACTOR / 100.0 * float(j) / 100.0) + "m";
+    text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0) - j, TEXT_MARGIN + FONT_HEIGHT);
+  }
+  
+  for (int j = 100; j < SCREEN_HEIGHT; j += 100) {
+    stroke(64);
+    line(0, j, SCREEN_WIDTH, j);
+    stroke(128);
+    string = (ZOOM_FACTOR / 100.0 * float(j) / 100.0) + "m";
+    text(string, SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN, j);
+  }
+
+  // Sets the color used to draw lines and borders around shapes.
+  fill(255);
+  stroke(255);
   string = "Scan number:" + i_scan;
   text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 2);
   string = "Time stamp:" + time_stamp;
@@ -326,31 +358,7 @@ void draw() {
   string = "Number of points:" + n_points;
   text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 11);
 
-  stroke(128);
-  line(SCREEN_WIDTH / 2, TEXT_MARGIN + FONT_HEIGHT, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
-  stroke(255);
-  string = "0m";
-  text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), TEXT_MARGIN + FONT_HEIGHT);
-  for (int j = 100; j < SCREEN_WIDTH / 2; j += 100) {
-    stroke(128);
-    line(SCREEN_WIDTH / 2 + j, TEXT_MARGIN + FONT_HEIGHT, SCREEN_WIDTH / 2 + j, SCREEN_HEIGHT);
-    line(SCREEN_WIDTH / 2 - j, TEXT_MARGIN + FONT_HEIGHT, SCREEN_WIDTH / 2 - j, SCREEN_HEIGHT);
-    stroke(255);
-    string = "+" + (ZOOM_FACTOR / 100.0 * float(j) / 100.0) + "m";
-    text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0) + j, TEXT_MARGIN + FONT_HEIGHT);
-    string = "-" + (ZOOM_FACTOR / 100.0 * float(j) / 100.0) + "m";
-    text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0) - j, TEXT_MARGIN + FONT_HEIGHT);
-  }
-  
-  for (int j = 100; j < SCREEN_HEIGHT; j += 100) {
-    stroke(128);
-    line(0, j, SCREEN_WIDTH, j);
-    stroke(255);
-    string = (ZOOM_FACTOR / 100.0 * float(j) / 100.0) + "m";
-    text(string, SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN, j);
-  }
-
-  stroke(255);
+  int p_x = -1, p_y = -1;
   for (int j = 0; j < n_points; j++) {
     // Get Distance
     // : units are 1/10 mm.
@@ -360,10 +368,14 @@ void draw() {
     // Check No echo
     if (distance == 0x80000000) {
       //println("index=" + i + ",point=", j, ",distance=" + "No echo");
+      p_x = -1;
+      p_y = -1;
     }
     // Check Noisy
     else if (distance == 0x7fffffff) {
       //println("index=" + i + ",point=", j, ",distance=" + "Noise");
+      p_x = -1;
+      p_y = -1;
     }
     else {
       //println("index=" + i + ",point=", j, ",distance=" + distance);
@@ -373,7 +385,14 @@ void draw() {
       y = int(float(distance) * sin(radians((scan_angle_start + float(j) * scan_angle_range / float(n_points)))) / ZOOM_FACTOR);
       //println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_range / float(n_points)) + ",x=" + x + ",y=", y);
       x += SCREEN_WIDTH / 2;
+      if (p_x != -1 && p_y != -1) {
+        stroke(128);
+        line(p_x, p_y, x, y);
+      }
+      stroke(255);
       point(x, y);
+      p_x = x;
+      p_y = y;
     }
     i = i + 4;
 
@@ -394,7 +413,7 @@ void draw() {
   //i = i + 4;
 } 
 
-void update(int x, int y) {
+void update() {
   if ( overRect(button_1_x, button_1_y, button_1_width, button_1_height) ) {
     button_1_over = true;
     button_2_over = false;
@@ -415,7 +434,7 @@ void mousePressed() {
     ZOOM_FACTOR = int(ZOOM_FACTOR - ZOOM_FACTOR / 10.0) / 10 * 10;
     if (ZOOM_FACTOR < 10.0) ZOOM_FACTOR = 10.0;
   }
-  /*if (PRINT)*/ println("ZOOM_FACTOR=" + ZOOM_FACTOR);
+  if (PRINT) println("ZOOM_FACTOR=" + ZOOM_FACTOR);
 }
 
 boolean overRect(int x, int y, int width, int height)  {
