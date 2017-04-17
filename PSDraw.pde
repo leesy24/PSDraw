@@ -2,9 +2,9 @@
 //final boolean PRINT = true; 
 final boolean PRINT = false; 
 
-// Define just screen width and height variables.
-int SCREEN_WIDTH;
-int SCREEN_HEIGHT;
+// Define screen width and height.
+int SCREEN_WIDTH = 1920;
+int SCREEN_HEIGHT = 1080;
 
 // Define just font height variables.
 int FONT_HEIGHT;
@@ -36,12 +36,20 @@ boolean button_2_over = false;
 color button_highlight;
 color button_color, button_base_color;
 
+// The settings() function is new with Processing 3.0. It's not needed in most sketches.
+// It's only useful when it's absolutely necessary to define the parameters to size() with a variable. 
+void settings() {
+  // Defines the dimension of the display window width and height in units of pixels.
+  size(SCREEN_WIDTH, SCREEN_HEIGHT);
+}
+
 // The setup() function is run once, when the program starts.
 // It's used to define initial enviroment properties such as screen size
 //  and to load media such as images and fonts as the program starts.
 // There can only be one setup() function for each program
 //  and it shouldn't be called again after its initial execution.
 void setup() {
+/*
   // fullScreen() opens a sketch using the full size of the computer's display.
   // This function must be the first line in setup().
   // The size() and fullScreen() functions cannot both be used in the same program,
@@ -51,6 +59,7 @@ void setup() {
   // Assign full screen width and height
   SCREEN_WIDTH = width;
   SCREEN_HEIGHT = height;
+*/
 
   // Check OS
   if (OS.equals("Linux")) {
@@ -225,7 +234,7 @@ void draw() {
   if (n_params >= 3) {
     // Get Scan start direction.
     // : direction to the first measured point, given in the user angle system (typical unit is 0,001 deg)
-    scan_angle_start = get_int32_bytes(data, i) / 1000f;
+    scan_angle_start = get_int32_bytes(data, i) / 1000.0;
     if (PRINT) println("index=" + i + ",scan start angle=" + scan_angle_start);
     i = i + 4;
   }
@@ -233,7 +242,7 @@ void draw() {
   if (n_params >= 4) {
     // Get Scan angle
     // : the scan angle in the user angle system. Typically 90.000.
-    scan_angle_range = get_int32_bytes(data, i) / 1000f;
+    scan_angle_range = get_int32_bytes(data, i) / 1000.0;
     if (PRINT) println("index=" + i + ",scan range angle=" + scan_angle_range);
     i = i + 4;
   }
@@ -296,27 +305,43 @@ void draw() {
   i = i + 4;
 
   string = "Scan number:" + i_scan;
-  text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 1);
+  text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 2);
   string = "Time stamp:" + time_stamp;
   //text(string, SCREEN_WIDTH - int(textWidth(string)) - 10, 10 + FONT_HEIGHT);
-  text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 2);
-  string = "Scan start direction:" + scan_angle_start;
   text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 3);
-  string = "Scan angle range:" + scan_angle_range;
+  string = "Scan start direction:" + scan_angle_start;
   text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 4);
-  string = "Number of echoes:" + n_echos;
+  string = "Scan angle range:" + scan_angle_range;
   text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 5);
-  string = "Encoder count:" + i_encoder;
+  string = "Number of echoes:" + n_echos;
   text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 6);
-  string = "System temperature:" + temperature;
+  string = "Encoder count:" + i_encoder;
   text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 7);
-  string = "System status:" + status;
+  string = "System temperature:" + temperature;
   text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 8);
-  string = "Data content:" + content;
+  string = "System status:" + status;
   text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 9);
-  string = "Number of points:" + n_points;
+  string = "Data content:" + content;
   text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 10);
+  string = "Number of points:" + n_points;
+  text(string, TEXT_MARGIN, TEXT_MARGIN + FONT_HEIGHT * 11);
 
+  stroke(128);
+  line(SCREEN_WIDTH / 2, TEXT_MARGIN + FONT_HEIGHT, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
+  stroke(255);
+  string = "0m";
+  text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), TEXT_MARGIN + FONT_HEIGHT);
+  for (int j = 100; j < SCREEN_WIDTH / 2; j += 100) {
+    stroke(128);
+    line(SCREEN_WIDTH / 2 + j, TEXT_MARGIN + FONT_HEIGHT, SCREEN_WIDTH / 2 + j, SCREEN_HEIGHT);
+    line(SCREEN_WIDTH / 2 - j, TEXT_MARGIN + FONT_HEIGHT, SCREEN_WIDTH / 2 - j, SCREEN_HEIGHT);
+    stroke(255);
+    string = "+" + (ZOOM_FACTOR / 100.0 * float(j) / 100.0) + "m";
+    text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0) + j, TEXT_MARGIN + FONT_HEIGHT);
+    string = "-" + (ZOOM_FACTOR / 100.0 * float(j) / 100.0) + "m";
+    text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0) - j, TEXT_MARGIN + FONT_HEIGHT);
+  }
+  
   for (int j = 100; j < SCREEN_HEIGHT; j += 100) {
     stroke(128);
     line(0, j, SCREEN_WIDTH, j);
@@ -342,7 +367,13 @@ void draw() {
     }
     else {
       //println("index=" + i + ",point=", j, ",distance=" + distance);
-      point(j * SCREEN_WIDTH / n_points, distance / ZOOM_FACTOR);
+      //point(j * SCREEN_WIDTH / n_points, distance / ZOOM_FACTOR);
+      int x, y;
+      x = int(float(distance) * cos(radians((scan_angle_start + float(j) * scan_angle_range / float(n_points)))) / ZOOM_FACTOR);
+      y = int(float(distance) * sin(radians((scan_angle_start + float(j) * scan_angle_range / float(n_points)))) / ZOOM_FACTOR);
+      //println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_range / float(n_points)) + ",x=" + x + ",y=", y);
+      x += SCREEN_WIDTH / 2;
+      point(x, y);
     }
     i = i + 4;
 
@@ -377,10 +408,11 @@ void update(int x, int y) {
 
 void mousePressed() {
   if (button_1_over) {
-    ZOOM_FACTOR = int(ZOOM_FACTOR + ZOOM_FACTOR / 10.0);
+    if (ZOOM_FACTOR < 100.0) ZOOM_FACTOR += 10.0;
+    else ZOOM_FACTOR = int(ZOOM_FACTOR + ZOOM_FACTOR / 10.0) / 10 * 10; 
   }
   if (button_2_over) {
-    ZOOM_FACTOR = int(ZOOM_FACTOR - ZOOM_FACTOR / 10.0);
+    ZOOM_FACTOR = int(ZOOM_FACTOR - ZOOM_FACTOR / 10.0) / 10 * 10;
     if (ZOOM_FACTOR < 10.0) ZOOM_FACTOR = 10.0;
   }
   /*if (PRINT)*/ println("ZOOM_FACTOR=" + ZOOM_FACTOR);
