@@ -438,7 +438,7 @@ void mousePressed() {
       else ZOOM_FACTOR = int(ZOOM_FACTOR - ZOOM_FACTOR / 10.0 + 5.0) / 10 * 10;
     }
   }
-  /*if (PRINT)*/ println("ZOOM_FACTOR=" + ZOOM_FACTOR);
+  if (PRINT) println("ZOOM_FACTOR=" + ZOOM_FACTOR);
 }
 
 boolean overRect(int x, int y, int width, int height)  {
