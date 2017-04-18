@@ -20,6 +20,9 @@ float ZOOM_FACTOR = 100;
 // Define rotate factor variables.
 float ROTATE_FACTOR = 0;
 
+// Define mirror variables.
+boolean MIRROR_ENABLE = false;
+
 // Get OS Name
 final String OS = System.getProperty("os.name");
 
@@ -44,6 +47,9 @@ boolean button_rotate_ccw_over = false;
 int button_rotate_cw_x, button_rotate_cw_y;      // Position of square button rotate clock-wise
 int button_rotate_cw_width, button_rotate_cw_height;     // Diameter of rect
 boolean button_rotate_cw_over = false;
+int button_mirror_en_x, button_mirror_en_y;      // Position of square button mirror enable
+int button_mirror_en_width, button_mirror_en_height;     // Diameter of rect
+boolean button_mirror_en_over = false;
 color button_highlight;
 color button_color, button_base_color;
 
@@ -332,22 +338,37 @@ void draw() {
       int x, y;
       if (ROTATE_FACTOR == 0) {
         x = int(float(distance) * sin(radians((scan_angle_start + float(j) * scan_angle_range / float(n_points)))) / ZOOM_FACTOR);
-        y = int(float(distance) * cos(radians((scan_angle_start + float(n_points - j) * scan_angle_range / float(n_points)))) / ZOOM_FACTOR);
+        if (MIRROR_ENABLE)
+          y = int(float(distance) * cos(radians((scan_angle_start + float(j) * scan_angle_range / float(n_points)))) / ZOOM_FACTOR);
+        else
+          y = int(float(distance) * cos(radians((scan_angle_start + float(n_points - j) * scan_angle_range / float(n_points)))) / ZOOM_FACTOR);
         //println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_range / float(n_points)) + ",x=" + x + ",y=", y);
         y += SCREEN_HEIGHT / 2;
-      } else if (ROTATE_FACTOR == 90) {
-        x = int(float(distance) * cos(radians((scan_angle_start + float(j) * scan_angle_range / float(n_points)))) / ZOOM_FACTOR);
+      }
+      else if (ROTATE_FACTOR == 90) {
+        if (MIRROR_ENABLE)
+          x = int(float(distance) * cos(radians((scan_angle_start + float(n_points - j) * scan_angle_range / float(n_points)))) / ZOOM_FACTOR);
+        else
+          x = int(float(distance) * cos(radians((scan_angle_start + float(j) * scan_angle_range / float(n_points)))) / ZOOM_FACTOR);
         y = int(float(distance) * sin(radians((scan_angle_start + float(j) * scan_angle_range / float(n_points)))) / ZOOM_FACTOR);
         //println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_range / float(n_points)) + ",x=" + x + ",y=", y);
         x += SCREEN_WIDTH / 2;
-      } else if (ROTATE_FACTOR == 180) {
+      }
+      else if (ROTATE_FACTOR == 180) {
         x = int(float(distance) * sin(radians((scan_angle_start + float(j) * scan_angle_range / float(n_points)))) / ZOOM_FACTOR);
-        y = int(float(distance) * cos(radians((scan_angle_start + float(j) * scan_angle_range / float(n_points)))) / ZOOM_FACTOR);
+        if (MIRROR_ENABLE)
+          y = int(float(distance) * cos(radians((scan_angle_start + float(n_points - j) * scan_angle_range / float(n_points)))) / ZOOM_FACTOR);
+        else
+          y = int(float(distance) * cos(radians((scan_angle_start + float(j) * scan_angle_range / float(n_points)))) / ZOOM_FACTOR);
         //println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_range / float(n_points)) + ",x=" + x + ",y=", y);
         x = SCREEN_WIDTH - x; 
         y += SCREEN_HEIGHT / 2;
-      } else /*if (ROTATE_FACTOR == 270)*/ {
-        x = int(float(distance) * cos(radians((scan_angle_start + float(n_points - j) * scan_angle_range / float(n_points)))) / ZOOM_FACTOR);
+      }
+      else /*if (ROTATE_FACTOR == 270)*/ {
+        if (MIRROR_ENABLE)
+          x = int(float(distance) * cos(radians((scan_angle_start + float(j) * scan_angle_range / float(n_points)))) / ZOOM_FACTOR);
+        else
+          x = int(float(distance) * cos(radians((scan_angle_start + float(n_points - j) * scan_angle_range / float(n_points)))) / ZOOM_FACTOR);
         y = int(float(distance) * sin(radians((scan_angle_start + float(j) * scan_angle_range / float(n_points)))) / ZOOM_FACTOR);
         //println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_range / float(n_points)) + ",x=" + x + ",y=", y);
         x += SCREEN_WIDTH / 2;
@@ -402,6 +423,11 @@ void button_setup()
   button_rotate_cw_height = FONT_HEIGHT * 2;
   button_rotate_cw_x = TEXT_MARGIN + FONT_HEIGHT * 6;
   button_rotate_cw_y = SCREEN_HEIGHT - button_rotate_cw_height - TEXT_MARGIN - FONT_HEIGHT * 4;
+
+  button_mirror_en_width = FONT_HEIGHT * 2;
+  button_mirror_en_height = FONT_HEIGHT * 2;
+  button_mirror_en_x = TEXT_MARGIN + FONT_HEIGHT * 9;
+  button_mirror_en_y = SCREEN_HEIGHT - button_mirror_en_height - TEXT_MARGIN - FONT_HEIGHT * 2;
 
   button_color = color(0);
   button_highlight = color(51);
@@ -460,6 +486,20 @@ void button_draw()
 
   string = "Rotate";
   text(string, button_rotate_cw_x + button_rotate_cw_width / 2 - int(textWidth(string)) / 2, button_rotate_cw_y - FONT_HEIGHT / 2);
+
+  if (button_mirror_en_over) {
+    fill( button_highlight);
+  } else {
+    fill( button_color);
+  }
+  rect(button_mirror_en_x, button_mirror_en_y, button_mirror_en_width, button_mirror_en_height);
+  fill(255);
+  if (ROTATE_FACTOR == 0 || ROTATE_FACTOR == 180)  string = "⇅";
+  else string = "⇄";
+  text(string, button_mirror_en_x + button_mirror_en_width / 2 - int(textWidth(string)) / 2, button_mirror_en_y + button_mirror_en_height / 2 + FONT_HEIGHT / 2);
+
+  string = "Mirror";
+  text(string, button_mirror_en_x + button_mirror_en_width / 2 - int(textWidth(string)) / 2, button_mirror_en_y - FONT_HEIGHT / 2);
 }
 
 void button_update() {
@@ -468,23 +508,38 @@ void button_update() {
     button_zoom_pluse_over = false;
     button_rotate_ccw_over = false;
     button_rotate_cw_over = false;
-  } else if ( overRect(button_zoom_pluse_x, button_zoom_pluse_y, button_zoom_pluse_width, button_zoom_pluse_height) ) {
+    button_mirror_en_over = false;
+  }
+  else if ( overRect(button_zoom_pluse_x, button_zoom_pluse_y, button_zoom_pluse_width, button_zoom_pluse_height) ) {
     button_zoom_minus_over = false;
     button_zoom_pluse_over = true;
     button_rotate_ccw_over = false;
     button_rotate_cw_over = false;
-  } else if ( overRect(button_rotate_ccw_x, button_rotate_ccw_y, button_rotate_ccw_width, button_rotate_ccw_height) ) {
+    button_mirror_en_over = false;
+  }
+  else if ( overRect(button_rotate_ccw_x, button_rotate_ccw_y, button_rotate_ccw_width, button_rotate_ccw_height) ) {
     button_zoom_minus_over = false;
     button_zoom_pluse_over = false;
     button_rotate_ccw_over = true;
     button_rotate_cw_over = false;
-  } else if ( overRect(button_rotate_cw_x, button_rotate_cw_y, button_rotate_cw_width, button_rotate_cw_height) ) {
+    button_mirror_en_over = false;
+  }
+  else if ( overRect(button_rotate_cw_x, button_rotate_cw_y, button_rotate_cw_width, button_rotate_cw_height) ) {
     button_zoom_minus_over = false;
     button_zoom_pluse_over = false;
     button_rotate_ccw_over = false;
     button_rotate_cw_over = true;
-  } else {
-    button_zoom_minus_over = button_zoom_pluse_over = button_rotate_ccw_over = button_rotate_cw_over = false;
+    button_mirror_en_over = false;
+  }
+  else if ( overRect(button_mirror_en_x, button_mirror_en_y, button_mirror_en_width, button_mirror_en_height) ) {
+    button_zoom_minus_over = false;
+    button_zoom_pluse_over = false;
+    button_rotate_ccw_over = false;
+    button_rotate_cw_over = false;
+    button_mirror_en_over = true;
+  }
+  else {
+    button_zoom_minus_over = button_zoom_pluse_over = button_rotate_ccw_over = button_rotate_cw_over = button_mirror_en_over = false;
   }
 }
 
@@ -511,7 +566,12 @@ void mousePressed() {
     ROTATE_FACTOR += 90;
     if (ROTATE_FACTOR == 360) ROTATE_FACTOR = 0;
   }
-  if (PRINT)  println("ROTATE_FACTOR=" + ROTATE_FACTOR);
+  if (PRINT) println("ROTATE_FACTOR=" + ROTATE_FACTOR);
+
+  if (button_mirror_en_over) {
+    MIRROR_ENABLE = !MIRROR_ENABLE;
+  }
+  if (PRINT) println("MIRROR_ENABLE=" + MIRROR_ENABLE);
 }
 
 boolean overRect(int x, int y, int width, int height) {
@@ -539,9 +599,15 @@ void grid_draw()
       line(0, SCREEN_HEIGHT / 2 - j, SCREEN_WIDTH, SCREEN_HEIGHT / 2 - j);
       line(0, SCREEN_HEIGHT / 2 + j, SCREEN_WIDTH, SCREEN_HEIGHT / 2 + j);
       stroke(128);
-      string = "+" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
+      if (MIRROR_ENABLE)
+        string = "-" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
+      else
+        string = "+" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
       text(string, TEXT_MARGIN, SCREEN_HEIGHT / 2 + FONT_HEIGHT / 2 - j);
-      string = "-" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
+      if (MIRROR_ENABLE)
+        string = "+" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
+      else
+        string = "-" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
       text(string, TEXT_MARGIN, SCREEN_HEIGHT / 2 + FONT_HEIGHT / 2 + j);
     }
 
@@ -564,9 +630,15 @@ void grid_draw()
       line(SCREEN_WIDTH / 2 + j, 0, SCREEN_WIDTH / 2 + j, SCREEN_HEIGHT);
       line(SCREEN_WIDTH / 2 - j, 0, SCREEN_WIDTH / 2 - j, SCREEN_HEIGHT);
       stroke(128);
-      string = "+" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
+      if (MIRROR_ENABLE)
+        string = "-" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
+      else
+        string = "+" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
       text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0) + j, TEXT_MARGIN + FONT_HEIGHT);
-      string = "-" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
+      if (MIRROR_ENABLE)
+        string = "+" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
+      else
+        string = "-" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
       text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0) - j, TEXT_MARGIN + FONT_HEIGHT);
     }
 
@@ -589,9 +661,15 @@ void grid_draw()
       line(0, SCREEN_HEIGHT / 2 + j, SCREEN_WIDTH, SCREEN_HEIGHT / 2 + j);
       line(0, SCREEN_HEIGHT / 2 - j, SCREEN_WIDTH, SCREEN_HEIGHT / 2 - j);
       stroke(128);
-      string = "+" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
+      if (MIRROR_ENABLE)
+        string = "-" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
+      else
+        string = "+" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
       text(string, SCREEN_WIDTH - TEXT_MARGIN - int(textWidth(string)), SCREEN_HEIGHT / 2 + FONT_HEIGHT / 2 + j);
-      string = "-" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
+      if (MIRROR_ENABLE)
+        string = "+" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
+      else
+        string = "-" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
       text(string, SCREEN_WIDTH - TEXT_MARGIN - int(textWidth(string)), SCREEN_HEIGHT / 2 + FONT_HEIGHT / 2 - j);
     }
 
@@ -614,9 +692,15 @@ void grid_draw()
       line(SCREEN_WIDTH / 2 - j, 0, SCREEN_WIDTH / 2 - j, SCREEN_HEIGHT);
       line(SCREEN_WIDTH / 2 + j, 0, SCREEN_WIDTH / 2 + j, SCREEN_HEIGHT);
       stroke(128);
-      string = "+" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
+      if (MIRROR_ENABLE)
+        string = "-" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
+      else
+        string = "+" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
       text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0) - j, SCREEN_HEIGHT - TEXT_MARGIN);
-      string = "-" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
+      if (MIRROR_ENABLE)
+        string = "+" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
+      else
+        string = "-" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
       text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0) + j, SCREEN_HEIGHT - TEXT_MARGIN);
     }
 
