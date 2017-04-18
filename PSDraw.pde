@@ -129,9 +129,20 @@ void draw() {
   int i = 0; // index for navigating data.
   String string;
 
+  // Ready to draw from here!
+  // To clear the display window at the beginning of each frame,
+  background(0);
+
   // Check file exists to avoid exception error on loadBytes().
   File file = new File(FILENAME);
   if (file.exists() != true) {
+    // Sets the color used to draw lines and borders around shapes.
+    fill(255);
+    stroke(255);
+    string = "File not exist at " + FILENAME;
+    textSize(FONT_HEIGHT*3);
+    text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+    textSize(FONT_HEIGHT);
     if (PRINT) println("File not exist!:" + FILENAME);
     return;
   }
@@ -142,6 +153,13 @@ void draw() {
   // Check binary data length is valid.
   // Must larger than Function code(4B) + Length(4B) + Number of parameters(4B) + Number of points(4B) + CRC(4B).
   if (data.length <= 4 + 4 + 4 + 4 + 4) {
+    // Sets the color used to draw lines and borders around shapes.
+    fill(255);
+    stroke(255);
+    string = "File size is invalid!: " + data.length;
+    textSize(FONT_HEIGHT*3);
+    text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+    textSize(FONT_HEIGHT);
     if (PRINT) println("File size is invalid!:" + data.length);
     return;
   }
@@ -150,6 +168,13 @@ void draw() {
   func = str(char(data[i])) + str(char(data[i+1])) + str(char(data[i+2])) + str(char(data[i+3]));
   // Check function code is "GSCN".
   if (func.equals("GSCN") != true) {
+    // Sets the color used to draw lines and borders around shapes.
+    fill(255);
+    stroke(255);
+    string = "Function code is invalid!:" + func;
+    textSize(FONT_HEIGHT*3);
+    text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+    textSize(FONT_HEIGHT);
     if (PRINT) println("Function code is invalid!:", func);
     return;
   }
@@ -164,6 +189,13 @@ void draw() {
 
   // Check data record length with binary data length
   if (data.length < (len + 12)) {
+    // Sets the color used to draw lines and borders around shapes.
+    fill(255);
+    stroke(255);
+    string = "Binary data length is invalid!:" + data.length + "," + len;
+    textSize(FONT_HEIGHT*3);
+    text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+    textSize(FONT_HEIGHT);
     if (PRINT) println("Binary data length is invalid!:" + data.length + "," + len);
     return;
   }
@@ -178,7 +210,14 @@ void draw() {
   i = i + 4;
 
   if (n_params == 0) {
-    if (PRINT) println("No scan data is available!");
+    // Sets the color used to draw lines and borders around shapes.
+    fill(255);
+    stroke(255);
+    string = "No scan data is available!:Number of parameter is 0.";
+    textSize(FONT_HEIGHT*3);
+    text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+    textSize(FONT_HEIGHT);
+    if (PRINT) println("No scan data is available!:Number of parameter is 0.");
     return;
   }
 
@@ -199,16 +238,19 @@ void draw() {
 /*
     // Check time_stamp is changed
     if (old_time_stamp == time_stamp) {
-      if (PRINT) println("Time stamp is not changed!:" + time_stamp);
-      return;
+      // Sets the color used to draw lines and borders around shapes.
+      fill(255);
+      stroke(255);
+      string = "Scan data is not changed!:" + time_stamp;
+      textSize(FONT_HEIGHT*3);
+      text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+      textSize(FONT_HEIGHT);
+      if (PRINT) println("Scan data is not changed!:" + time_stamp);
+      //return;
     }
     old_time_stamp = time_stamp;
 */
-  }
-
-  // Ready to draw from here!
-  // To clear the display window at the beginning of each frame,
-  background(0);
+}
 
   grid_draw();
 
