@@ -128,11 +128,11 @@ class Data {
       // Sets the color used to draw lines and borders around shapes.
       fill(255);
       stroke(255);
-      string = "Binary data_buf length is invalid!:" + data_buf.length + "," + len;
+      string = "Binary data length is invalid!:" + data_buf.length + "," + len;
       textSize(FONT_HEIGHT*3);
       text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
-      if (PRINT_DataFunc_Parse) println("Binary data_buf length is invalid!:" + data_buf.length + "," + len);
+      if (PRINT_DataFunc_Parse) println("Binary data length is invalid!:" + data_buf.length + "," + len);
       return false;
     }
   
@@ -144,16 +144,15 @@ class Data {
     n_params = get_int32_bytes(data_buf, i);
     if (PRINT_DataFunc_Parse) println("index=" + i + ",number of parameters=" + n_params);
     i = i + 4;
-  
     if (n_params == 0) {
       // Sets the color used to draw lines and borders around shapes.
       fill(255);
       stroke(255);
-      string = "No scan data_buf is available!:Number of parameter is 0.";
+      string = "No scan data is available!:Number of parameter is 0.";
       textSize(FONT_HEIGHT*3);
       text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
-      if (PRINT_DataFunc_Parse) println("No scan data_buf is available!:Number of parameter is 0.");
+      if (PRINT_DataFunc_Parse) println("No scan data is available!:Number of parameter is 0.");
       return false;
     }
   
@@ -245,7 +244,7 @@ class Data {
       //    o 8 Bytes: distances in 1/10 mm and pulse widths in picoseconds
       //    o Any other value than 4 be read as "8 Bytes".
       content = get_int32_bytes(data_buf, i);
-      if (PRINT_DataFunc_Parse) println("index=" + i + ",data_buf content=" + content);
+      if (PRINT_DataFunc_Parse) println("index=" + i + ",data content=" + content);
       i = i + 4;
     }
   
@@ -260,6 +259,18 @@ class Data {
     n_points = get_int32_bytes(data_buf, i);
     if (PRINT_DataFunc_Parse) println("index=" + i + ",number of points=" + n_points);
     i = i + 4;
+    if (n_points > MAX_POINTS || n_points <= 0) {
+      // Sets the color used to draw lines and borders around shapes.
+      fill(255);
+      stroke(255);
+      string = "Number of points invalide!:Number of points is" + n_points + ".";
+      textSize(FONT_HEIGHT*3);
+      text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+      textSize(FONT_HEIGHT);
+      if (PRINT_DataFunc_Parse) println("Number of points invalide!:Number of points is" + n_points + ".");
+      return false;
+    }
+  
 
     for (int j = 0; j < n_points; j++) {
       // Get Distance

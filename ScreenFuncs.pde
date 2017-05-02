@@ -23,35 +23,41 @@ void screen_settings() {
 }
 
 void screen_setup() {
-  // Set text margin to follow screen Width
-  TEXT_MARGIN = SCREEN_WIDTH / 200;
+  // Set text margin to follow min(Width, Height) of screen.
+  TEXT_MARGIN = (SCREEN_WIDTH < SCREEN_HEIGHT) ? (SCREEN_WIDTH / 200) : (SCREEN_HEIGHT / 200);
+  if (PRINT_ScreenFunc) println("TEXT_MARGIN=" + TEXT_MARGIN);
 
-  // Set font height of text to follow screen Height
-  FONT_HEIGHT = SCREEN_HEIGHT / 60;
+  // Set font height of text to follow min(Width, Height) of screen.
+  FONT_HEIGHT = (SCREEN_WIDTH < SCREEN_HEIGHT) ? (SCREEN_WIDTH / 60) : (SCREEN_HEIGHT / 60);
+  if (FONT_HEIGHT > 15) FONT_HEIGHT = 15;
+  if (FONT_HEIGHT < 10) FONT_HEIGHT = 10;
+  if (PRINT_ScreenFunc) println("FONT_HEIGHT=" + FONT_HEIGHT);
   textSize(FONT_HEIGHT);
 }
 
 boolean screen_check_update() {
+  //println("screen size width=" + width + ", height=" + height);
+  
   // Check screen size changed.
-  if (SCREEN_WIDTH != width || SCREEN_HEIGHT != height)
-  {
-/*
-    if (width < MIN_SCREEN_WIDTH || height < MIN_SCREEN_HEIGHT) {
-      if (PRINT_ScreenFunc) println("screen size changed too small! width " + SCREEN_WIDTH + "->" + width + ", height " + SCREEN_HEIGHT + "->" + height);
-      if (width < MIN_SCREEN_WIDTH) {
-        SCREEN_WIDTH = MIN_SCREEN_WIDTH;
-      }
-      if (height < MIN_SCREEN_HEIGHT) {
-        SCREEN_HEIGHT = MIN_SCREEN_HEIGHT;
-      }
-      surface.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-      return true;
-    }
-*/
+  if (SCREEN_WIDTH != width || SCREEN_HEIGHT != height) {
     if (PRINT_ScreenFunc) println("screen size changed! width " + SCREEN_WIDTH + "->" + width + ", height " + SCREEN_HEIGHT + "->" + height);
     SCREEN_WIDTH = width;
     SCREEN_HEIGHT = height;
     return true;
   }
+
+  // Check screen size too small.
+  if (width < MIN_SCREEN_WIDTH || height < MIN_SCREEN_HEIGHT) {
+    if (PRINT_ScreenFunc) println("screen size changed too small! width " + width + ", height " + height);
+    if (width < MIN_SCREEN_WIDTH) {
+      SCREEN_WIDTH = MIN_SCREEN_WIDTH;
+    }
+    if (height < MIN_SCREEN_HEIGHT) {
+      SCREEN_HEIGHT = MIN_SCREEN_HEIGHT;
+    }
+    surface.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+    return true;
+  }
+  
   return false;
 }

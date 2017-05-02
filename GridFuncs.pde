@@ -1,3 +1,6 @@
+int GRID_OFFSET_X = 0;
+int GRID_OFFSET_Y = 0;
+
 void grid_draw()
 {
   String string;
@@ -36,33 +39,48 @@ void grid_draw()
   } else if (ROTATE_FACTOR == 90) {
     // Sets the color used to draw lines and borders around shapes.
     stroke(64);
-    line(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
+    line(SCREEN_WIDTH / 2 + GRID_OFFSET_X, 0, SCREEN_WIDTH / 2 + GRID_OFFSET_X, SCREEN_HEIGHT);
     stroke(128);
     string = "0m";
-    text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), TEXT_MARGIN + FONT_HEIGHT);
+    if (GRID_OFFSET_Y > 0) {
+      text(string, SCREEN_WIDTH / 2 + GRID_OFFSET_X - int(textWidth(string) / 2.0), TEXT_MARGIN + FONT_HEIGHT + GRID_OFFSET_Y);
+    }
+    else {
+      text(string, SCREEN_WIDTH / 2 + GRID_OFFSET_X - int(textWidth(string) / 2.0), TEXT_MARGIN + FONT_HEIGHT);
+    }
     for (int j = 100; j < SCREEN_WIDTH / 2; j += 100) {
       stroke(64);
-      line(SCREEN_WIDTH / 2 + j, 0, SCREEN_WIDTH / 2 + j, SCREEN_HEIGHT);
-      line(SCREEN_WIDTH / 2 - j, 0, SCREEN_WIDTH / 2 - j, SCREEN_HEIGHT);
+      line(SCREEN_WIDTH / 2 + j + GRID_OFFSET_X, 0, SCREEN_WIDTH / 2 + j + GRID_OFFSET_X, SCREEN_HEIGHT);
+      line(SCREEN_WIDTH / 2 - j + GRID_OFFSET_X, 0, SCREEN_WIDTH / 2 - j + GRID_OFFSET_X, SCREEN_HEIGHT);
       stroke(128);
       if (MIRROR_ENABLE)
         string = "-" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
       else
         string = "+" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
-      text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0) + j, TEXT_MARGIN + FONT_HEIGHT);
+      if (GRID_OFFSET_Y > 0) {
+        text(string, SCREEN_WIDTH / 2 + GRID_OFFSET_X - int(textWidth(string) / 2.0) + j, TEXT_MARGIN + FONT_HEIGHT + GRID_OFFSET_Y);
+      }
+      else {
+        text(string, SCREEN_WIDTH / 2 + GRID_OFFSET_X - int(textWidth(string) / 2.0) + j, TEXT_MARGIN + FONT_HEIGHT);
+      }
       if (MIRROR_ENABLE)
         string = "+" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
       else
         string = "-" + (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
-      text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0) - j, TEXT_MARGIN + FONT_HEIGHT);
+      if (GRID_OFFSET_Y > 0) {
+        text(string, SCREEN_WIDTH / 2 + GRID_OFFSET_X - int(textWidth(string) / 2.0) - j, TEXT_MARGIN + FONT_HEIGHT + GRID_OFFSET_Y);
+      }
+      else {
+        text(string, SCREEN_WIDTH / 2 + GRID_OFFSET_X - int(textWidth(string) / 2.0) - j, TEXT_MARGIN + FONT_HEIGHT);
+      }
     }
 
-    for (int j = 100; j < SCREEN_HEIGHT; j += 100) {
+    for (int j = 0; j < SCREEN_HEIGHT; j += 100) {
       stroke(64);
-      line(0, j, SCREEN_WIDTH, j);
+      line(0, j + GRID_OFFSET_Y, SCREEN_WIDTH, j + GRID_OFFSET_Y);
       stroke(128);
       string = (float(int(ZOOM_FACTOR / 100.0 * float(j))) / 100.0) + "m";
-      text(string, SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN, j + FONT_HEIGHT / 2);
+      text(string, SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN, j + FONT_HEIGHT / 2 + GRID_OFFSET_Y);
     }
   } else if (ROTATE_FACTOR == 180) {
     // Sets the color used to draw lines and borders around shapes.
