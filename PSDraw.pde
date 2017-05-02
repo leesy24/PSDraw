@@ -2,18 +2,6 @@
 //final boolean PRINT = true; 
 final boolean PRINT = false; 
 
-// Define screen width and height.
-//int SCREEN_WIDTH = 1920;
-//int SCREEN_HEIGHT = 1080;
-int SCREEN_WIDTH = 1024;
-int SCREEN_HEIGHT = 768;
-
-// Define just font height variables.
-int FONT_HEIGHT;
-
-// Define just text area margin variables.
-int TEXT_MARGIN;
-
 // Define zoom factor variables.
 float ZOOM_FACTOR = 100;
 
@@ -38,8 +26,7 @@ long old_time_stamp = -1;
 // The settings() function is new with Processing 3.0. It's not needed in most sketches.
 // It's only useful when it's absolutely necessary to define the parameters to size() with a variable. 
 void settings() {
-  // Defines the dimension of the display window width and height in units of pixels.
-  size(SCREEN_WIDTH, SCREEN_HEIGHT);
+  screen_settings();
 }
 
 // The setup() function is run once, when the program starts.
@@ -60,6 +47,8 @@ void setup() {
   SCREEN_HEIGHT = height;
 */
 
+  surface.setResizable(true);
+
   // Check OS
   if (OS.equals("Linux")) {
     // Define binary data filename and path for Linux OS
@@ -77,12 +66,7 @@ void setup() {
   // Specifies the number of frames to be displayed every second. 
   frameRate(30);
 
-  TEXT_MARGIN = SCREEN_WIDTH / 200;
-
-  // Set font height of text to follow screen Height
-  FONT_HEIGHT = SCREEN_HEIGHT / 60;
-  textSize(FONT_HEIGHT);
-
+  screen_setup();
   button_setup();
 }
 
@@ -114,6 +98,11 @@ void draw() {
   // Ready to draw from here!
   // To clear the display window at the beginning of each frame,
   background(0);
+
+  if (screen_check_update()) {
+    screen_setup();
+    button_setup();
+  }
 
   // Check file exists to avoid exception error on loadBytes().
   File file = new File(FILENAME);
@@ -232,7 +221,7 @@ void draw() {
     }
     old_time_stamp = time_stamp;
 */
-}
+  }
 
   grid_draw();
 
