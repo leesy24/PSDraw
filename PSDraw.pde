@@ -18,7 +18,7 @@ int TEXT_MARGIN;
 float ZOOM_FACTOR = 100;
 
 // Define rotate factor variables.
-float ROTATE_FACTOR = 0;
+float ROTATE_FACTOR = 90;
 
 // Define mirror variables.
 boolean MIRROR_ENABLE = false;
@@ -585,20 +585,37 @@ void button_update() {
   }
 }
 
-void mousePressed() {
-  if (button_zoom_minus_over) {
-    if (ZOOM_FACTOR <= 3000.0) {
-      if (ZOOM_FACTOR < 100.0) ZOOM_FACTOR += 10.0;
-      else ZOOM_FACTOR = int(ZOOM_FACTOR + ZOOM_FACTOR / 10.0 + 5.0) / 10 * 10;
-    }
+void button_zoom_minus() {
+  if (ZOOM_FACTOR <= 3000.0) {
+    if (ZOOM_FACTOR < 100.0) ZOOM_FACTOR += 10.0;
+    else ZOOM_FACTOR = int(ZOOM_FACTOR + ZOOM_FACTOR / 10.0 + 5.0) / 10 * 10;
   }
-  if (button_zoom_pluse_over) {
+  if (PRINT) println("ZOOM_FACTOR=" + ZOOM_FACTOR);
+}
+
+void button_zoom_pluse() {
     if (ZOOM_FACTOR > 10.0) {
       if (ZOOM_FACTOR < 100.0) ZOOM_FACTOR -= 10.0;
       else ZOOM_FACTOR = int(ZOOM_FACTOR - ZOOM_FACTOR / 10.0 + 5.0) / 10 * 10;
     }
-  }
   if (PRINT) println("ZOOM_FACTOR=" + ZOOM_FACTOR);
+}
+
+float mouseXPressed = 0.0; 
+float mouseYPressed = 0.0; 
+float mouseXDragged = 0.0; 
+float mouseYDragged = 0.0; 
+
+void mousePressed() {
+  mouseXPressed = mouseX; 
+  mouseYPressed = mouseY; 
+
+  if (button_zoom_minus_over) {
+    button_zoom_minus();
+  }
+  if (button_zoom_pluse_over) {
+    button_zoom_pluse();
+  }
 
   if (button_rotate_ccw_over) {
     ROTATE_FACTOR -= 90;
@@ -614,6 +631,23 @@ void mousePressed() {
     MIRROR_ENABLE = !MIRROR_ENABLE;
   }
   if (PRINT) println("MIRROR_ENABLE=" + MIRROR_ENABLE);
+}
+
+void mouseDragged() 
+{
+  mouseXDragged = mouseX-mouseXPressed; 
+  mouseYDragged = mouseY-mouseYPressed;
+  /*if (PRINT)*/ println("Mouse dragged = dx:" + mouseXDragged + ",dy:" + mouseYDragged);
+}
+
+void mouseWheel(MouseEvent event) {
+  float e = event.getCount();
+
+  if (PRINT) println("Mouse wheel =" + e);
+  if (e == 1)
+    button_zoom_minus();
+  else if (e == -1)
+    button_zoom_pluse();
 }
 
 boolean overRect(int x, int y, int width, int height) {
