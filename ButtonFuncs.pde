@@ -1,3 +1,6 @@
+//final boolean PRINT_ButtonFunc = true; 
+final boolean PRINT_ButtonFunc = false;
+
 int button_zoom_minus_x, button_zoom_minus_y;      // Position of square button zoom minus
 int button_zoom_minus_width, button_zoom_minus_height;     // Diameter of rect
 boolean button_zoom_minus_over = false;
@@ -162,15 +165,15 @@ void button_zoom_minus() {
     if (ZOOM_FACTOR < 100.0) ZOOM_FACTOR += 10.0;
     else ZOOM_FACTOR = int(ZOOM_FACTOR + ZOOM_FACTOR / 10.0 + 5.0) / 10 * 10;
   }
-  if (PRINT) println("ZOOM_FACTOR=" + ZOOM_FACTOR);
+  if (PRINT_ButtonFunc) println("ZOOM_FACTOR=" + ZOOM_FACTOR);
 }
 
 void button_zoom_pluse() {
-    if (ZOOM_FACTOR > 10.0) {
-      if (ZOOM_FACTOR < 100.0) ZOOM_FACTOR -= 10.0;
-      else ZOOM_FACTOR = int(ZOOM_FACTOR - ZOOM_FACTOR / 10.0 + 5.0) / 10 * 10;
-    }
-  if (PRINT) println("ZOOM_FACTOR=" + ZOOM_FACTOR);
+  if (ZOOM_FACTOR > 10.0) {
+    if (ZOOM_FACTOR < 100.0) ZOOM_FACTOR -= 10.0;
+    else ZOOM_FACTOR = int(ZOOM_FACTOR - ZOOM_FACTOR / 10.0 + 5.0) / 10 * 10;
+  }
+  if (PRINT_ButtonFunc) println("ZOOM_FACTOR=" + ZOOM_FACTOR);
 }
 
 boolean button_check_over(int x, int y, int width, int height) {
