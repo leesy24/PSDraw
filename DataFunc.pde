@@ -363,6 +363,7 @@ class Data {
           else
             y = int(float(distance) * cos(radians((scan_angle_start + float(n_points - j) * scan_angle_size / float(n_points)))) / ZOOM_FACTOR);
           if (PRINT_DataFunc_Draw) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
+          x += TEXT_MARGIN + FONT_HEIGHT / 2;
           y += SCREEN_HEIGHT / 2;
         }
         else if (ROTATE_FACTOR == 90) {
@@ -373,6 +374,7 @@ class Data {
           y = int(float(distance) * sin(radians((scan_angle_start + float(j) * scan_angle_size / float(n_points)))) / ZOOM_FACTOR);
           if (PRINT_DataFunc_Draw) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
           x += SCREEN_WIDTH / 2;
+          y += TEXT_MARGIN + FONT_HEIGHT / 2;
         }
         else if (ROTATE_FACTOR == 180) {
           x = int(float(distance) * sin(radians((scan_angle_start + float(j) * scan_angle_size / float(n_points)))) / ZOOM_FACTOR);
@@ -382,6 +384,7 @@ class Data {
             y = int(float(distance) * cos(radians((scan_angle_start + float(j) * scan_angle_size / float(n_points)))) / ZOOM_FACTOR);
           if (PRINT_DataFunc_Draw) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
           x = SCREEN_WIDTH - x; 
+          x -= TEXT_MARGIN + FONT_HEIGHT / 2;
           y += SCREEN_HEIGHT / 2;
         }
         else /*if (ROTATE_FACTOR == 270)*/ {
@@ -393,13 +396,14 @@ class Data {
           if (PRINT_DataFunc_Draw) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
           x += SCREEN_WIDTH / 2;
           y = SCREEN_HEIGHT - y;
+          y -= TEXT_MARGIN + FONT_HEIGHT / 2;
         }
         if (p_x != -1 && p_y != -1) {
           stroke(128);
-          line(p_x, p_y, x, y);
+          line(p_x + GRID_OFFSET_X, p_y + GRID_OFFSET_Y, x + GRID_OFFSET_X, y + GRID_OFFSET_Y);
         }
         stroke(255);
-        point(x, y);
+        point(x + GRID_OFFSET_X, y + GRID_OFFSET_Y);
         p_x = x;
         p_y = y;
       }

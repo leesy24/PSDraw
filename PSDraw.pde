@@ -6,7 +6,7 @@ final boolean PRINT = false;
 float ZOOM_FACTOR = 100;
 
 // Define rotate factor variables.
-float ROTATE_FACTOR = 90;
+float ROTATE_FACTOR = /*0;*/ 90; /*180;*/ /*270;*/
 
 // Define mirror variables.
 boolean MIRROR_ENABLE = false;
