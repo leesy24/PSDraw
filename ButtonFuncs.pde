@@ -16,6 +16,9 @@ boolean button_rotate_cw_over = false;
 int button_mirror_en_x, button_mirror_en_y;      // Position of square button mirror enable
 int button_mirror_en_width, button_mirror_en_height;     // Diameter of rect
 boolean button_mirror_en_over = false;
+int button_reset_en_x, button_reset_en_y;      // Position of square button reset enable
+int button_reset_en_width, button_reset_en_height;     // Diameter of rect
+boolean button_reset_en_over = false;
 color button_highlight;
 color button_color, button_base_color;
 
@@ -45,6 +48,11 @@ void button_setup()
   button_mirror_en_height = FONT_HEIGHT * 2;
   button_mirror_en_x = TEXT_MARGIN + FONT_HEIGHT * 9;
   button_mirror_en_y = SCREEN_HEIGHT - button_mirror_en_height - TEXT_MARGIN - FONT_HEIGHT * 2;
+
+  button_reset_en_width = FONT_HEIGHT * 2;
+  button_reset_en_height = FONT_HEIGHT * 2;
+  button_reset_en_x = TEXT_MARGIN + FONT_HEIGHT * 12;
+  button_reset_en_y = SCREEN_HEIGHT - button_mirror_en_height - TEXT_MARGIN - FONT_HEIGHT * 2;
 
   button_color = color(0);
   button_highlight = color(51);
@@ -114,9 +122,20 @@ void button_draw()
   if (ROTATE_FACTOR == 0 || ROTATE_FACTOR == 180)  string = "⇅";
   else string = "⇄";
   text(string, button_mirror_en_x + button_mirror_en_width / 2 - int(textWidth(string)) / 2, button_mirror_en_y + button_mirror_en_height / 2 + FONT_HEIGHT / 2);
-
   string = "Mirror";
   text(string, button_mirror_en_x + button_mirror_en_width / 2 - int(textWidth(string)) / 2, button_mirror_en_y - FONT_HEIGHT / 2);
+
+  if (button_reset_en_over) {
+    fill( button_highlight);
+  } else {
+    fill( button_color);
+  }
+  rect(button_reset_en_x, button_reset_en_y, button_reset_en_width, button_reset_en_height);
+  fill(255);
+  string = "0";
+  text(string, button_reset_en_x + button_reset_en_width / 2 - int(textWidth(string)) / 2, button_reset_en_y + button_reset_en_height / 2 + FONT_HEIGHT / 2);
+  string = "Reset";
+  text(string, button_reset_en_x + button_reset_en_width / 2 - int(textWidth(string)) / 2, button_reset_en_y - FONT_HEIGHT / 2);
 }
 
 void button_update() {
@@ -126,6 +145,7 @@ void button_update() {
     button_rotate_ccw_over = false;
     button_rotate_cw_over = false;
     button_mirror_en_over = false;
+    button_reset_en_over = false;
   }
   else if ( button_check_over(button_zoom_pluse_x, button_zoom_pluse_y, button_zoom_pluse_width, button_zoom_pluse_height) ) {
     button_zoom_minus_over = false;
@@ -133,6 +153,7 @@ void button_update() {
     button_rotate_ccw_over = false;
     button_rotate_cw_over = false;
     button_mirror_en_over = false;
+    button_reset_en_over = false;
   }
   else if ( button_check_over(button_rotate_ccw_x, button_rotate_ccw_y, button_rotate_ccw_width, button_rotate_ccw_height) ) {
     button_zoom_minus_over = false;
@@ -140,6 +161,7 @@ void button_update() {
     button_rotate_ccw_over = true;
     button_rotate_cw_over = false;
     button_mirror_en_over = false;
+    button_reset_en_over = false;
   }
   else if ( button_check_over(button_rotate_cw_x, button_rotate_cw_y, button_rotate_cw_width, button_rotate_cw_height) ) {
     button_zoom_minus_over = false;
@@ -147,6 +169,7 @@ void button_update() {
     button_rotate_ccw_over = false;
     button_rotate_cw_over = true;
     button_mirror_en_over = false;
+    button_reset_en_over = false;
   }
   else if ( button_check_over(button_mirror_en_x, button_mirror_en_y, button_mirror_en_width, button_mirror_en_height) ) {
     button_zoom_minus_over = false;
@@ -154,9 +177,24 @@ void button_update() {
     button_rotate_ccw_over = false;
     button_rotate_cw_over = false;
     button_mirror_en_over = true;
+    button_reset_en_over = false;
+  }
+  else if ( button_check_over(button_reset_en_x, button_reset_en_y, button_reset_en_width, button_reset_en_height) ) {
+    button_zoom_minus_over = false;
+    button_zoom_pluse_over = false;
+    button_rotate_ccw_over = false;
+    button_rotate_cw_over = false;
+    button_mirror_en_over = false;
+    button_reset_en_over = true;
   }
   else {
-    button_zoom_minus_over = button_zoom_pluse_over = button_rotate_ccw_over = button_rotate_cw_over = button_mirror_en_over = false;
+    button_zoom_minus_over =
+    button_zoom_pluse_over =
+    button_rotate_ccw_over =
+    button_rotate_cw_over =
+    button_mirror_en_over =
+    button_reset_en_over =
+    false;
   }
 }
 

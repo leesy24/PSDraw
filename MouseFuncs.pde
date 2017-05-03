@@ -51,6 +51,15 @@ void mousePressed() {
     MIRROR_ENABLE = !MIRROR_ENABLE;
     if (PRINT_MouseFunc_Pressed) println("MIRROR_ENABLE=" + MIRROR_ENABLE);
   }
+
+  if (button_reset_en_over) {
+    if (PRINT_MouseFunc_Pressed) println("ZOOM_FACTOR=" + ZOOM_FACTOR);
+    if (PRINT_MouseFunc_Pressed) println("MIRROR_ENABLE=" + MIRROR_ENABLE);
+    if (PRINT_MouseFunc_Pressed) println("GRID_OFFSET_X=" + GRID_OFFSET_X + ", GRID_OFFSET_Y=" + GRID_OFFSET_Y);
+    GRID_OFFSET_X = GRID_OFFSET_Y = 0;
+    MIRROR_ENABLE = false;
+    ZOOM_FACTOR = 100;
+  }
 }
 
 void mouseReleased() {
