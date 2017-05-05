@@ -15,7 +15,7 @@ int mouseYPressed = 0;
 
 void mousePressed() {
   //println("SCREEN_WIDTH - mouseX=" + (SCREEN_WIDTH - mouseX) + ", mouseY=" + mouseY);
-  //println("mouseX=" + mouseX + ", mouseY=" + mouseY);
+  println("mouseX=" + mouseX + ", mouseY=" + mouseY);
   mouseXPressed = mouseX - GRID_OFFSET_X; 
   mouseYPressed = mouseY - GRID_OFFSET_Y; 
 
@@ -28,21 +28,51 @@ void mousePressed() {
 
   //println("old GRID_OFFSET_X=" + GRID_OFFSET_X + ", GRID_OFFSET_Y=" + GRID_OFFSET_Y);
   if (button_rotate_ccw_over) {
-    int save;
+    float save_ox, save_oy;
     ROTATE_FACTOR -= 90;
     if (ROTATE_FACTOR == -90) ROTATE_FACTOR = 270;
-    save = GRID_OFFSET_X;
-    GRID_OFFSET_X = int(float(GRID_OFFSET_Y) * float(SCREEN_WIDTH) / float(SCREEN_HEIGHT));
-    GRID_OFFSET_Y = int(-1.0 * float(save) * float(SCREEN_HEIGHT) / float(SCREEN_WIDTH));
+    save_ox = float(GRID_OFFSET_X);
+    save_oy = float(GRID_OFFSET_Y);
+    if (ROTATE_FACTOR == 0) { // OK
+      GRID_OFFSET_X =  int(save_oy - (float(SCREEN_HEIGHT) / 2.0) + (float(SCREEN_WIDTH)  / 2.0));
+      GRID_OFFSET_Y = -int(save_ox);
+    }
+    else if (ROTATE_FACTOR == 90) { // 
+      GRID_OFFSET_Y = -int(save_ox + (float(SCREEN_WIDTH)  / 2.0) - (float(SCREEN_HEIGHT) / 2.0));
+      GRID_OFFSET_X =  int(save_oy);
+    }
+    else if (ROTATE_FACTOR == 180) { // 
+      GRID_OFFSET_X =  int(save_oy + (float(SCREEN_HEIGHT) / 2.0) - (float(SCREEN_WIDTH)  / 2.0));
+      GRID_OFFSET_Y = -int(save_ox);
+    }
+    else /*if (ROTATE_FACTOR == 270)*/ { // ok
+      GRID_OFFSET_Y = -int(save_ox - (float(SCREEN_WIDTH)  / 2.0) + (float(SCREEN_HEIGHT) / 2.0));
+      GRID_OFFSET_X =  int(save_oy);
+    }
     if (PRINT_MouseFunc_Pressed) println("ROTATE_FACTOR=" + ROTATE_FACTOR);
   }
   if (button_rotate_cw_over) {
-    int save;
+    float save_ox, save_oy;
     ROTATE_FACTOR += 90;
     if (ROTATE_FACTOR == 360) ROTATE_FACTOR = 0;
-    save = GRID_OFFSET_X;
-    GRID_OFFSET_X = int(-1.0 * float(GRID_OFFSET_Y) * float(SCREEN_WIDTH) / float(SCREEN_HEIGHT));
-    GRID_OFFSET_Y = int(float(save) * float(SCREEN_HEIGHT) / float(SCREEN_WIDTH));
+    save_ox = float(GRID_OFFSET_X);
+    save_oy = float(GRID_OFFSET_Y);
+    if (ROTATE_FACTOR == 0) { // OK
+      GRID_OFFSET_X = -int(save_oy + (float(SCREEN_HEIGHT) / 2.0) - (float(SCREEN_WIDTH)  / 2.0));
+      GRID_OFFSET_Y =  int(save_ox);
+    }
+    else if (ROTATE_FACTOR == 90) { // OK
+      GRID_OFFSET_Y =  int(save_ox - (float(SCREEN_WIDTH)  / 2.0) + (float(SCREEN_HEIGHT) / 2.0));
+      GRID_OFFSET_X = -int(save_oy);
+    }
+    else if (ROTATE_FACTOR == 180) { // OK
+      GRID_OFFSET_X = -int(save_oy - (float(SCREEN_HEIGHT) / 2.0) + (float(SCREEN_WIDTH)  / 2.0));
+      GRID_OFFSET_Y =  int(save_ox);
+    }
+    else /*if (ROTATE_FACTOR == 270)*/ { // OK
+      GRID_OFFSET_Y =  int(save_ox + (float(SCREEN_WIDTH)  / 2.0) - (float(SCREEN_HEIGHT) / 2.0));
+      GRID_OFFSET_X = -int(save_oy);
+    }
     if (PRINT_MouseFunc_Pressed) println("ROTATE_FACTOR=" + ROTATE_FACTOR);
   }
   //println("new GRID_OFFSET_X=" + GRID_OFFSET_X + ", GRID_OFFSET_Y=" + GRID_OFFSET_Y);

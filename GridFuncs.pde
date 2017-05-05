@@ -9,7 +9,7 @@ void grid_draw_rotate_0()
   
   // Sets the color used to draw lines and borders around shapes.
   stroke(64);
-  for (iy = -1; iy <= SCREEN_HEIGHT / 100; iy ++) {
+  for (iy = -1; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
     // if even number.
     if ((SCREEN_HEIGHT / 100) % 2 == 0) {
       line(0,            iy * 100 + (SCREEN_HEIGHT % 100) / 2 + (GRID_OFFSET_Y % 100),
@@ -28,7 +28,7 @@ void grid_draw_rotate_0()
 
   // Sets the color used to draw text and borders around shapes.
   stroke(128);
-  for (iy = -1; iy <= SCREEN_HEIGHT / 100; iy ++) {
+  for (iy = -1; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
     if (MIRROR_ENABLE) {
       string =
         (
@@ -123,7 +123,7 @@ void grid_draw_rotate_90()
 
   // Sets the color used to draw lines and borders around shapes.
   stroke(64);
-  for (ix = -1; ix <= SCREEN_WIDTH / 100; ix ++) {
+  for (ix = -1; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
     // if even number.
     if ((SCREEN_WIDTH / 100) % 2 == 0) {
       line(ix * 100 + (SCREEN_WIDTH % 100) / 2 + (GRID_OFFSET_X % 100), 0,
@@ -142,7 +142,7 @@ void grid_draw_rotate_90()
 
   // Sets the color used to draw text and borders around shapes.
   stroke(128);
-  for (ix = -1; ix <= SCREEN_WIDTH / 100 ; ix ++) {
+  for (ix = -1; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
     if (MIRROR_ENABLE) {
       string =
         (
@@ -236,7 +236,7 @@ void grid_draw_rotate_180()
 
   // Sets the color used to draw lines and borders around shapes.
   stroke(64);
-  for (iy = -1; iy <= SCREEN_HEIGHT / 100; iy ++) {
+  for (iy = -1; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
     // if even number.
     if ((SCREEN_HEIGHT / 100) % 2 == 0) {
       line(0,            iy * 100 + (SCREEN_HEIGHT % 100) / 2 + (GRID_OFFSET_Y % 100),
@@ -255,7 +255,7 @@ void grid_draw_rotate_180()
 
   // Sets the color used to draw text and borders around shapes.
   stroke(128);
-  for (iy = -1; iy <= SCREEN_HEIGHT / 100; iy ++) {
+  for (iy = -1; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
     if (MIRROR_ENABLE) {
       string =
         (
@@ -350,7 +350,7 @@ void grid_draw_rotate_270()
 
   // Sets the color used to draw lines and borders around shapes.
   stroke(64);
-  for (ix = -1; ix <= SCREEN_WIDTH / 100; ix ++) {
+  for (ix = -1; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
     // if even number.
     if ((SCREEN_WIDTH / 100) % 2 == 0) {
       line(ix * 100 + (SCREEN_WIDTH % 100) / 2 + (GRID_OFFSET_X % 100), 0,
@@ -369,7 +369,7 @@ void grid_draw_rotate_270()
 
   // Sets the color used to draw text and borders around shapes.
   stroke(128);
-  for (ix = -1; ix <= SCREEN_WIDTH / 100 ; ix ++) {
+  for (ix = -1; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
     if (MIRROR_ENABLE) {
       string =
         (
