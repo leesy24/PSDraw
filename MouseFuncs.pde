@@ -10,14 +10,17 @@ final boolean PRINT_MouseFunc_Dragged = false;
 //final boolean PRINT_MouseFunc_Wheel = true; 
 final boolean PRINT_MouseFunc_Wheel = false;
 
-int mouseXPressed = 0; 
-int mouseYPressed = 0; 
+int mouseXPressed = -1; 
+int mouseYPressed = -1; 
 
 void mousePressed() {
-  //println("SCREEN_WIDTH - mouseX=" + (SCREEN_WIDTH - mouseX) + ", mouseY=" + mouseY);
-  //println("mouseX=" + mouseX + ", mouseY=" + mouseY);
-  mouseXPressed = mouseX - GRID_OFFSET_X; 
-  mouseYPressed = mouseY - GRID_OFFSET_Y; 
+  if (PRINT_MouseFunc_Pressed) println("Mouse pressed! ");
+
+  if (PRINT_MouseFunc_Pressed) println("mouseX=" + mouseX + ", mouseY=" + mouseY);
+  //if (PRINT_MouseFunc_Pressed) println("SCREEN_WIDTH - mouseX=" + (SCREEN_WIDTH - mouseX) + ", mouseY=" + mouseY);
+
+  mouseXPressed = mouseX - GRID_OFFSET_X;
+  mouseYPressed = mouseY - GRID_OFFSET_Y;
 
   if (button_zoom_minus_over) {
     button_zoom_minus();
@@ -37,15 +40,15 @@ void mousePressed() {
       GRID_OFFSET_X =  int(save_oy - (float(SCREEN_HEIGHT) / 2.0) + (float(SCREEN_WIDTH)  / 2.0));
       GRID_OFFSET_Y = -int(save_ox);
     }
-    else if (ROTATE_FACTOR == 90) { // 
+    else if (ROTATE_FACTOR == 90) { // OK
       GRID_OFFSET_Y = -int(save_ox + (float(SCREEN_WIDTH)  / 2.0) - (float(SCREEN_HEIGHT) / 2.0));
       GRID_OFFSET_X =  int(save_oy);
     }
-    else if (ROTATE_FACTOR == 180) { // 
+    else if (ROTATE_FACTOR == 180) { // OK
       GRID_OFFSET_X =  int(save_oy + (float(SCREEN_HEIGHT) / 2.0) - (float(SCREEN_WIDTH)  / 2.0));
       GRID_OFFSET_Y = -int(save_ox);
     }
-    else /*if (ROTATE_FACTOR == 270)*/ { // ok
+    else /*if (ROTATE_FACTOR == 270)*/ { // OK
       GRID_OFFSET_Y = -int(save_ox - (float(SCREEN_WIDTH)  / 2.0) + (float(SCREEN_HEIGHT) / 2.0));
       GRID_OFFSET_X =  int(save_oy);
     }
@@ -94,14 +97,20 @@ void mousePressed() {
 
 void mouseReleased() {
   if (PRINT_MouseFunc_Released) println("Mouse released! ");
+  mouseXPressed = -1;
+  mouseYPressed = -1;
 }
 
 void mouseDragged() 
 {
-  GRID_OFFSET_X = mouseX - mouseXPressed;
-  GRID_OFFSET_Y = mouseY - mouseYPressed;
-  
-  if (PRINT_MouseFunc_Dragged) println("Mouse dragged! dx:" + GRID_OFFSET_X + ",dy:" + GRID_OFFSET_Y);
+  if (PRINT_MouseFunc_Dragged) println("Mouse dragged!");
+  if (PRINT_MouseFunc_Dragged) println("\t mouseX=" + mouseX + ", mouseY=" + mouseY);
+  if (PRINT_MouseFunc_Dragged) println("\t mouseXPressed=" + mouseXPressed + ", mouseYPressed=" + mouseYPressed);
+  if (mouseXPressed >= 0 && mouseYPressed >= 0) {
+    GRID_OFFSET_X = mouseX - mouseXPressed;
+    GRID_OFFSET_Y = mouseY - mouseYPressed;
+  }
+  if (PRINT_MouseFunc_Dragged) println("\t GRID_OFFSET_X:" + GRID_OFFSET_X + ", GRID_OFFSET_Y:" + GRID_OFFSET_Y);
 }
 
 void mouseWheel(MouseEvent event) {

@@ -1,5 +1,5 @@
-//final boolean PRINT_ScreenFunc = true; 
-final boolean PRINT_ScreenFunc = false; 
+//final boolean PRINT_ScreenFunc = true;
+final boolean PRINT_ScreenFunc = false;
 
 // Define minimum screen width and height.
 final int MIN_SCREEN_WIDTH = 640;
@@ -36,28 +36,52 @@ void screen_setup() {
 }
 
 boolean screen_check_update() {
+  int new_width, new_height;
+
   //println("screen size width=" + width + ", height=" + height);
   
   // Check screen size changed.
   if (SCREEN_WIDTH != width || SCREEN_HEIGHT != height) {
-    if (PRINT_ScreenFunc) println("screen size changed! width " + SCREEN_WIDTH + "->" + width + ", height " + SCREEN_HEIGHT + "->" + height);
-    SCREEN_WIDTH = width;
-    SCREEN_HEIGHT = height;
+    new_width = width;
+    new_height = height;
+    if (PRINT_ScreenFunc) println("screen size changed! width " + SCREEN_WIDTH + "->" + new_width + ", height " + SCREEN_HEIGHT + "->" + new_height);
+
+    // Check screen size too small.
+    if (new_width < MIN_SCREEN_WIDTH || new_height < MIN_SCREEN_HEIGHT) {
+      if (PRINT_ScreenFunc) println("screen size changed too small! width " + new_width + ", height " + new_height);
+      
+      if (new_width < MIN_SCREEN_WIDTH && new_height < MIN_SCREEN_HEIGHT) {
+        new_width = MIN_SCREEN_WIDTH;
+        new_height = MIN_SCREEN_HEIGHT;
+      }
+      else if (new_width < MIN_SCREEN_WIDTH) {
+        new_width = MIN_SCREEN_WIDTH;
+      }
+      else if (new_height < MIN_SCREEN_HEIGHT) {
+        new_height = MIN_SCREEN_HEIGHT;
+      }
+      surface.setSize(new_width, new_height);
+    }
+  
+    //println("old GRID_OFFSET_X=" + GRID_OFFSET_X + ", GRID_OFFSET_Y=" + GRID_OFFSET_Y);
+    if (ROTATE_FACTOR == 0) { // OK
+      GRID_OFFSET_X = int(GRID_OFFSET_X - (float(SCREEN_WIDTH)  / 2.0) + (float(new_width)  / 2.0));
+    }
+    else if (ROTATE_FACTOR == 90) { // OK
+      GRID_OFFSET_Y = int(GRID_OFFSET_Y - (float(SCREEN_HEIGHT) / 2.0) + (float(new_height) / 2.0));
+    }
+    else if (ROTATE_FACTOR == 180) { // OK
+      GRID_OFFSET_X = int(GRID_OFFSET_X + (float(SCREEN_WIDTH)  / 2.0) - (float(new_width)  / 2.0));
+    }
+    else /*if (ROTATE_FACTOR == 270)*/ { // OK
+      GRID_OFFSET_Y = int(GRID_OFFSET_Y + (float(SCREEN_HEIGHT) / 2.0) - (float(new_height) / 2.0));
+    }
+    //println("new GRID_OFFSET_X=" + GRID_OFFSET_X + ", GRID_OFFSET_Y=" + GRID_OFFSET_Y);
+    SCREEN_WIDTH = new_width;
+    SCREEN_HEIGHT = new_height;
+ 
     return true;
   }
 
-  // Check screen size too small.
-  if (width < MIN_SCREEN_WIDTH || height < MIN_SCREEN_HEIGHT) {
-    if (PRINT_ScreenFunc) println("screen size changed too small! width " + width + ", height " + height);
-    if (width < MIN_SCREEN_WIDTH) {
-      SCREEN_WIDTH = MIN_SCREEN_WIDTH;
-    }
-    if (height < MIN_SCREEN_HEIGHT) {
-      SCREEN_HEIGHT = MIN_SCREEN_HEIGHT;
-    }
-    surface.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-    return true;
-  }
-  
   return false;
 }
