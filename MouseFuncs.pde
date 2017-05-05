@@ -15,7 +15,7 @@ int mouseYPressed = 0;
 
 void mousePressed() {
   //println("SCREEN_WIDTH - mouseX=" + (SCREEN_WIDTH - mouseX) + ", mouseY=" + mouseY);
-  println("mouseX=" + mouseX + ", mouseY=" + mouseY);
+  //println("mouseX=" + mouseX + ", mouseY=" + mouseY);
   mouseXPressed = mouseX - GRID_OFFSET_X; 
   mouseYPressed = mouseY - GRID_OFFSET_Y; 
 
