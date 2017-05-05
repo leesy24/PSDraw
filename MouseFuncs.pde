@@ -129,29 +129,69 @@ void mouseWheel(MouseEvent event) {
     if (ROTATE_FACTOR == 0) {
       dx = 
         int(
-          (mouseX - GRID_OFFSET_X)
+          (
+            mouseX - float(GRID_OFFSET_X)
+            -
+            (float(TEXT_MARGIN) + float(FONT_HEIGHT) / 2.0)
+          )
           -
-          (mouseX - GRID_OFFSET_X) * zoom_factor_save / ZOOM_FACTOR
+          (
+            (
+              mouseX - float(GRID_OFFSET_X)
+              -
+              (float(TEXT_MARGIN) + float(FONT_HEIGHT) / 2.0)
+            )
+            *
+            zoom_factor_save
+            /
+            ZOOM_FACTOR
+          )
         );
       dy =
         int(
-          (mouseY - SCREEN_HEIGHT / 2 - GRID_OFFSET_Y)
+          (mouseY - float(SCREEN_HEIGHT) / 2.0 - float(GRID_OFFSET_Y))
           -
-          (mouseY - SCREEN_HEIGHT / 2 - GRID_OFFSET_Y) * zoom_factor_save / ZOOM_FACTOR
+          (
+            (mouseY - float(SCREEN_HEIGHT) / 2.0 - float(GRID_OFFSET_Y))
+            *
+            zoom_factor_save
+            /
+            ZOOM_FACTOR
+          )
         );
     }
-    else if (ROTATE_FACTOR == 90) {
+    else if (ROTATE_FACTOR == 90) { // C
       dx = 
         int(
-          (mouseX - SCREEN_WIDTH / 2 - GRID_OFFSET_X)
+          (mouseX - float(SCREEN_WIDTH) / 2.0 - float(GRID_OFFSET_X))
           -
-          (mouseX - SCREEN_WIDTH / 2 - GRID_OFFSET_X) * zoom_factor_save / ZOOM_FACTOR
+          (
+            (mouseX - float(SCREEN_WIDTH) / 2.0 - float(GRID_OFFSET_X))
+            *
+            zoom_factor_save
+            /
+            ZOOM_FACTOR
+          )
         );
       dy =
         int(
-          (mouseY - GRID_OFFSET_Y)
+          (
+            mouseY - float(GRID_OFFSET_Y)
+            -
+            (float(TEXT_MARGIN) + float(FONT_HEIGHT) / 2.0)
+          )
           -
-          (mouseY - GRID_OFFSET_Y) * zoom_factor_save / ZOOM_FACTOR
+          (
+            (
+              mouseY - float(GRID_OFFSET_Y)
+              -
+              (float(TEXT_MARGIN) + float(FONT_HEIGHT) / 2.0)
+            )
+            *
+            zoom_factor_save
+            /
+            ZOOM_FACTOR
+          )
         );
     }
     else if (ROTATE_FACTOR == 180) {
@@ -159,15 +199,35 @@ void mouseWheel(MouseEvent event) {
       //println("(SCREEN_WIDTH - mouseX + GRID_OFFSET_X)=" + ((SCREEN_WIDTH - mouseX + GRID_OFFSET_X)));
       dx = 
         int(
-          (SCREEN_WIDTH - mouseX + GRID_OFFSET_X) * zoom_factor_save / ZOOM_FACTOR
+          (
+            (
+              float(SCREEN_WIDTH) - mouseX + float(GRID_OFFSET_X)
+              -
+              (float(TEXT_MARGIN) + float(FONT_HEIGHT) / 2.0)
+            )
+            *
+            zoom_factor_save
+            /
+            ZOOM_FACTOR
+          )
           -
-          (SCREEN_WIDTH - mouseX + GRID_OFFSET_X)
+          (
+            float(SCREEN_WIDTH) - mouseX + float(GRID_OFFSET_X)
+            -
+            (float(TEXT_MARGIN) + float(FONT_HEIGHT) / 2.0)
+          )
         );
       dy =
         int(
-          (mouseY - SCREEN_HEIGHT / 2 - GRID_OFFSET_Y)
+          (mouseY - float(SCREEN_HEIGHT) / 2.0 - float(GRID_OFFSET_Y))
           -
-          (mouseY - SCREEN_HEIGHT / 2 - GRID_OFFSET_Y) * zoom_factor_save / ZOOM_FACTOR
+          (
+            (mouseY - float(SCREEN_HEIGHT) / 2.0 - float(GRID_OFFSET_Y))
+            *
+            zoom_factor_save
+            /
+            ZOOM_FACTOR
+          )
         );
     }
     else //if (ROTATE_FACTOR == 270)
@@ -176,15 +236,35 @@ void mouseWheel(MouseEvent event) {
       //println("(SCREEN_HEIGHT - mouseY - GRID_OFFSET_Y)=" + ((SCREEN_HEIGHT - mouseY - GRID_OFFSET_Y)));
       dx = 
         int(
-          (mouseX - SCREEN_WIDTH / 2 - GRID_OFFSET_X)
+          (mouseX - float(SCREEN_WIDTH) / 2.0 - float(GRID_OFFSET_X))
           -
-          (mouseX - SCREEN_WIDTH / 2 - GRID_OFFSET_X) * zoom_factor_save / ZOOM_FACTOR
+          (
+            (mouseX - float(SCREEN_WIDTH) / 2.0 - float(GRID_OFFSET_X))
+            *
+            zoom_factor_save
+            /
+            ZOOM_FACTOR
+          )
         );
       dy =
         int(
-          (SCREEN_HEIGHT - mouseY + GRID_OFFSET_Y) * zoom_factor_save / ZOOM_FACTOR
+          (
+            (
+              float(SCREEN_HEIGHT) - mouseY + float(GRID_OFFSET_Y)
+              -
+              (float(TEXT_MARGIN) + float(FONT_HEIGHT) / 2.0)
+            )
+            *
+            zoom_factor_save
+            /
+            ZOOM_FACTOR
+          )
           -
-          (SCREEN_HEIGHT - mouseY + GRID_OFFSET_Y)
+          (
+            float(SCREEN_HEIGHT) - mouseY + float(GRID_OFFSET_Y)
+            -
+            (float(TEXT_MARGIN) + float(FONT_HEIGHT) / 2.0)
+          )
         );
     }
     GRID_OFFSET_X += dx;
