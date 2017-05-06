@@ -10,8 +10,9 @@ final boolean PRINT_MouseFunc_Dragged = false;
 //final boolean PRINT_MouseFunc_Wheel = true; 
 final boolean PRINT_MouseFunc_Wheel = false;
 
-int mouseXPressed = -1; 
-int mouseYPressed = -1; 
+boolean mousePressed = false;
+int mousePressedX;
+int mousePressedY;
 
 void mousePressed() {
   if (PRINT_MouseFunc_Pressed) println("Mouse pressed! ");
@@ -19,8 +20,9 @@ void mousePressed() {
   if (PRINT_MouseFunc_Pressed) println("mouseX=" + mouseX + ", mouseY=" + mouseY);
   //if (PRINT_MouseFunc_Pressed) println("SCREEN_WIDTH - mouseX=" + (SCREEN_WIDTH - mouseX) + ", mouseY=" + mouseY);
 
-  mouseXPressed = mouseX - GRID_OFFSET_X;
-  mouseYPressed = mouseY - GRID_OFFSET_Y;
+  mousePressedX = mouseX - GRID_OFFSET_X;
+  mousePressedY = mouseY - GRID_OFFSET_Y;
+  mousePressed = true;
 
   if (button_zoom_minus_over) {
     button_zoom_minus();
@@ -97,18 +99,17 @@ void mousePressed() {
 
 void mouseReleased() {
   if (PRINT_MouseFunc_Released) println("Mouse released! ");
-  mouseXPressed = -1;
-  mouseYPressed = -1;
+  mousePressed = false;
 }
 
 void mouseDragged() 
 {
   if (PRINT_MouseFunc_Dragged) println("Mouse dragged!");
   if (PRINT_MouseFunc_Dragged) println("\t mouseX=" + mouseX + ", mouseY=" + mouseY);
-  if (PRINT_MouseFunc_Dragged) println("\t mouseXPressed=" + mouseXPressed + ", mouseYPressed=" + mouseYPressed);
-  if (mouseXPressed >= 0 && mouseYPressed >= 0) {
-    GRID_OFFSET_X = mouseX - mouseXPressed;
-    GRID_OFFSET_Y = mouseY - mouseYPressed;
+  if (PRINT_MouseFunc_Dragged) println("\t mousePressedX=" + mousePressedX + ", mousePressedY=" + mousePressedY);
+  if (mousePressed == true) {
+    GRID_OFFSET_X = mouseX - mousePressedX;
+    GRID_OFFSET_Y = mouseY - mousePressedY;
   }
   if (PRINT_MouseFunc_Dragged) println("\t GRID_OFFSET_X:" + GRID_OFFSET_X + ", GRID_OFFSET_Y:" + GRID_OFFSET_Y);
 }
