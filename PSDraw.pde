@@ -2,6 +2,9 @@
 //final boolean PRINT = true; 
 final boolean PRINT = false; 
 
+// Define window title string.
+String Title = "DASAN-InfoTEK - PSDraw";
+
 // Define zoom factor variables.
 float ZOOM_FACTOR = 100;
 
@@ -49,6 +52,9 @@ void setup() {
 
   screen_setup();
   button_setup();
+
+  // Set window title
+  frame.setTitle(Title);
 }
 
 // Called directly after setup()
