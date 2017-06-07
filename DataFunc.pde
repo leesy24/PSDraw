@@ -335,10 +335,10 @@ class Data {
   // Draw points of parsed data_buf
   void draw_points() {
     int distance;
-    int pulse_width, pulse_width_p = -1;
+    int pulse_width = -1, p_pulse_width = -1;
     int x, y;
     int p_x = -1, p_y = -1;
-    color c_draw_point;
+    color c_draw_point, p_c_draw_point = 0;
     color c_draw_line;
 
     for (int j = 0; j < n_points; j++) {
@@ -347,6 +347,10 @@ class Data {
       // : The distance value is -2147483648 (0x80000000) in case that the echo signal was too low.
       // : The distance value is 2147483647 (0x7FFFFFFF) in case that the echo signal was noisy.
       distance = distances[j];
+      // Check pulse width exist
+      if (content != 4) {
+        pulse_width = pulse_widths[j];
+      }
       // Check No echo
       if (distance == 0x80000000) {
         if (PRINT_DataFunc_Draw) println("point=", j, ",distance=" + "No echo");
@@ -407,55 +411,60 @@ class Data {
         if (content != 4) {
           colorMode(HSB, MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
           //print("[" + j + "]=" + pulse_widths[j] + " ");
-          if(pulse_widths[j] > MAX_PULSE_WIDTH) {
+          if(pulse_width > MAX_PULSE_WIDTH) {
             c_draw_point =
               color(
-                (MAX_PULSE_WIDTH + int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 3.0 / 4.0) - MAX_PULSE_WIDTH)%(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH),
+                (MAX_PULSE_WIDTH + int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 5.0 / 6.0) - MAX_PULSE_WIDTH) % (MAX_PULSE_WIDTH - MIN_PULSE_WIDTH + 1),
                 MAX_PULSE_WIDTH - MIN_PULSE_WIDTH,
                 MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
           }
-          else if(pulse_widths[j] < MIN_PULSE_WIDTH) {
+          else if(pulse_width < MIN_PULSE_WIDTH) {
             c_draw_point =
               color(
-                (MAX_PULSE_WIDTH + int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 3.0 / 4.0) - MIN_PULSE_WIDTH)%(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH),
+                (MAX_PULSE_WIDTH + int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 5.0 / 6.0) - MIN_PULSE_WIDTH) % (MAX_PULSE_WIDTH - MIN_PULSE_WIDTH + 1),
                 MAX_PULSE_WIDTH - MIN_PULSE_WIDTH,
                 MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
           }
           else {
             c_draw_point =
               color(
-                (MAX_PULSE_WIDTH + int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 3.0 / 4.0) - pulse_widths[j])%(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH),
+                (MAX_PULSE_WIDTH + int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 5.0 / 6.0) - pulse_width) % (MAX_PULSE_WIDTH - MIN_PULSE_WIDTH + 1),
                 MAX_PULSE_WIDTH - MIN_PULSE_WIDTH,
                 MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
           }
           c_draw_line =
             color(
-              (MAX_PULSE_WIDTH + int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 3.0 / 4.0) - (pulse_widths[j] + pulse_width_p) / 2)%(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH),
+              (MAX_PULSE_WIDTH + int((float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 5.0 / 6.0) - (float(pulse_width + p_pulse_width) / 2.0))) % (MAX_PULSE_WIDTH - MIN_PULSE_WIDTH + 1),
               MAX_PULSE_WIDTH - MIN_PULSE_WIDTH,
               MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
           colorMode(RGB, 255);
         }
         else {
           c_draw_point = C_DRAW_POINT;
+          p_c_draw_point = C_DRAW_POINT;
           c_draw_line = C_DRAW_LINE;
         }
         
-        fill(c_draw_point);
         if (p_x != -1 && p_y != -1) {
+          //print(j + ":" + p_pulse_width + "," + pulse_width + " ");
+          fill(c_draw_line);
           stroke(c_draw_line);
           line(p_x + GRID_OFFSET_X, p_y + GRID_OFFSET_Y, x + GRID_OFFSET_X, y + GRID_OFFSET_Y);
-          stroke(c_draw_point);
+          fill(p_c_draw_point);
+          stroke(p_c_draw_point);
           //point(p_x + GRID_OFFSET_X, p_y + GRID_OFFSET_Y);
           rect(p_x + GRID_OFFSET_X - 1, p_y + GRID_OFFSET_Y - 1, 3, 3 );
         }
+        fill(c_draw_point);
         stroke(c_draw_point);
         //point(x + GRID_OFFSET_X, y + GRID_OFFSET_Y);
         rect(x + GRID_OFFSET_X - 1, y + GRID_OFFSET_Y - 1, 3, 3 );
         p_x = x;
         p_y = y;
-        pulse_width_p = pulse_widths[j];
+        p_c_draw_point = c_draw_point;
+        p_pulse_width = pulse_widths[j];
       }
-  
+/*
       // Check pulse width exist
       if (content != 4) {
         // Get Pulse width
@@ -463,6 +472,7 @@ class Data {
         pulse_width = pulse_widths[j];
         if (PRINT_DataFunc_Draw) println("point=", j, ",pulse width=" + pulse_width);
       }
+*/
     } // End of for (int j = 0; j < n_points; j++)
   } // End of draw_points()
 }
