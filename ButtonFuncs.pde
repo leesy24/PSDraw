@@ -19,8 +19,6 @@ boolean button_mirror_en_over = false;
 int button_reset_en_x, button_reset_en_y;      // Position of square button reset enable
 int button_reset_en_width, button_reset_en_height;     // Diameter of rect
 boolean button_reset_en_over = false;
-color button_highlight;
-color button_color, button_base_color;
 
 void button_setup()
 {
@@ -53,10 +51,6 @@ void button_setup()
   button_reset_en_height = FONT_HEIGHT * 2;
   button_reset_en_x = TEXT_MARGIN + FONT_HEIGHT * 12;
   button_reset_en_y = SCREEN_HEIGHT - button_mirror_en_height - TEXT_MARGIN - FONT_HEIGHT * 1;
-
-  button_color = color(0);
-  button_highlight = color(51);
-  button_base_color = color(102);
 }
 
 void button_draw()
@@ -64,25 +58,25 @@ void button_draw()
   String string;
 
   // Sets the color used to draw lines and borders around shapes.
-  stroke(255);
+  stroke(C_BTN_TEXT);
 
   if (button_zoom_minus_over) {
-    fill( button_highlight);
+    fill( C_BTN_HIGHLIGHT);
   } else {
-    fill( button_color);
+    fill( C_BTN_NORMAL);
   }
   rect(button_zoom_minus_x, button_zoom_minus_y, button_zoom_minus_width, button_zoom_minus_height);
-  fill(255);
+  fill(C_BTN_TEXT);
   string = "-";
   text(string, button_zoom_minus_x + button_zoom_minus_width / 2 - int(textWidth(string)) / 2, button_zoom_minus_y + button_zoom_minus_height / 2 + FONT_HEIGHT / 2);
 
   if (button_zoom_pluse_over) {
-    fill( button_highlight);
+    fill( C_BTN_HIGHLIGHT);
   } else {
-    fill( button_color);
+    fill( C_BTN_NORMAL);
   }
   rect(button_zoom_pluse_x, button_zoom_pluse_y, button_zoom_pluse_width, button_zoom_pluse_height);
-  fill(255);
+  fill(C_BTN_TEXT);
   string = "+";
   text(string, button_zoom_pluse_x + button_zoom_pluse_width / 2 - int(textWidth(string)) / 2, button_zoom_pluse_y + button_zoom_pluse_height / 2 + FONT_HEIGHT / 2);
 
@@ -90,22 +84,22 @@ void button_draw()
   text(string, button_zoom_pluse_x + button_zoom_pluse_width / 2 - int(textWidth(string)) / 2, button_zoom_pluse_y - FONT_HEIGHT / 2);
 
   if (button_rotate_ccw_over) {
-    fill( button_highlight);
+    fill( C_BTN_HIGHLIGHT);
   } else {
-    fill( button_color);
+    fill( C_BTN_NORMAL);
   }
   rect(button_rotate_ccw_x, button_rotate_ccw_y, button_rotate_ccw_width, button_rotate_ccw_height);
-  fill(255);
+  fill(C_BTN_TEXT);
   string = "↺";
   text(string, button_rotate_ccw_x + button_rotate_ccw_width / 2 - int(textWidth(string)) / 2, button_rotate_ccw_y + button_rotate_ccw_height / 2 + FONT_HEIGHT / 2);
 
   if (button_rotate_cw_over) {
-    fill( button_highlight);
+    fill( C_BTN_HIGHLIGHT);
   } else {
-    fill( button_color);
+    fill( C_BTN_NORMAL);
   }
   rect(button_rotate_cw_x, button_rotate_cw_y, button_rotate_cw_width, button_rotate_cw_height);
-  fill(255);
+  fill(C_BTN_TEXT);
   string = "↻";
   text(string, button_rotate_cw_x + button_rotate_cw_width / 2 - int(textWidth(string)) / 2, button_rotate_cw_y + button_rotate_cw_height / 2 + FONT_HEIGHT / 2);
 
@@ -113,12 +107,12 @@ void button_draw()
   text(string, button_rotate_cw_x + button_rotate_cw_width / 2 - int(textWidth(string)) / 2, button_rotate_cw_y - FONT_HEIGHT / 2);
 
   if (button_mirror_en_over) {
-    fill( button_highlight);
+    fill( C_BTN_HIGHLIGHT);
   } else {
-    fill( button_color);
+    fill( C_BTN_NORMAL);
   }
   rect(button_mirror_en_x, button_mirror_en_y, button_mirror_en_width, button_mirror_en_height);
-  fill(255);
+  fill(C_BTN_TEXT);
   if (ROTATE_FACTOR == 0 || ROTATE_FACTOR == 180)  string = "⇅";
   else string = "⇄";
   text(string, button_mirror_en_x + button_mirror_en_width / 2 - int(textWidth(string)) / 2, button_mirror_en_y + button_mirror_en_height / 2 + FONT_HEIGHT / 2);
@@ -126,12 +120,12 @@ void button_draw()
   text(string, button_mirror_en_x + button_mirror_en_width / 2 - int(textWidth(string)) / 2, button_mirror_en_y - FONT_HEIGHT / 2);
 
   if (button_reset_en_over) {
-    fill( button_highlight);
+    fill( C_BTN_HIGHLIGHT);
   } else {
-    fill( button_color);
+    fill( C_BTN_NORMAL);
   }
   rect(button_reset_en_x, button_reset_en_y, button_reset_en_width, button_reset_en_height);
-  fill(255);
+  fill(C_BTN_TEXT);
   string = "0";
   text(string, button_reset_en_x + button_reset_en_width / 2 - int(textWidth(string)) / 2, button_reset_en_y + button_reset_en_height / 2 + FONT_HEIGHT / 2);
   string = "Reset";

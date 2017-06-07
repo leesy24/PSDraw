@@ -2,6 +2,18 @@
 //final boolean PRINT = true; 
 final boolean PRINT = false; 
 
+color C_BG = #FFFFFF; // White
+color C_TEXT = #000000; // Black
+//color C_DRAW_LINE = #808080; //
+//color C_DRAW_POINT = #000000; //
+color C_DRAW_LINE = #0000FF; //
+color C_DRAW_POINT = #FF0000; //
+color C_GRID_LINE = #808080; //
+color C_GRID_TEXT = #404040; //
+color C_BTN_NORMAL = #FFFFFF; //
+color C_BTN_HIGHLIGHT = #C0C0C0; //
+color C_BTN_TEXT = #000000; //
+
 // Define window title string.
 String Title = "DASAN-InfoTEK - PSDraw";
 
@@ -44,7 +56,7 @@ void setup() {
   surface.setResizable(true);
 
   // To set the background on the first frame of animation. 
-  background(0);
+  background(C_BG);
   // Specifies the number of frames to be displayed every second. 
   frameRate(30);
 
@@ -65,7 +77,7 @@ void setup() {
 void draw() {
   // Ready to draw from here!
   // To clear the display window at the beginning of each frame,
-  background(0);
+  background(C_BG);
 
   if (screen_check_update()) {
     screen_setup();

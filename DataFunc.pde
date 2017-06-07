@@ -66,8 +66,8 @@ class Data {
     File file = new File(FILENAME);
     if (file.exists() != true) {
       // Sets the color used to draw lines and borders around shapes.
-      fill(255);
-      stroke(255);
+      fill(C_TEXT);
+      stroke(C_TEXT);
       string = "File not exist at " + FILENAME;
       textSize(FONT_HEIGHT*3);
       text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
@@ -83,8 +83,8 @@ class Data {
     // Must larger than Function code(4B) + Length(4B) + Number of parameters(4B) + Number of points(4B) + CRC(4B).
     if (data_buf.length <= 4 + 4 + 4 + 4 + 4) {
       // Sets the color used to draw lines and borders around shapes.
-      fill(255);
-      stroke(255);
+      fill(C_TEXT);
+      stroke(C_TEXT);
       string = "File size is invalid!: " + data_buf.length;
       textSize(FONT_HEIGHT*3);
       text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
@@ -105,8 +105,8 @@ class Data {
     // Check function code is "GSCN".
     if (func.equals("GSCN") != true) {
       // Sets the color used to draw lines and borders around shapes.
-      fill(255);
-      stroke(255);
+      fill(C_TEXT);
+      stroke(C_TEXT);
       string = "Function code is invalid!:" + func;
       textSize(FONT_HEIGHT*3);
       text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
@@ -126,8 +126,8 @@ class Data {
     // Check data_buf record length with binary data_buf length
     if (data_buf.length < (len + 12)) {
       // Sets the color used to draw lines and borders around shapes.
-      fill(255);
-      stroke(255);
+      fill(C_TEXT);
+      stroke(C_TEXT);
       string = "Binary data length is invalid!:" + data_buf.length + "," + len;
       textSize(FONT_HEIGHT*3);
       text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
@@ -146,8 +146,8 @@ class Data {
     i = i + 4;
     if (n_params == 0) {
       // Sets the color used to draw lines and borders around shapes.
-      fill(255);
-      stroke(255);
+      fill(C_TEXT);
+      stroke(C_TEXT);
       string = "No scan data is available!:Number of parameter is 0.";
       textSize(FONT_HEIGHT*3);
       text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
@@ -174,8 +174,8 @@ class Data {
       // Check time_stamp is changed
       if (old_time_stamp == time_stamp) {
         // Sets the color used to draw lines and borders around shapes.
-        fill(255);
-        stroke(255);
+        fill(C_TEXT);
+        stroke(C_TEXT);
         string = "Scan data_buf is not changed!:" + time_stamp;
         textSize(FONT_HEIGHT*3);
         text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
@@ -261,8 +261,8 @@ class Data {
     i = i + 4;
     if (n_points > MAX_POINTS || n_points <= 0) {
       // Sets the color used to draw lines and borders around shapes.
-      fill(255);
-      stroke(255);
+      fill(C_TEXT);
+      stroke(C_TEXT);
       string = "Number of points invalide!:Number of points is" + n_points + ".";
       textSize(FONT_HEIGHT*3);
       text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
@@ -304,8 +304,8 @@ class Data {
     String string;
 
     // Sets the color used to draw lines and borders around shapes.
-    fill(255);
-    stroke(255);
+    fill(C_TEXT);
+    stroke(C_TEXT);
     string = "Scan number:" + i_scan;
     text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * 2);
     string = "Time stamp:" + time_stamp;
@@ -399,11 +399,15 @@ class Data {
           y -= TEXT_MARGIN + FONT_HEIGHT / 2;
         }
         if (p_x != -1 && p_y != -1) {
-          stroke(128);
+          stroke(C_DRAW_LINE);
           line(p_x + GRID_OFFSET_X, p_y + GRID_OFFSET_Y, x + GRID_OFFSET_X, y + GRID_OFFSET_Y);
+          stroke(C_DRAW_POINT);
+          //point(p_x + GRID_OFFSET_X, p_y + GRID_OFFSET_Y);
+          rect(p_x + GRID_OFFSET_X - 1, p_y + GRID_OFFSET_Y - 1, 3, 3 );
         }
-        stroke(255);
-        point(x + GRID_OFFSET_X, y + GRID_OFFSET_Y);
+        stroke(C_DRAW_POINT);
+        //point(x + GRID_OFFSET_X, y + GRID_OFFSET_Y);
+        rect(x + GRID_OFFSET_X - 1, y + GRID_OFFSET_Y - 1, 3, 3 );
         p_x = x;
         p_y = y;
       }

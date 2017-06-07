@@ -1,14 +1,24 @@
 int GRID_OFFSET_X = 0;
 int GRID_OFFSET_Y = 0;
+PImage PS_image;
 
 void grid_draw_rotate_0()
 {
   String string;
   int x, y;
   int ix, iy;
-  
+  int image_x = -1, image_y = -1;
+
+  // Images must be in the "data" directory to load correctly
+  if (MIRROR_ENABLE) {
+    PS_image = loadImage("PS_0_.png");
+  }
+  else {
+    PS_image = loadImage("PS_0.png");
+  }
+
   // Sets the color used to draw lines and borders around shapes.
-  stroke(64);
+  stroke(C_GRID_LINE);
   for (iy = -1; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
     // if even number.
     if ((SCREEN_HEIGHT / 100) % 2 == 0) {
@@ -27,7 +37,7 @@ void grid_draw_rotate_0()
   }
 
   // Sets the color used to draw text and borders around shapes.
-  stroke(128);
+  stroke(C_GRID_TEXT);
   for (iy = -1; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
     if (MIRROR_ENABLE) {
       string =
@@ -77,6 +87,9 @@ void grid_draw_rotate_0()
     if (x < TEXT_MARGIN) x = TEXT_MARGIN;
     if (x > SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN) x = SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN;
     text(string, x, y);
+    if(string.equals("0.0m")) {
+      image_y = y - FONT_HEIGHT / 2;
+    }
     //println("iy=" + iy + ", string=" + string + ", x=" + x + ", y=" + y);
   }
   for (ix = 0; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
@@ -111,7 +124,15 @@ void grid_draw_rotate_0()
       if (y > SCREEN_HEIGHT - TEXT_MARGIN) y = SCREEN_HEIGHT - TEXT_MARGIN;
       x = ix * 100 + TEXT_MARGIN + FONT_HEIGHT / 2 - int(textWidth(string) / 2.0) + (GRID_OFFSET_X % 100);
       text(string, x, y);
+      if(string.equals("0.0m")) {
+        image_x = ix * 100 + TEXT_MARGIN + FONT_HEIGHT / 2 + (GRID_OFFSET_X % 100);
+      }
     }
+  }
+
+  if( (image_x >= 0 && image_x < SCREEN_WIDTH) && (image_y >= 0 && image_y < SCREEN_HEIGHT) ) {
+    //image(PS_image, image_x, image_y);
+    image(PS_image, image_x - PS_image.width / 2, image_y - PS_image.height / 2);
   }
 }
 
@@ -120,9 +141,18 @@ void grid_draw_rotate_90()
   String string;
   int x, y;
   int ix, iy;
+  int image_x = -1, image_y = -1;
+
+  // Images must be in the "data" directory to load correctly
+  if (MIRROR_ENABLE) {
+    PS_image = loadImage("PS_90_.png");
+  }
+  else {
+    PS_image = loadImage("PS_90.png");
+  }
 
   // Sets the color used to draw lines and borders around shapes.
-  stroke(64);
+  stroke(C_GRID_LINE);
   for (ix = -1; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
     // if even number.
     if ((SCREEN_WIDTH / 100) % 2 == 0) {
@@ -141,7 +171,7 @@ void grid_draw_rotate_90()
   }
 
   // Sets the color used to draw text and borders around shapes.
-  stroke(128);
+  stroke(C_GRID_TEXT);
   for (ix = -1; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
     if (MIRROR_ENABLE) {
       string =
@@ -191,6 +221,9 @@ void grid_draw_rotate_90()
     if (y < TEXT_MARGIN + FONT_HEIGHT) y = TEXT_MARGIN + FONT_HEIGHT;
     if (y > SCREEN_HEIGHT - TEXT_MARGIN) y = SCREEN_HEIGHT - TEXT_MARGIN;
     text(string, x, y);
+    if(string.equals("0.0m")) {
+      image_x = x + int(textWidth(string) / 2.0);
+    }
   }
   for (iy = 0; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
     if (
@@ -222,9 +255,17 @@ void grid_draw_rotate_90()
       x = SCREEN_WIDTH / 2 - int(textWidth(string)/2) + GRID_OFFSET_X;
       if (x < TEXT_MARGIN) x = TEXT_MARGIN;
       if (x > SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN) x = SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN;
-      y = iy * 100 + TEXT_MARGIN + FONT_HEIGHT + (GRID_OFFSET_Y % 100);
+      y = iy * 100 + TEXT_MARGIN + FONT_HEIGHT / 2 + FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100);
       text(string, x, y);
+      if(string.equals("0.0m")) {
+        image_y = iy * 100 + TEXT_MARGIN + FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100);
+      }
     }
+  }
+
+  if( (image_x >= 0 && image_x < SCREEN_WIDTH) && (image_y >= 0 && image_y < SCREEN_HEIGHT) ) {
+    //image(PS_image, image_x, image_y);
+    image(PS_image, image_x - PS_image.width / 2, image_y - PS_image.height / 2);
   }
 }
 
@@ -233,9 +274,18 @@ void grid_draw_rotate_180()
   String string;
   int x, y;
   int ix, iy;
+  int image_x = -1, image_y = -1;
+
+  // Images must be in the "data" directory to load correctly
+  if (MIRROR_ENABLE) {
+    PS_image = loadImage("PS_180_.png");
+  }
+  else {
+    PS_image = loadImage("PS_180.png");
+  }
 
   // Sets the color used to draw lines and borders around shapes.
-  stroke(64);
+  stroke(C_GRID_LINE);
   for (iy = -1; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
     // if even number.
     if ((SCREEN_HEIGHT / 100) % 2 == 0) {
@@ -254,7 +304,7 @@ void grid_draw_rotate_180()
   }
 
   // Sets the color used to draw text and borders around shapes.
-  stroke(128);
+  stroke(C_GRID_TEXT);
   for (iy = -1; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
     if (MIRROR_ENABLE) {
       string =
@@ -304,6 +354,9 @@ void grid_draw_rotate_180()
     if (x < TEXT_MARGIN) x = TEXT_MARGIN;
     if (x > SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN) x = SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN;
     text(string, x, y);
+    if(string.equals("0.0m")) {
+      image_y = y - FONT_HEIGHT / 2;
+    }
     //println("iy=" + iy + ", string=" + string + ", x=" + x + ", y=" + y);
   }
   for (ix = 0; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
@@ -338,7 +391,15 @@ void grid_draw_rotate_180()
       if (y > SCREEN_HEIGHT - TEXT_MARGIN) y = SCREEN_HEIGHT - TEXT_MARGIN;
       x = SCREEN_WIDTH - ix * 100 - (TEXT_MARGIN + FONT_HEIGHT / 2) - int(textWidth(string) / 2.0) + (GRID_OFFSET_X % 100);
       text(string, x, y);
+      if(string.equals("0.0m")) {
+        image_x = SCREEN_WIDTH - ix * 100 - (TEXT_MARGIN + FONT_HEIGHT / 2) + (GRID_OFFSET_X % 100);
+      }
     }
+  }
+
+  if( (image_x >= 0 && image_x < SCREEN_WIDTH) && (image_y >= 0 && image_y < SCREEN_HEIGHT) ) {
+    //image(PS_image, image_x, image_y);
+    image(PS_image, image_x - PS_image.width / 2, image_y - PS_image.height / 2);
   }
 }
 
@@ -347,9 +408,18 @@ void grid_draw_rotate_270()
   String string;
   int x, y;
   int ix, iy;
+  int image_x = -1, image_y = -1;
+
+  // Images must be in the "data" directory to load correctly
+  if (MIRROR_ENABLE) {
+    PS_image = loadImage("PS_270_.png");
+  }
+  else {
+    PS_image = loadImage("PS_270.png");
+  }
 
   // Sets the color used to draw lines and borders around shapes.
-  stroke(64);
+  stroke(C_GRID_LINE);
   for (ix = -1; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
     // if even number.
     if ((SCREEN_WIDTH / 100) % 2 == 0) {
@@ -368,7 +438,7 @@ void grid_draw_rotate_270()
   }
 
   // Sets the color used to draw text and borders around shapes.
-  stroke(128);
+  stroke(C_GRID_TEXT);
   for (ix = -1; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
     if (MIRROR_ENABLE) {
       string =
@@ -418,6 +488,9 @@ void grid_draw_rotate_270()
     if (y < TEXT_MARGIN + FONT_HEIGHT) y = TEXT_MARGIN + FONT_HEIGHT;
     if (y > SCREEN_HEIGHT - TEXT_MARGIN) y = SCREEN_HEIGHT - TEXT_MARGIN;
     text(string, x, y);
+    if(string.equals("0.0m")) {
+      image_x = x + int(textWidth(string) / 2.0);
+    }
   }
   for (iy = 0; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
     if (
@@ -451,7 +524,15 @@ void grid_draw_rotate_270()
       if (x > SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN) x = SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN;
       y = SCREEN_HEIGHT - iy * 100 - TEXT_MARGIN + (GRID_OFFSET_Y % 100);
       text(string, x, y);
+      if(string.equals("0.0m")) {
+        image_y = SCREEN_HEIGHT - iy * 100 - TEXT_MARGIN - FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100);
+      }
     }
+  }
+
+  if( (image_x >= 0 && image_x < SCREEN_WIDTH) && (image_y >= 0 && image_y < SCREEN_HEIGHT) ) {
+    //image(PS_image, image_x, image_y);
+    image(PS_image, image_x - PS_image.width / 2, image_y - PS_image.height / 2);
   }
 }
 
