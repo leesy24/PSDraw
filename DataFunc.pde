@@ -307,8 +307,8 @@ class Data {
     String string;
 
     // Sets the color used to draw lines and borders around shapes.
-    fill(C_TEXT);
-    stroke(C_TEXT);
+    fill(C_DRAW_TEXT);
+    stroke(C_DRAW_TEXT);
     string = "Scan number:" + i_scan;
     text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * 2);
     string = "Time stamp:" + time_stamp;

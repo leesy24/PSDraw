@@ -2,14 +2,18 @@
 //final boolean PRINT = true; 
 final boolean PRINT = false; 
 
-color C_BG = #FFFFFF; // White
+//color C_BG = #FFFFFF; // White
+color C_BG = #F8F8F8; // White - 0x8
 color C_TEXT = #000000; // Black
 //color C_DRAW_LINE = #808080; //
 //color C_DRAW_POINT = #000000; //
+color C_DRAW_TEXT = #404040; //
 color C_DRAW_LINE = #0000FF; //
 color C_DRAW_POINT = #FF0000; //
-color C_GRID_LINE = #808080; //
-color C_GRID_TEXT = #404040; //
+//color C_GRID_LINE = #808080; //
+//color C_GRID_TEXT = #404040; //
+color C_GRID_LINE = #C0C0C0; //
+color C_GRID_TEXT = #808080; //
 color C_BTN_NORMAL = #FFFFFF; //
 color C_BTN_HIGHLIGHT = #C0C0C0; //
 color C_BTN_TEXT = #000000; //
