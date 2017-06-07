@@ -89,6 +89,8 @@ void draw() {
   button_update();
   button_draw();
 
+  //colorbar_draw();
+
   Data data = new Data();
   if (data.load() == false) {
     return;
