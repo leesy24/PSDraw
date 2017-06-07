@@ -408,15 +408,31 @@ class Data {
           colorMode(HSB, MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
           //print("[" + j + "]=" + pulse_widths[j] + " ");
           if(pulse_widths[j] > MAX_PULSE_WIDTH) {
-            c_draw_point = color((MAX_PULSE_WIDTH + ((MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 3 / 4) - MAX_PULSE_WIDTH)%(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH), MAX_PULSE_WIDTH - MIN_PULSE_WIDTH, MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
+            c_draw_point =
+              color(
+                (MAX_PULSE_WIDTH + int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 3.0 / 4.0) - MAX_PULSE_WIDTH)%(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH),
+                MAX_PULSE_WIDTH - MIN_PULSE_WIDTH,
+                MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
           }
           else if(pulse_widths[j] < MIN_PULSE_WIDTH) {
-            c_draw_point = color((MAX_PULSE_WIDTH + ((MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 3 / 4) - MIN_PULSE_WIDTH)%(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH), MAX_PULSE_WIDTH - MIN_PULSE_WIDTH, MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
+            c_draw_point =
+              color(
+                (MAX_PULSE_WIDTH + int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 3.0 / 4.0) - MIN_PULSE_WIDTH)%(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH),
+                MAX_PULSE_WIDTH - MIN_PULSE_WIDTH,
+                MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
           }
           else {
-            c_draw_point = color((MAX_PULSE_WIDTH + ((MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 3 / 4) - pulse_widths[j])%(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH), MAX_PULSE_WIDTH - MIN_PULSE_WIDTH, MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
+            c_draw_point =
+              color(
+                (MAX_PULSE_WIDTH + int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 3.0 / 4.0) - pulse_widths[j])%(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH),
+                MAX_PULSE_WIDTH - MIN_PULSE_WIDTH,
+                MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
           }
-          c_draw_line = color((MAX_PULSE_WIDTH + ((MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 3 / 4) - (pulse_widths[j] + pulse_width_p) / 2)%(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH), MAX_PULSE_WIDTH - MIN_PULSE_WIDTH, MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
+          c_draw_line =
+            color(
+              (MAX_PULSE_WIDTH + int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 3.0 / 4.0) - (pulse_widths[j] + pulse_width_p) / 2)%(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH),
+              MAX_PULSE_WIDTH - MIN_PULSE_WIDTH,
+              MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
           colorMode(RGB, 255);
         }
         else {
