@@ -66,7 +66,7 @@ void setup() {
   button_setup();
 
   // Set window title
-  frame.setTitle(Title);
+  surface.setTitle(Title);
 }
 
 // Called directly after setup()
