@@ -462,7 +462,7 @@ class Data {
         p_x = x;
         p_y = y;
         p_c_draw_point = c_draw_point;
-        p_pulse_width = pulse_widths[j];
+        p_pulse_width = pulse_width;
       }
 /*
       // Check pulse width exist
