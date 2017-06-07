@@ -18,6 +18,7 @@ void grid_draw_rotate_0()
   }
 
   // Sets the color used to draw lines and borders around shapes.
+  fill(C_GRID_LINE);
   stroke(C_GRID_LINE);
   for (iy = -1; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
     // if even number.
@@ -37,6 +38,7 @@ void grid_draw_rotate_0()
   }
 
   // Sets the color used to draw text and borders around shapes.
+  fill(C_GRID_TEXT);
   stroke(C_GRID_TEXT);
   for (iy = -1; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
     if (MIRROR_ENABLE) {
@@ -152,6 +154,7 @@ void grid_draw_rotate_90()
   }
 
   // Sets the color used to draw lines and borders around shapes.
+  fill(C_GRID_LINE);
   stroke(C_GRID_LINE);
   for (ix = -1; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
     // if even number.
@@ -171,6 +174,7 @@ void grid_draw_rotate_90()
   }
 
   // Sets the color used to draw text and borders around shapes.
+  fill(C_GRID_TEXT);
   stroke(C_GRID_TEXT);
   for (ix = -1; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
     if (MIRROR_ENABLE) {
@@ -285,6 +289,7 @@ void grid_draw_rotate_180()
   }
 
   // Sets the color used to draw lines and borders around shapes.
+  fill(C_GRID_LINE);
   stroke(C_GRID_LINE);
   for (iy = -1; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
     // if even number.
@@ -304,6 +309,7 @@ void grid_draw_rotate_180()
   }
 
   // Sets the color used to draw text and borders around shapes.
+  fill(C_GRID_TEXT);
   stroke(C_GRID_TEXT);
   for (iy = -1; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
     if (MIRROR_ENABLE) {
@@ -419,6 +425,7 @@ void grid_draw_rotate_270()
   }
 
   // Sets the color used to draw lines and borders around shapes.
+  fill(C_GRID_LINE);
   stroke(C_GRID_LINE);
   for (ix = -1; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
     // if even number.
@@ -438,6 +445,7 @@ void grid_draw_rotate_270()
   }
 
   // Sets the color used to draw text and borders around shapes.
+  fill(C_GRID_TEXT);
   stroke(C_GRID_TEXT);
   for (ix = -1; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
     if (MIRROR_ENABLE) {
