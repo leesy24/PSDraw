@@ -2,6 +2,8 @@ color C_BUBBLEINFO_RECT_FILL = #F8F8F8; // White - 0x8
 color C_BUBBLEINFO_RECT_STROKE = #000000; // White - 0x8
 color C_BUBBLEINFO_TEXT = #000000; // Black
 
+final int BUBBLEINFO_TIMEOUT = 2000; // 2 seconds
+
 boolean BUBBLEINFO_AVAILABLE = false;
 boolean BUBBLEINFO_DISPLAY = false;
 int BUBBLEINFO_POINT;
@@ -10,7 +12,7 @@ float BUBBLEINFO_COR_X;
 float BUBBLEINFO_COR_Y;
 float BUBBLEINFO_ANGLE;
 int BUBBLEINFO_PULSE_WIDTH;
-int BUBBLEINFO_TIMER = 0;
+int BUBBLEINFO_TIMER = -BUBBLEINFO_TIMEOUT;
 int BUBBLEINFO_BOX_X, BUBBLEINFO_BOX_Y;
 
 void bubbleinfo_draw()
@@ -18,7 +20,7 @@ void bubbleinfo_draw()
   String string1, string2, string3, string4, string5, string6;
   int x, y, w, h, tl = 5, tr = 5, br = 0, bl = 5;
 
-  if(BUBBLEINFO_AVAILABLE || (millis() - BUBBLEINFO_TIMER) < 2000)
+  if(BUBBLEINFO_AVAILABLE || (millis() - BUBBLEINFO_TIMER) < BUBBLEINFO_TIMEOUT)
   {
     BUBBLEINFO_DISPLAY = true;
     if(BUBBLEINFO_AVAILABLE) {
