@@ -1,5 +1,5 @@
-color C_COLORBAR_RECT_FILL = #F8F8F8; // White - 0x8
-color C_COLORBAR_RECT_STROKE = #000000; // White - 0x8
+color C_COLORBAR_RECT_FILL = 0xC0F8F8F8; // White - 0x8 w/ Opaque 75%
+color C_COLORBAR_RECT_STROKE = #000000; // Black
 color C_COLORBAR_TEXT = #000000; // Black
 
 void colorbar_draw_0()

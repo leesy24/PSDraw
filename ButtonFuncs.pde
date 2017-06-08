@@ -134,6 +134,7 @@ void button_draw()
 
 void button_update() {
   if ( button_check_over(button_zoom_minus_x, button_zoom_minus_y, button_zoom_minus_width, button_zoom_minus_height) ) {
+    //println("ZOOM_FACTOR=" + ZOOM_FACTOR);
     button_zoom_minus_over = true;
     button_zoom_pluse_over = false;
     button_rotate_ccw_over = false;
@@ -142,6 +143,7 @@ void button_update() {
     button_reset_en_over = false;
   }
   else if ( button_check_over(button_zoom_pluse_x, button_zoom_pluse_y, button_zoom_pluse_width, button_zoom_pluse_height) ) {
+    //println("ZOOM_FACTOR=" + ZOOM_FACTOR);
     button_zoom_minus_over = false;
     button_zoom_pluse_over = true;
     button_rotate_ccw_over = false;

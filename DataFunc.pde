@@ -471,9 +471,13 @@ class Data {
         //point(x + GRID_OFFSET_X, y + GRID_OFFSET_Y);
         rect(x + GRID_OFFSET_X - 1, y + GRID_OFFSET_Y - 1, 3, 3 );
 
-        // Check mouse pointer over rect.  
-        if( (x + GRID_OFFSET_X > mouseX - 2 && x + GRID_OFFSET_X < mouseX + 2) &&
-            (y + GRID_OFFSET_Y > mouseY - 2 && y + GRID_OFFSET_Y < mouseY + 2) ) {
+        // Check mouse pointer over rect.
+        int range = 2;
+        if( ZOOM_FACTOR < 50 ) {
+          range += (50 - ZOOM_FACTOR)/10;
+        }
+        if( (x + GRID_OFFSET_X > mouseX - range && x + GRID_OFFSET_X < mouseX + range) &&
+            (y + GRID_OFFSET_Y > mouseY - range && y + GRID_OFFSET_Y < mouseY + range) ) {
           //println("point=" + j + ",distance=" + (float(distance)/10000.0) + "m(" + (cx/10000.0) + "," + (cy/10000.0) + ")" + ",pulse width=" + pulse_width);
           BUBBLEINFO_AVAILABLE = true;
           BUBBLEINFO_POINT = j;
