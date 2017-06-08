@@ -338,6 +338,7 @@ class Data {
     int pulse_width = -1, p_pulse_width = -1;
     int x, y;
     float cx, cy;
+    float angle;
     int p_x = -1, p_y = -1;
     color c_draw_point, p_c_draw_point = 0;
     color c_draw_line;
@@ -366,9 +367,10 @@ class Data {
       }
       else {
         if (PRINT_DataFunc_Draw) println("point=", j, ",distance=" + distance);
+        angle = scan_angle_start + float(j) * scan_angle_size / float(n_points);
         if (ROTATE_FACTOR == 0) {
-          cx = float(distance) * sin(radians((scan_angle_start + float(j) * scan_angle_size / float(n_points))));
-          cy = float(distance) * cos(radians((scan_angle_start + float(j) * scan_angle_size / float(n_points))));
+          cx = float(distance) * sin(radians(angle));
+          cy = float(distance) * cos(radians(angle));
           x = int(cx / ZOOM_FACTOR);
           y = int(cy / ZOOM_FACTOR);
           if (PRINT_DataFunc_Draw) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
@@ -379,8 +381,8 @@ class Data {
             y = SCREEN_HEIGHT / 2 - y;
         }
         else if (ROTATE_FACTOR == 90) {
-          cx = float(distance) * cos(radians((scan_angle_start + float(j) * scan_angle_size / float(n_points))));
-          cy = float(distance) * sin(radians((scan_angle_start + float(j) * scan_angle_size / float(n_points))));
+          cx = float(distance) * cos(radians(angle));
+          cy = float(distance) * sin(radians(angle));
           x = int(cx / ZOOM_FACTOR);
           y = int(cy / ZOOM_FACTOR);
           if (PRINT_DataFunc_Draw) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
@@ -391,8 +393,8 @@ class Data {
           y += TEXT_MARGIN + FONT_HEIGHT / 2;
         }
         else if (ROTATE_FACTOR == 180) {
-          cx = float(distance) * sin(radians((scan_angle_start + float(j) * scan_angle_size / float(n_points))));
-          cy = float(distance) * cos(radians((scan_angle_start + float(j) * scan_angle_size / float(n_points))));
+          cx = float(distance) * sin(radians(angle));
+          cy = float(distance) * cos(radians(angle));
           x = int(cx / ZOOM_FACTOR);
           y = int(cy / ZOOM_FACTOR);
           if (PRINT_DataFunc_Draw) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
@@ -404,8 +406,8 @@ class Data {
             y += SCREEN_HEIGHT / 2;
         }
         else /*if (ROTATE_FACTOR == 270)*/ {
-          cx = float(distance) * cos(radians((scan_angle_start + float(j) * scan_angle_size / float(n_points))));
-          cy = float(distance) * sin(radians((scan_angle_start + float(j) * scan_angle_size / float(n_points))));
+          cx = float(distance) * cos(radians(angle));
+          cy = float(distance) * sin(radians(angle));
           x = int(cx / ZOOM_FACTOR);
           y = int(cy / ZOOM_FACTOR);
           if (PRINT_DataFunc_Draw) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
@@ -478,6 +480,7 @@ class Data {
           BUBBLEINFO_DISTANCE = float(distance)/10000.0;
           BUBBLEINFO_COR_X = (int(cx)/10000.0);
           BUBBLEINFO_COR_Y = (int(cy)/10000.0);
+          BUBBLEINFO_ANGLE = float(int(angle*100.0))/100.0;
           BUBBLEINFO_PULSE_WIDTH = pulse_width;
         }
         

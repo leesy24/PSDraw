@@ -8,13 +8,14 @@ int BUBBLEINFO_POINT;
 float BUBBLEINFO_DISTANCE;
 float BUBBLEINFO_COR_X;
 float BUBBLEINFO_COR_Y;
+float BUBBLEINFO_ANGLE;
 int BUBBLEINFO_PULSE_WIDTH;
 int BUBBLEINFO_TIMER = 0;
 int BUBBLEINFO_BOX_X, BUBBLEINFO_BOX_Y;
 
 void bubbleinfo_draw()
 {
-  String string1, string2, string3, string4, string5;
+  String string1, string2, string3, string4, string5, string6;
   int x, y, w, h, tl = 5, tr = 5, br = 0, bl = 5;
 
   if(BUBBLEINFO_AVAILABLE || (millis() - BUBBLEINFO_TIMER) < 2000)
@@ -28,14 +29,16 @@ void bubbleinfo_draw()
     }
 
     string1 = "Point:" + BUBBLEINFO_POINT;
-    string2 = "Distance:" + BUBBLEINFO_DISTANCE + "m";
-    string3 = "Coord. X:" + BUBBLEINFO_COR_X + "m";
-    string4 = "Coord. Y:" + BUBBLEINFO_COR_Y + "m";
-    string5 = "Pulse width:" + BUBBLEINFO_PULSE_WIDTH;
+    string2 = "Angle:" + BUBBLEINFO_ANGLE + "°";
+    string3 = "Distance:" + BUBBLEINFO_DISTANCE + "m";
+    string4 = "Coord. X:" + BUBBLEINFO_COR_X + "m";
+    string5 = "Coord. Y:" + BUBBLEINFO_COR_Y + "m";
+    string6 = "Pulse width:" + BUBBLEINFO_PULSE_WIDTH;
     w = int(max(textWidth(string1), textWidth(string2), textWidth(string3)));
     w = int(max(float(w), textWidth(string4), textWidth(string5)));
+    w = int(max(float(w), textWidth(string6)));
     w += TEXT_MARGIN + TEXT_MARGIN;
-    h = TEXT_MARGIN + FONT_HEIGHT * 5 + TEXT_MARGIN;
+    h = TEXT_MARGIN + FONT_HEIGHT * 6 + TEXT_MARGIN;
     x = BUBBLEINFO_BOX_X - w;
     y = BUBBLEINFO_BOX_Y - h;
     if(x < 0 && y < 0) {
@@ -67,6 +70,7 @@ void bubbleinfo_draw()
     text(string3, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 3);
     text(string4, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 4);
     text(string5, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 5);
+    text(string6, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 6);
   }
   else
   {
