@@ -106,4 +106,5 @@ void draw() {
   data.draw_points();
 
   bubbleinfo_draw();
+  colorbar_info_draw();
 } 

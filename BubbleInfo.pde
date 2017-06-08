@@ -3,6 +3,7 @@ color C_BUBBLEINFO_RECT_STROKE = #000000; // White - 0x8
 color C_BUBBLEINFO_TEXT = #000000; // Black
 
 boolean BUBBLEINFO_AVAILABLE = false;
+boolean BUBBLEINFO_DISPLAY = false;
 int BUBBLEINFO_POINT;
 float BUBBLEINFO_DISTANCE;
 float BUBBLEINFO_COR_X;
@@ -18,12 +19,14 @@ void bubbleinfo_draw()
 
   if(BUBBLEINFO_AVAILABLE || (millis() - BUBBLEINFO_TIMER) < 2000)
   {
+    BUBBLEINFO_DISPLAY = true;
     if(BUBBLEINFO_AVAILABLE) {
       BUBBLEINFO_TIMER = millis();
       BUBBLEINFO_AVAILABLE = false;
       BUBBLEINFO_BOX_X = mouseX;
       BUBBLEINFO_BOX_Y = mouseY;
     }
+
     string1 = "Point:" + BUBBLEINFO_POINT;
     string2 = "Distance:" + BUBBLEINFO_DISTANCE + "m";
     string3 = "Coord. X:" + BUBBLEINFO_COR_X + "m";
@@ -64,5 +67,9 @@ void bubbleinfo_draw()
     text(string3, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 3);
     text(string4, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 4);
     text(string5, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 5);
+  }
+  else
+  {
+    BUBBLEINFO_DISPLAY = false;
   }
 }
