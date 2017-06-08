@@ -468,6 +468,8 @@ class Data {
         stroke(c_draw_point);
         //point(x + GRID_OFFSET_X, y + GRID_OFFSET_Y);
         rect(x + GRID_OFFSET_X - 1, y + GRID_OFFSET_Y - 1, 3, 3 );
+
+        // Check mouse pointer over rect.  
         if( (x + GRID_OFFSET_X > mouseX - 2 && x + GRID_OFFSET_X < mouseX + 2) &&
             (y + GRID_OFFSET_Y > mouseY - 2 && y + GRID_OFFSET_Y < mouseY + 2) ) {
           //println("point=" + j + ",distance=" + (float(distance)/10000.0) + "m(" + (cx/10000.0) + "," + (cy/10000.0) + ")" + ",pulse width=" + pulse_width);
@@ -478,6 +480,8 @@ class Data {
           BUBBLEINFO_COR_Y = (int(cy)/10000.0);
           BUBBLEINFO_PULSE_WIDTH = pulse_width;
         }
+        
+        // Save data for drawing line with points. 
         p_x = x;
         p_y = y;
         p_c_draw_point = c_draw_point;
