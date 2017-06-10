@@ -5,6 +5,11 @@ final String OS = System.getProperty("os.name");
 static String FILE_name = "data.bin";
 static long FILE_last_modified_time = 0;
 
+void interface_file_reset()
+{
+  // Nothing to do.
+}
+
 void interface_file_setup()
 {
   // Check OS

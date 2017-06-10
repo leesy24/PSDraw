@@ -27,6 +27,11 @@ byte[] data_buf;
 long old_time_stamp = -1;
 
 void data_setup() {
+  // Append interface name to window title
+  Title += ((DATA_interface == 0)?"File":"UART");
+
+  interface_file_reset();
+  interface_UART_reset();
   if(DATA_interface == 0) {
     interface_file_setup();
   }
