@@ -14,6 +14,7 @@ float BUBBLEINFO_ANGLE;
 int BUBBLEINFO_PULSE_WIDTH;
 int BUBBLEINFO_TIMER = -BUBBLEINFO_TIMEOUT;
 int BUBBLEINFO_BOX_X, BUBBLEINFO_BOX_Y;
+final static int BUBBLEINFO_POINT_WH = 10;
 
 void bubbleinfo_draw()
 {
@@ -26,8 +27,8 @@ void bubbleinfo_draw()
     if(BUBBLEINFO_AVAILABLE) {
       BUBBLEINFO_TIMER = millis();
       BUBBLEINFO_AVAILABLE = false;
-      BUBBLEINFO_BOX_X = mouseX;
-      BUBBLEINFO_BOX_Y = mouseY;
+      //BUBBLEINFO_BOX_X = mouseX;
+      //BUBBLEINFO_BOX_Y = mouseY;
     }
 
     string1 = "Point:" + BUBBLEINFO_POINT;
@@ -41,23 +42,23 @@ void bubbleinfo_draw()
     w = int(max(float(w), textWidth(string6)));
     w += TEXT_MARGIN + TEXT_MARGIN;
     h = TEXT_MARGIN + FONT_HEIGHT * 6 + TEXT_MARGIN;
-    x = BUBBLEINFO_BOX_X - w;
-    y = BUBBLEINFO_BOX_Y - h;
+    x = BUBBLEINFO_BOX_X - BUBBLEINFO_POINT_WH/2 - w;
+    y = BUBBLEINFO_BOX_Y - BUBBLEINFO_POINT_WH/2 - h;
     if(x < 0 && y < 0) {
       br = 5;
       tl = 0;
-      x = BUBBLEINFO_BOX_X;
-      y = BUBBLEINFO_BOX_Y;
+      x = BUBBLEINFO_BOX_X + BUBBLEINFO_POINT_WH/2;
+      y = BUBBLEINFO_BOX_Y + BUBBLEINFO_POINT_WH/2;
     }
     else if(x < 0) {
       br = 5;
       bl = 0;
-      x = BUBBLEINFO_BOX_X;
+      x = BUBBLEINFO_BOX_X + BUBBLEINFO_POINT_WH/2;
     }
     else if(y < 0) {
       br = 5;
       tr = 0;
-      y = BUBBLEINFO_BOX_Y;
+      y = BUBBLEINFO_BOX_Y + BUBBLEINFO_POINT_WH/2;
     }
     
     // Sets the color used to draw box and borders around shapes.

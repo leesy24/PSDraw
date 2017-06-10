@@ -313,6 +313,7 @@ class Data {
     int distance;
     int pulse_width = -1, p_pulse_width = -1;
     int x, y;
+    int wh = 3; // Set width and height point rect
     float cx, cy;
     float angle;
     int p_x = -1, p_y = -1;
@@ -437,6 +438,25 @@ class Data {
           p_c_draw_point = C_DATA_POINT;
           c_draw_line = C_DATA_LINE;
         }
+
+        // Reset width and height point rect
+        wh = 3;
+        // Check mouse pointer over point rect.
+        if( BUBBLEINFO_AVAILABLE != true &&
+            (x + GRID_OFFSET_X > mouseX - range && x + GRID_OFFSET_X < mouseX + range) &&
+            (y + GRID_OFFSET_Y > mouseY - range && y + GRID_OFFSET_Y < mouseY + range) ) {
+          //println("point=" + j + ",distance=" + (float(distance)/10000.0) + "m(" + (cx/10000.0) + "," + (cy/10000.0) + ")" + ",pulse width=" + pulse_width);
+          BUBBLEINFO_AVAILABLE = true;
+          BUBBLEINFO_POINT = j;
+          BUBBLEINFO_DISTANCE = float(distance)/10000.0;
+          BUBBLEINFO_COR_X = (int(cx)/10000.0);
+          BUBBLEINFO_COR_Y = (int(cy)/10000.0);
+          BUBBLEINFO_BOX_X = x + GRID_OFFSET_X;
+          BUBBLEINFO_BOX_Y = y + GRID_OFFSET_Y;
+          BUBBLEINFO_ANGLE = float(int(angle*100.0))/100.0;
+          BUBBLEINFO_PULSE_WIDTH = pulse_width;
+          wh = BUBBLEINFO_POINT_WH;
+        }
         
         if (p_x != -1 && p_y != -1) {
           //print(j + ":" + p_pulse_width + "," + pulse_width + " ");
@@ -451,21 +471,8 @@ class Data {
         fill(c_draw_point);
         stroke(c_draw_point);
         //point(x + GRID_OFFSET_X, y + GRID_OFFSET_Y);
-        rect(x + GRID_OFFSET_X - 1, y + GRID_OFFSET_Y - 1, 3, 3 );
+        rect(x + GRID_OFFSET_X - wh / 2, y + GRID_OFFSET_Y - wh / 2, wh, wh );
 
-        // Check mouse pointer over point rect.
-        if( (x + GRID_OFFSET_X > mouseX - range && x + GRID_OFFSET_X < mouseX + range) &&
-            (y + GRID_OFFSET_Y > mouseY - range && y + GRID_OFFSET_Y < mouseY + range) ) {
-          //println("point=" + j + ",distance=" + (float(distance)/10000.0) + "m(" + (cx/10000.0) + "," + (cy/10000.0) + ")" + ",pulse width=" + pulse_width);
-          BUBBLEINFO_AVAILABLE = true;
-          BUBBLEINFO_POINT = j;
-          BUBBLEINFO_DISTANCE = float(distance)/10000.0;
-          BUBBLEINFO_COR_X = (int(cx)/10000.0);
-          BUBBLEINFO_COR_Y = (int(cy)/10000.0);
-          BUBBLEINFO_ANGLE = float(int(angle*100.0))/100.0;
-          BUBBLEINFO_PULSE_WIDTH = pulse_width;
-        }
-        
         // Save data for drawing line with points. 
         p_x = x;
         p_y = y;
