@@ -7,35 +7,34 @@ final boolean PRINT_DataFunc_Parse = false;
 //final boolean PRINT_DataFunc_Draw = true; 
 final boolean PRINT_DataFunc_Draw = false;
 
+//final static color C_DATA_LINE = #808080; //
+//final static color C_DATA_POINT = #000000; //
+final static color C_DATA_TEXT = #404040; //
+final static color C_DATA_LINE = #0000FF; // Blue
+final static color C_DATA_POINT = #FF0000; // Red
+
 final int MAX_POINTS = 1000;
 
 final int MAX_PULSE_WIDTH = 12000;
 final int MIN_PULSE_WIDTH = 4096;
 
-// Get OS Name
-final String OS = System.getProperty("os.name");
-
-// Define default binary data_buf filename and path 
-String FILENAME = "data_buf.bin";
+Data PS_Data;
 
 // Define data_buf array to load binary data_buf
-byte data_buf[]; 
+byte[] data_buf; 
 
 // Define old time stamp to check time stamp changed for detecting data_buf changed or not
 long old_time_stamp = -1;
 
 void data_setup() {
-  // Check OS
-  if (OS.equals("Linux")) {
-    // Define binary data filename and path for Linux OS
-    FILENAME = "/tmp/data.bin";
+  if(DATA_interface == 0) {
+    interface_file_setup();
   }
-  // Assume Windows OS 
   else {
-    // Define binary data filename and path for Windows OS
-    //FILENAME = "C:\\work\\git\\PSDemoProgram\\Release-windows\\data.bin";
-    FILENAME = "C:\\Temp\\data.bin";
+    interface_UART_setup();
   }
+
+  PS_Data = new Data();
 }
 
 // A Data class
@@ -63,39 +62,12 @@ class Data {
 
   // Load data_buf
   boolean load() {
-    String string;
-
-    // Check file exists to avoid exception error on loadBytes().
-    File file = new File(FILENAME);
-    if (file.exists() != true) {
-      // Sets the color used to draw lines and borders around shapes.
-      fill(C_TEXT);
-      stroke(C_TEXT);
-      string = "File not exist at " + FILENAME;
-      textSize(FONT_HEIGHT*3);
-      text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
-      textSize(FONT_HEIGHT);
-      if (PRINT_DataFunc_Load) println("File not exist!:" + FILENAME);
-      return false;
-    } // End of load()
-  
-    // Load binary data_buf.
-    data_buf = loadBytes(FILENAME);
-    if (PRINT_DataFunc_Load) println("data_buf.length = " + data_buf.length);
-    // Check binary data_buf length is valid.
-    // Must larger than Function code(4B) + Length(4B) + Number of parameters(4B) + Number of points(4B) + CRC(4B).
-    if (data_buf.length <= 4 + 4 + 4 + 4 + 4) {
-      // Sets the color used to draw lines and borders around shapes.
-      fill(C_TEXT);
-      stroke(C_TEXT);
-      string = "File size is invalid!: " + data_buf.length;
-      textSize(FONT_HEIGHT*3);
-      text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
-      textSize(FONT_HEIGHT);
-      if (PRINT_DataFunc_Load) println("File size is invalid!:" + data_buf.length);
-      return false;
+    if(DATA_interface == 0) {
+      return interface_file_load();
     }
-    return true;
+    else {
+      return interface_UART_load();
+    }
   }
 
   // Parsing data_buf
@@ -104,7 +76,7 @@ class Data {
     int i = 0; // index for navigating data_buf.
 
     // Get function code.
-    func = str(char(data_buf[i])) + str(char(data_buf[i+1])) + str(char(data_buf[i+2])) + str(char(data_buf[i+3]));
+    func = get_str_bytes(data_buf, i, 4);
     // Check function code is "GSCN".
     if (func.equals("GSCN") != true) {
       // Sets the color used to draw lines and borders around shapes.
@@ -274,7 +246,6 @@ class Data {
       return false;
     }
   
-
     for (int j = 0; j < n_points; j++) {
       // Get Distance
       // : units are 1/10 mm.
@@ -307,8 +278,8 @@ class Data {
     String string;
 
     // Sets the color used to draw lines and borders around shapes.
-    fill(C_DRAW_TEXT);
-    stroke(C_DRAW_TEXT);
+    fill(C_DATA_TEXT);
+    stroke(C_DATA_TEXT);
     string = "Scan number:" + i_scan;
     text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * 2);
     string = "Time stamp:" + time_stamp;
@@ -457,9 +428,9 @@ class Data {
           colorMode(RGB, 255);
         }
         else {
-          c_draw_point = C_DRAW_POINT;
-          p_c_draw_point = C_DRAW_POINT;
-          c_draw_line = C_DRAW_LINE;
+          c_draw_point = C_DATA_POINT;
+          p_c_draw_point = C_DATA_POINT;
+          c_draw_line = C_DATA_LINE;
         }
         
         if (p_x != -1 && p_y != -1) {

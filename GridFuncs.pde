@@ -1,3 +1,8 @@
+//color C_GRID_LINE = #808080; //
+//color C_GRID_TEXT = #404040; //
+final static color C_GRID_LINE = #C0C0C0; //
+final static color C_GRID_TEXT = #808080; //
+
 int GRID_OFFSET_X = 0;
 int GRID_OFFSET_Y = 0;
 PImage PS_image;

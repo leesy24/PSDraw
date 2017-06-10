@@ -1,6 +1,10 @@
 //final boolean PRINT_ButtonFunc = true; 
 final boolean PRINT_ButtonFunc = false;
 
+final static color C_BTN_NORMAL = #FFFFFF; //
+final static color C_BTN_HIGHLIGHT = #C0C0C0; //
+final static color C_BTN_TEXT = #000000; //
+
 int button_zoom_minus_x, button_zoom_minus_y;      // Position of square button zoom minus
 int button_zoom_minus_width, button_zoom_minus_height;     // Diameter of rect
 boolean button_zoom_minus_over = false;

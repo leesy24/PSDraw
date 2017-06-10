@@ -2,21 +2,11 @@
 //final boolean PRINT = true; 
 final boolean PRINT = false; 
 
-//color C_BG = #FFFFFF; // White
-color C_BG = #F8F8F8; // White - 0x8
-color C_TEXT = #000000; // Black
-//color C_DRAW_LINE = #808080; //
-//color C_DRAW_POINT = #000000; //
-color C_DRAW_TEXT = #404040; //
-color C_DRAW_LINE = #0000FF; // Blue
-color C_DRAW_POINT = #FF0000; // Red
-//color C_GRID_LINE = #808080; //
-//color C_GRID_TEXT = #404040; //
-color C_GRID_LINE = #C0C0C0; //
-color C_GRID_TEXT = #808080; //
-color C_BTN_NORMAL = #FFFFFF; //
-color C_BTN_HIGHLIGHT = #C0C0C0; //
-color C_BTN_TEXT = #000000; //
+int DATA_interface = 1; // 0 = File, 1 = UART
+
+//final color C_BG = #FFFFFF; // White
+final color C_BG = #F8F8F8; // White - 0x8
+final color C_TEXT = #000000; // Black
 
 // Define window title string.
 String Title = "DASAN-InfoTEK - PSDraw";
@@ -70,7 +60,7 @@ void setup() {
   button_setup();
 
   // Set window title
-  surface.setTitle(Title);
+  surface.setTitle(Title + ((DATA_interface == 0)?" - File":" - UART"));
 }
 
 // Called directly after setup()
@@ -79,6 +69,7 @@ void setup() {
 //  and should never be called explicitly.
 // All Processing programs update the screen at the end of draw(), never earlier.
 void draw() {
+
   // Ready to draw from here!
   // To clear the display window at the beginning of each frame,
   background(C_BG);
@@ -95,15 +86,13 @@ void draw() {
 
   colorbar_draw();
 
-  Data data = new Data();
-  if (data.load() == false) {
-    return;
+  if (PS_Data.load() == true) {
+    if (PS_Data.parse() == false) {
+      return;
+    }
   }
-  if (data.parse() == false) {
-    return;
-  }
-  data.draw_params();
-  data.draw_points();
+  PS_Data.draw_params();
+  PS_Data.draw_points();
 
   bubbleinfo_draw();
   colorbar_info_draw();
