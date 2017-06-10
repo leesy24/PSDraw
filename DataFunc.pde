@@ -291,15 +291,15 @@ class Data {
     string = "Time stamp:" + time_stamp;
     //text(string, SCREEN_WIDTH - int(textWidth(string)) - 10, 10 + FONT_HEIGHT);
     text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * 3);
-    string = "Scan start direction:" + scan_angle_start;
+    string = "Scan start direction:" + scan_angle_start + "°";
     text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * 4);
-    string = "Scan angle size:" + scan_angle_size;
+    string = "Scan angle size:" + scan_angle_size + "°";
     text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * 5);
     string = "Number of echoes:" + n_echos;
     text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * 6);
     string = "Encoder count:" + i_encoder;
     text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * 7);
-    string = "System temperature:" + temperature;
+    string = "System temperature:" + temperature + "°C";
     text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * 8);
     string = "System status:" + status;
     text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * 9);
