@@ -5,3 +5,9 @@ MIRROR_ENABLE,flase
 ZOOM_FACTOR,100.0
 GRID_OFFSET_X,0
 GRID_OFFSET_Y,0
+FILE_name,C:\Temp\data.bin
+UART_port_name,COM1
+UART_baud_rate,115200
+UART_parity,N
+UART_data_bits,8
+UART_stop_bits,1.0

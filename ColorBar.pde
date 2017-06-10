@@ -9,13 +9,13 @@ void colorbar_draw_0()
   int pw;
 
   for(i = 0; i < SCREEN_HEIGHT; i ++) {
-    pw = int(float(MIN_PULSE_WIDTH - MAX_PULSE_WIDTH) / float(SCREEN_HEIGHT) * float(i)) + MAX_PULSE_WIDTH;
-    colorMode(HSB, MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
+    pw = int(float(DATA_MIN_PULSE_WIDTH - DATA_MAX_PULSE_WIDTH) / float(SCREEN_HEIGHT) * float(i)) + DATA_MAX_PULSE_WIDTH;
+    colorMode(HSB, DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
     c =
       color(
-        (MAX_PULSE_WIDTH + int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 5.0 / 6.0) - pw) % (MAX_PULSE_WIDTH - MIN_PULSE_WIDTH + 1),
-        MAX_PULSE_WIDTH - MIN_PULSE_WIDTH,
-        MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
+        (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - pw) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1),
+        DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH,
+        DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
     colorMode(RGB, 255);
     
     fill(c);
@@ -31,20 +31,20 @@ void colorbar_draw_90()
   int pw;
 
   for(i = 0; i < SCREEN_WIDTH; i ++) {
-    pw = int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) / float(SCREEN_WIDTH) * float(i)) + MIN_PULSE_WIDTH;
-    colorMode(HSB, MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
+    pw = int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) / float(SCREEN_WIDTH) * float(i)) + DATA_MIN_PULSE_WIDTH;
+    colorMode(HSB, DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
     c =
       color(
-        (MAX_PULSE_WIDTH + int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 5.0 / 6.0) - pw) % (MAX_PULSE_WIDTH - MIN_PULSE_WIDTH + 1),
-        MAX_PULSE_WIDTH - MIN_PULSE_WIDTH,
-        MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
-    //print("[" + i + "]=" + p + "," + (MAX_PULSE_WIDTH + int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 3.0 / 4.0) - p)%(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) + " ");
+        (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - pw) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1),
+        DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH,
+        DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
+    //print("[" + i + "]=" + p + "," + (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 3.0 / 4.0) - p)%(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) + " ");
     //print("[" + i + "]=" + p + "," + hue(c) + " ");
     colorMode(RGB, 255);
 //    print(i + "=" +
 //      p + "," + 
 //      int(hue(c)) + ":" +
-//      (MAX_PULSE_WIDTH + int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 5.0 / 6.0) - p) % (MAX_PULSE_WIDTH - MIN_PULSE_WIDTH + 1) + "," +
+//      (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - p) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1) + "," +
 //      int(red(c)) + ":" + int(green(c)) + ":" + int(blue(c)) + " ");
     fill(c);
     stroke(c);
@@ -59,14 +59,14 @@ void colorbar_draw_180()
   int pw;
 
   for(i = 0; i < SCREEN_HEIGHT; i ++) {
-    pw = int(float(MIN_PULSE_WIDTH - MAX_PULSE_WIDTH) / float(SCREEN_HEIGHT) * float(i)) + MAX_PULSE_WIDTH;
+    pw = int(float(DATA_MIN_PULSE_WIDTH - DATA_MAX_PULSE_WIDTH) / float(SCREEN_HEIGHT) * float(i)) + DATA_MAX_PULSE_WIDTH;
     //print("[" + i + "]=" + p + " ");
-    colorMode(HSB, MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
+    colorMode(HSB, DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
     c =
       color(
-        (MAX_PULSE_WIDTH + int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 5.0 / 6.0) - pw) % (MAX_PULSE_WIDTH - MIN_PULSE_WIDTH + 1),
-        MAX_PULSE_WIDTH - MIN_PULSE_WIDTH,
-        MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
+        (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - pw) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1),
+        DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH,
+        DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
     colorMode(RGB, 255);
     
     fill(c);
@@ -82,14 +82,14 @@ void colorbar_draw_270()
   int pw;
 
   for(i = 0; i < SCREEN_WIDTH; i ++) {
-    pw = int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) / float(SCREEN_WIDTH) * float(i)) + MIN_PULSE_WIDTH;
+    pw = int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) / float(SCREEN_WIDTH) * float(i)) + DATA_MIN_PULSE_WIDTH;
     //print("[" + i + "]=" + p + " ");
-    colorMode(HSB, MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
+    colorMode(HSB, DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
     c =
       color(
-        (MAX_PULSE_WIDTH + int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 5.0 / 6.0) - pw) % (MAX_PULSE_WIDTH - MIN_PULSE_WIDTH + 1),
-        MAX_PULSE_WIDTH - MIN_PULSE_WIDTH,
-        MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
+        (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - pw) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1),
+        DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH,
+        DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
     colorMode(RGB, 255);
     
     fill(c);
@@ -108,7 +108,7 @@ void colorbar_info_draw_0()
   if( mouseX >= SCREEN_WIDTH - FONT_HEIGHT / 2 &&
       BUBBLEINFO_DISPLAY == false ) {
     // Display pulse width
-    pw = int(float(MIN_PULSE_WIDTH - MAX_PULSE_WIDTH) / float(SCREEN_HEIGHT) * mouseY) + MAX_PULSE_WIDTH;
+    pw = int(float(DATA_MIN_PULSE_WIDTH - DATA_MAX_PULSE_WIDTH) / float(SCREEN_HEIGHT) * mouseY) + DATA_MAX_PULSE_WIDTH;
     string = "Pulse width:" + pw;
     w = int(textWidth(string));
     w += TEXT_MARGIN + TEXT_MARGIN;
@@ -141,7 +141,7 @@ void colorbar_info_draw_90()
   if( mouseY >= SCREEN_HEIGHT - FONT_HEIGHT / 2 &&
       BUBBLEINFO_DISPLAY == false ) {
     // Display pulse width
-    pw = int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) / float(SCREEN_WIDTH) * mouseX) + MIN_PULSE_WIDTH;
+    pw = int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) / float(SCREEN_WIDTH) * mouseX) + DATA_MIN_PULSE_WIDTH;
     string = "Pulse width:" + pw;
     w = int(textWidth(string));
     w += TEXT_MARGIN + TEXT_MARGIN;
@@ -174,7 +174,7 @@ void colorbar_info_draw_180()
   if( mouseX <= FONT_HEIGHT / 2 &&
       BUBBLEINFO_DISPLAY == false ) {
     // Display pulse width
-    pw = int(float(MIN_PULSE_WIDTH - MAX_PULSE_WIDTH) / float(SCREEN_HEIGHT) * mouseY) + MAX_PULSE_WIDTH;
+    pw = int(float(DATA_MIN_PULSE_WIDTH - DATA_MAX_PULSE_WIDTH) / float(SCREEN_HEIGHT) * mouseY) + DATA_MAX_PULSE_WIDTH;
     string = "Pulse width:" + pw;
     w = int(textWidth(string));
     w += TEXT_MARGIN + TEXT_MARGIN;
@@ -207,7 +207,7 @@ void colorbar_info_draw_270()
   if( mouseY <= FONT_HEIGHT / 2 &&
       BUBBLEINFO_DISPLAY == false ) {
     // Display pulse width
-    pw = int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) / float(SCREEN_WIDTH) * mouseX) + MIN_PULSE_WIDTH;
+    pw = int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) / float(SCREEN_WIDTH) * mouseX) + DATA_MIN_PULSE_WIDTH;
     string = "Pulse width:" + pw;
     w = int(textWidth(string));
     w += TEXT_MARGIN + TEXT_MARGIN;

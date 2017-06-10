@@ -26,6 +26,18 @@ void config_settings()
         GRID_OFFSET_X = variable.getInt("Value");
       else if(name.equals("GRID_OFFSET_Y"))
         GRID_OFFSET_Y = variable.getInt("Value");
+      else if(name.equals("FILE_name"))
+        FILE_name = variable.getString("Value");
+      else if(name.equals("UART_port_name"))
+        UART_port_name = variable.getString("Value");
+      else if(name.equals("UART_baud_rate"))
+        UART_baud_rate = variable.getInt("Value");
+      else if(name.equals("UART_parity"))
+        UART_parity = variable.getString("Value").charAt(0);
+      else if(name.equals("UART_data_bits"))
+        UART_data_bits = variable.getInt("Value");
+      else if(name.equals("UART_stop_bits"))
+        UART_stop_bits = variable.getFloat("Value"); 
     }
   }
   catch (Exception e) {
@@ -60,6 +72,30 @@ void config_settings()
     variable = config.addRow();
     variable.setString("Name", "GRID_OFFSET_Y");
     variable.setInt("Value", GRID_OFFSET_Y);
+
+    variable = config.addRow();
+    variable.setString("Name", "FILE_name");
+    variable.setString("Value", FILE_name);
+
+    variable = config.addRow();
+    variable.setString("Name", "UART_port_name");
+    variable.setString("Value", UART_port_name);
+
+    variable = config.addRow();
+    variable.setString("Name", "UART_baud_rate");
+    variable.setInt("Value", UART_baud_rate);
+
+    variable = config.addRow();
+    variable.setString("Name", "UART_parity");
+    variable.setString("Value", Character.toString(UART_parity));
+
+    variable = config.addRow();
+    variable.setString("Name", "UART_data_bits");
+    variable.setInt("Value", UART_data_bits);
+
+    variable = config.addRow();
+    variable.setString("Name", "UART_stop_bits");
+    variable.setFloat("Value", UART_stop_bits);
 
     saveTable(config, "data/" + CONFIG_file_name);
   }
@@ -115,6 +151,48 @@ void config_save()
       value_int = variable.getInt("Value");
       if(value_int != GRID_OFFSET_Y) {
         variable.setInt("Value", GRID_OFFSET_Y);
+        changed = true;
+      }
+    }
+    else if(name.equals("FILE_name")) {
+      value_string = variable.getString("Value");
+      if(value_string.equals(FILE_name) != true) {
+        variable.setString("Value", FILE_name);
+        changed = true;
+      }
+    }
+    else if(name.equals("UART_port_name")) {
+      value_string = variable.getString("Value");
+      if(value_string.equals(UART_port_name) != true) {
+        variable.setString("Value", UART_port_name);
+        changed = true;
+      }
+    }
+    else if(name.equals("UART_baud_rate")) {
+      value_int = variable.getInt("Value");
+      if(value_int != UART_baud_rate) {
+        variable.setInt("Value", UART_baud_rate);
+        changed = true;
+      }
+    }
+    else if(name.equals("UART_parity")) {
+      value_string = variable.getString("Value");
+      if(value_string.charAt(0) != UART_parity) {
+        variable.setString("Value", Character.toString(UART_parity));
+        changed = true;
+      }
+    }
+    else if(name.equals("UART_data_bits")) {
+      value_int = variable.getInt("Value");
+      if(value_int != UART_data_bits) {
+        variable.setInt("Value", UART_data_bits);
+        changed = true;
+      }
+    }
+    else if(name.equals("UART_stop_bits")) {
+      value_float = variable.getFloat("Value");
+      if(value_float != UART_stop_bits) {
+        variable.setFloat("Value", UART_stop_bits);
         changed = true;
       }
     }

@@ -13,10 +13,11 @@ final static color C_DATA_TEXT = #404040; //
 final static color C_DATA_LINE = #0000FF; // Blue
 final static color C_DATA_POINT = #FF0000; // Red
 
-final int MAX_POINTS = 1000;
+final int DATA_MAX_POINTS = 1000;
+final int DATA_POINT_WH = 3;
 
-final int MAX_PULSE_WIDTH = 12000;
-final int MIN_PULSE_WIDTH = 4096;
+final int DATA_MAX_PULSE_WIDTH = 12000;
+final int DATA_MIN_PULSE_WIDTH = 4096;
 
 Data PS_Data;
 
@@ -57,8 +58,8 @@ class Data {
   int status = 0;
   int content = 0;
   int n_points = 0;
-  int[] distances = new int[MAX_POINTS];
-  int[] pulse_widths = new int[MAX_POINTS];
+  int[] distances = new int[DATA_MAX_POINTS];
+  int[] pulse_widths = new int[DATA_MAX_POINTS];
   int crc;
 
   // Create the Data
@@ -239,7 +240,7 @@ class Data {
     n_points = get_int32_bytes(data_buf, i);
     if (PRINT_DataFunc_Parse) println("index=" + i + ",number of points=" + n_points);
     i = i + 4;
-    if (n_points > MAX_POINTS || n_points <= 0) {
+    if (n_points > DATA_MAX_POINTS || n_points <= 0) {
       // Sets the color used to draw lines and borders around shapes.
       fill(C_TEXT);
       stroke(C_TEXT);
@@ -313,13 +314,13 @@ class Data {
     int distance;
     int pulse_width = -1, p_pulse_width = -1;
     int x, y;
-    int wh = 3; // Set width and height point rect
+    int wh = DATA_POINT_WH; // Set width and height point rect
     float cx, cy;
     float angle;
     int p_x = -1, p_y = -1;
     color c_draw_point, p_c_draw_point = 0;
     color c_draw_line;
-    int range = 2; // Range for mouse over point rect.
+    int range = DATA_POINT_WH; // Range for mouse over point rect.
 
     // Adjust mouse over range by ZOOM_FACTOR.
     if( ZOOM_FACTOR < 50 ) {
@@ -403,34 +404,34 @@ class Data {
         }
         // Check pulse width exist
         if (content != 4) {
-          colorMode(HSB, MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
+          colorMode(HSB, DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
           //print("[" + j + "]=" + pulse_widths[j] + " ");
-          if(pulse_width > MAX_PULSE_WIDTH) {
+          if(pulse_width > DATA_MAX_PULSE_WIDTH) {
             c_draw_point =
               color(
-                (MAX_PULSE_WIDTH + int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 5.0 / 6.0) - MAX_PULSE_WIDTH) % (MAX_PULSE_WIDTH - MIN_PULSE_WIDTH + 1),
-                MAX_PULSE_WIDTH - MIN_PULSE_WIDTH,
-                MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
+                (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - DATA_MAX_PULSE_WIDTH) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1),
+                DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH,
+                DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
           }
-          else if(pulse_width < MIN_PULSE_WIDTH) {
+          else if(pulse_width < DATA_MIN_PULSE_WIDTH) {
             c_draw_point =
               color(
-                (MAX_PULSE_WIDTH + int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 5.0 / 6.0) - MIN_PULSE_WIDTH) % (MAX_PULSE_WIDTH - MIN_PULSE_WIDTH + 1),
-                MAX_PULSE_WIDTH - MIN_PULSE_WIDTH,
-                MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
+                (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - DATA_MIN_PULSE_WIDTH) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1),
+                DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH,
+                DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
           }
           else {
             c_draw_point =
               color(
-                (MAX_PULSE_WIDTH + int(float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 5.0 / 6.0) - pulse_width) % (MAX_PULSE_WIDTH - MIN_PULSE_WIDTH + 1),
-                MAX_PULSE_WIDTH - MIN_PULSE_WIDTH,
-                MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
+                (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - pulse_width) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1),
+                DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH,
+                DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
           }
           c_draw_line =
             color(
-              (MAX_PULSE_WIDTH + int((float(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH) * 5.0 / 6.0) - (float(pulse_width + p_pulse_width) / 2.0))) % (MAX_PULSE_WIDTH - MIN_PULSE_WIDTH + 1),
-              MAX_PULSE_WIDTH - MIN_PULSE_WIDTH,
-              MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
+              (DATA_MAX_PULSE_WIDTH + int((float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - (float(pulse_width + p_pulse_width) / 2.0))) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1),
+              DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH,
+              DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
           colorMode(RGB, 255);
         }
         else {
@@ -440,7 +441,7 @@ class Data {
         }
 
         // Reset width and height point rect
-        wh = 3;
+        wh = DATA_POINT_WH;
         // Check mouse pointer over point rect.
         if( BUBBLEINFO_AVAILABLE != true &&
             (x + GRID_OFFSET_X > mouseX - range && x + GRID_OFFSET_X < mouseX + range) &&
@@ -466,7 +467,7 @@ class Data {
           fill(p_c_draw_point);
           stroke(p_c_draw_point);
           //point(p_x + GRID_OFFSET_X, p_y + GRID_OFFSET_Y);
-          rect(p_x + GRID_OFFSET_X - 1, p_y + GRID_OFFSET_Y - 1, 3, 3 );
+          rect(p_x + GRID_OFFSET_X - 1, p_y + GRID_OFFSET_Y - 1, DATA_POINT_WH, DATA_POINT_WH );
         }
         fill(c_draw_point);
         stroke(c_draw_point);

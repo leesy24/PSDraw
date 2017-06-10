@@ -23,6 +23,8 @@ void interface_file_setup()
     //FILE_name = "C:\\work\\git\\PSDemoProgram\\Release-windows\\data.bin";
     FILE_name = "C:\\Temp\\data.bin";
   }
+  config_save();
+  Title += "(" + FILE_name + ")";
 }
 
 boolean interface_file_load()

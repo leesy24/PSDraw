@@ -15,7 +15,7 @@ String Title = "DASAN-InfoTEK - PSDraw - ";
 float ZOOM_FACTOR = 100;
 
 // Define rotate factor variables.
-float ROTATE_FACTOR = /*0;*/90;/*180;*//*270;*/
+float ROTATE_FACTOR = 0;/*90;*//*180;*//*270;*/
 
 // Define mirror variables.
 boolean MIRROR_ENABLE = false;

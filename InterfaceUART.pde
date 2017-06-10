@@ -30,7 +30,7 @@ boolean SCAN_DONE = false;
 
 void interface_UART_reset()
 {
-  println("UART reset! " + UART_port_name);
+  //println("UART reset! " + UART_port_name);
   // Check UART port config changed
   if(UART_handle != null) {
     UART_handle.stop();
@@ -49,6 +49,13 @@ void interface_UART_reset()
 void interface_UART_setup()
 {
   boolean found = false;
+
+  Title += "(" + UART_port_name + ":" + UART_baud_rate;
+  Title += ":" + UART_data_bits + UART_parity;
+  if(int(UART_stop_bits*10.0)%10 == 0)
+    Title += int(UART_stop_bits) + ")";
+  else
+    Title += UART_stop_bits + ")";
 
   // Check UART_port_name with the available serial ports
   for( String port : Serial.list() ) {
@@ -116,11 +123,13 @@ void UART_config_timeout(int msec)
 
 void UART_clear()
 {
+  if(UART_handle == null) return;
   UART_handle.clear();
 }
 
 void UART_write(byte[] buf)
 {
+  if(UART_handle == null) return;
   UART_handle.write(buf);
   UART_CMD_start_time = millis();
 }
@@ -185,7 +194,7 @@ void serialEvent(Serial p)
     }
   }
   catch (Exception e) {
-    println("Initialization exception! " + e);
+    //println("Initialization exception! " + e);
   }
 } 
 
