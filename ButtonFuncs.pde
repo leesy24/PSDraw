@@ -202,6 +202,7 @@ void button_zoom_minus() {
   if (ZOOM_FACTOR <= 3000.0) {
     if (ZOOM_FACTOR < 100.0) ZOOM_FACTOR += 10.0;
     else ZOOM_FACTOR = int(ZOOM_FACTOR + ZOOM_FACTOR / 10.0 + 5.0) / 10 * 10;
+    config_save();
   }
   if (PRINT_ButtonFunc) println("ZOOM_FACTOR=" + ZOOM_FACTOR);
 }
@@ -210,6 +211,7 @@ void button_zoom_pluse() {
   if (ZOOM_FACTOR > 10.0) {
     if (ZOOM_FACTOR < 100.0) ZOOM_FACTOR -= 10.0;
     else ZOOM_FACTOR = int(ZOOM_FACTOR - ZOOM_FACTOR / 10.0 + 5.0) / 10 * 10;
+    config_save();
   }
   if (PRINT_ButtonFunc) println("ZOOM_FACTOR=" + ZOOM_FACTOR);
 }

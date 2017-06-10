@@ -79,7 +79,9 @@ boolean screen_check_update() {
     //println("new GRID_OFFSET_X=" + GRID_OFFSET_X + ", GRID_OFFSET_Y=" + GRID_OFFSET_Y);
     SCREEN_WIDTH = new_width;
     SCREEN_HEIGHT = new_height;
- 
+
+    config_save();
+
     return true;
   }
 

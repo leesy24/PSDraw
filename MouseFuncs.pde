@@ -55,6 +55,7 @@ void mousePressed() {
       GRID_OFFSET_X =  int(save_oy);
     }
     if (PRINT_MouseFunc_Pressed) println("ROTATE_FACTOR=" + ROTATE_FACTOR);
+    config_save();
   }
   if (button_rotate_cw_over) {
     float save_ox, save_oy;
@@ -79,12 +80,14 @@ void mousePressed() {
       GRID_OFFSET_X = -int(save_oy);
     }
     if (PRINT_MouseFunc_Pressed) println("ROTATE_FACTOR=" + ROTATE_FACTOR);
+    config_save();
   }
   //println("new GRID_OFFSET_X=" + GRID_OFFSET_X + ", GRID_OFFSET_Y=" + GRID_OFFSET_Y);
 
   if (button_mirror_en_over) {
     MIRROR_ENABLE = !MIRROR_ENABLE;
     if (PRINT_MouseFunc_Pressed) println("MIRROR_ENABLE=" + MIRROR_ENABLE);
+    config_save();
   }
 
   if (button_reset_en_over) {
@@ -94,6 +97,7 @@ void mousePressed() {
     GRID_OFFSET_X = GRID_OFFSET_Y = 0;
     MIRROR_ENABLE = false;
     ZOOM_FACTOR = 100;
+    config_save();
   }
 }
 
@@ -110,6 +114,7 @@ void mouseDragged()
   if (mousePressed == true) {
     GRID_OFFSET_X = mouseX - mousePressedX;
     GRID_OFFSET_Y = mouseY - mousePressedY;
+    config_save();
   }
   if (PRINT_MouseFunc_Dragged) println("\t GRID_OFFSET_X:" + GRID_OFFSET_X + ", GRID_OFFSET_Y:" + GRID_OFFSET_Y);
 }
@@ -279,6 +284,7 @@ void mouseWheel(MouseEvent event) {
     }
     GRID_OFFSET_X += dx;
     GRID_OFFSET_Y += dy;
+    config_save();
     //println("dx=" + dx + ", dy=" + dy);
   }
 }

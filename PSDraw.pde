@@ -2,7 +2,7 @@
 //final boolean PRINT = true; 
 final boolean PRINT = false; 
 
-int DATA_interface = 1; // 0 = File, 1 = UART
+int DATA_interface = 0; // 0 = File, 1 = UART
 
 //final color C_BG = #FFFFFF; // White
 final color C_BG = #F8F8F8; // White - 0x8
@@ -23,6 +23,7 @@ boolean MIRROR_ENABLE = false;
 // The settings() function is new with Processing 3.0. It's not needed in most sketches.
 // It's only useful when it's absolutely necessary to define the parameters to size() with a variable. 
 void settings() {
+  config_settings();
   screen_settings();
 }
 
@@ -32,6 +33,7 @@ void settings() {
 // There can only be one setup() function for each program
 //  and it shouldn't be called again after its initial execution.
 void setup() {
+  //config_settings();
 /*
   // fullScreen() opens a sketch using the full size of the computer's display.
   // This function must be the first line in setup().
