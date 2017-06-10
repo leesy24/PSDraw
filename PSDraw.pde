@@ -81,10 +81,8 @@ void draw() {
   }
 
   grid_draw();
-
   button_update();
   button_draw();
-
   colorbar_draw();
 
   if (PS_Data.load() == true) {
