@@ -23,6 +23,8 @@ void bubbleinfo_draw()
 
   if(BUBBLEINFO_AVAILABLE || (millis() - BUBBLEINFO_TIMER) < BUBBLEINFO_TIMEOUT)
   {
+    String[] strings = new String[6];
+
     BUBBLEINFO_DISPLAY = true;
     if(BUBBLEINFO_AVAILABLE) {
       BUBBLEINFO_TIMER = millis();
@@ -31,16 +33,21 @@ void bubbleinfo_draw()
       //BUBBLEINFO_BOX_Y = mouseY;
     }
 
-    string1 = "Point:" + BUBBLEINFO_POINT;
-    string2 = "Angle:" + BUBBLEINFO_ANGLE + "°";
-    string3 = "Distance:" + BUBBLEINFO_DISTANCE + "m";
-    string4 = "Coord. X:" + BUBBLEINFO_COR_X + "m";
-    string5 = "Coord. Y:" + BUBBLEINFO_COR_Y + "m";
-    string6 = "Pulse width:" + BUBBLEINFO_PULSE_WIDTH;
-    w = int(max(textWidth(string1), textWidth(string2), textWidth(string3)));
-    w = int(max(float(w), textWidth(string4), textWidth(string5)));
-    w = int(max(float(w), textWidth(string6)));
+    strings[0] = "Point:" + BUBBLEINFO_POINT;
+    strings[1] = "Angle:" + BUBBLEINFO_ANGLE + "°";
+    strings[2] = "Distance:" + BUBBLEINFO_DISTANCE + "m";
+    strings[3] = "Coord. X:" + BUBBLEINFO_COR_X + "m";
+    strings[4] = "Coord. Y:" + BUBBLEINFO_COR_Y + "m";
+    strings[5] = "Pulse width:" + BUBBLEINFO_PULSE_WIDTH;
+
+    // Get max string width
+    w = 0;
+    for( String string:strings)
+    {
+      w = max(w, int(textWidth(string)));    
+    }
     w += TEXT_MARGIN + TEXT_MARGIN;
+
     h = TEXT_MARGIN + FONT_HEIGHT * 6 + TEXT_MARGIN;
     x = BUBBLEINFO_BOX_X - BUBBLEINFO_POINT_WH/2 - w;
     y = BUBBLEINFO_BOX_Y - BUBBLEINFO_POINT_WH/2 - h;
@@ -68,12 +75,12 @@ void bubbleinfo_draw()
     // Sets the color used to draw text and borders around shapes.
     fill(C_BUBBLEINFO_TEXT);
     stroke(C_BUBBLEINFO_TEXT);
-    text(string1, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 1);
-    text(string2, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 2);
-    text(string3, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 3);
-    text(string4, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 4);
-    text(string5, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 5);
-    text(string6, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 6);
+    int i = 0;
+    for( String string:strings)
+    {
+      text(string, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * (1 + i));
+      i ++;
+    }
   }
   else
   {
