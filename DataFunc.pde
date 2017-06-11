@@ -9,9 +9,11 @@ final boolean PRINT_DataFunc_Draw = false;
 
 //final static color C_DATA_LINE = #808080; //
 //final static color C_DATA_POINT = #000000; //
-final static color C_DATA_TEXT = #404040; //
 final static color C_DATA_LINE = #0000FF; // Blue
 final static color C_DATA_POINT = #FF0000; // Red
+final static color C_DATA_RECT_FILL = 0xC0F8F8F8; // White - 0x8 w/ Opaque 75%
+final static color C_DATA_RECT_STROKE = #000000; // Black
+final static color C_DATA_RECT_TEXT = #404040; // Black + 0x40
 
 final int DATA_MAX_POINTS = 1000;
 final int DATA_POINT_WH = 3;
@@ -292,32 +294,40 @@ class Data {
   
   // Draw params of parsed data_buf
   void draw_params() {
-    String string;
+    String[] strings = new String[10];
+
+    strings[0] = "Scan number:" + i_scan;
+    strings[1] = "Time stamp:" + time_stamp;
+    strings[2] = "Scan start direction:" + scan_angle_start + "°";
+    strings[3] = "Scan angle size:" + scan_angle_size + "°";
+    strings[4] = "Number of echoes:" + n_echos;
+    strings[5] = "Encoder count:" + i_encoder;
+    strings[6] = "System temperature:" + temperature + "°C";
+    strings[7] = "System status:" + status;
+    strings[8] = "Data content:" + content;
+    strings[9] = "Number of points:" + n_points;
+
+    // Get max string width
+    int witdh_max = 0;
+    for( String string:strings)
+    {
+      witdh_max = max(witdh_max, int(textWidth(string)));    
+    }
+
+    // Draw rect
+    fill(C_DATA_RECT_FILL);
+    stroke(C_DATA_RECT_STROKE);
+    rect(FONT_HEIGHT * 3, FONT_HEIGHT * 1, witdh_max + TEXT_MARGIN*2, FONT_HEIGHT * 10 + TEXT_MARGIN*2, 5, 5, 5, 5);
 
     // Sets the color used to draw lines and borders around shapes.
-    fill(C_DATA_TEXT);
-    stroke(C_DATA_TEXT);
-    string = "Scan number:" + i_scan;
-    text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * 2);
-    string = "Time stamp:" + time_stamp;
-    //text(string, SCREEN_WIDTH - int(textWidth(string)) - 10, 10 + FONT_HEIGHT);
-    text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * 3);
-    string = "Scan start direction:" + scan_angle_start + "°";
-    text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * 4);
-    string = "Scan angle size:" + scan_angle_size + "°";
-    text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * 5);
-    string = "Number of echoes:" + n_echos;
-    text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * 6);
-    string = "Encoder count:" + i_encoder;
-    text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * 7);
-    string = "System temperature:" + temperature + "°C";
-    text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * 8);
-    string = "System status:" + status;
-    text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * 9);
-    string = "Data content:" + content;
-    text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * 10);
-    string = "Number of points:" + n_points;
-    text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * 11);
+    fill(C_DATA_RECT_TEXT);
+    stroke(C_DATA_RECT_TEXT);
+    int i = 0;
+    for( String string:strings)
+    {
+      text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * (2 + i));
+      i ++;
+    }
   } // End of draw_params()
   
   // Draw points of parsed data_buf
