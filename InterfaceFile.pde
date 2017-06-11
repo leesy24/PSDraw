@@ -58,9 +58,6 @@ boolean interface_file_load()
     return false;
   }
   
-  // Update time_last_modified
-  FILE_last_modified_time = file.lastModified();
-
   // Load binary buf.
   data_buf = loadBytes(FILE_name);
   if (PRINT_DataFunc_Load) println("buf.length = " + buf.length);
@@ -77,6 +74,9 @@ boolean interface_file_load()
     if (PRINT_DataFunc_Load) println("File size is invalid!:" + data_buf.length);
     return false;
   }
-  
+
+  // Update time_last_modified
+  FILE_last_modified_time = file.lastModified();
+
   return true;
 }

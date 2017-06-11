@@ -101,7 +101,7 @@ class Data {
       // Sets the color used to draw lines and borders around shapes.
       fill(C_TEXT);
       stroke(C_TEXT);
-      string = "Function code is invalid!:" + func;
+      string = "Error: Function code is invalid! " + func;
       textSize(FONT_HEIGHT*3);
       text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
@@ -122,7 +122,7 @@ class Data {
       // Sets the color used to draw lines and borders around shapes.
       fill(C_TEXT);
       stroke(C_TEXT);
-      string = "Binary data length is invalid!:" + data_buf.length + "," + len;
+      string = "Error: Binary data length is invalid!:" + data_buf.length + "," + len;
       textSize(FONT_HEIGHT*3);
       text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
@@ -142,7 +142,7 @@ class Data {
       // Sets the color used to draw lines and borders around shapes.
       fill(C_TEXT);
       stroke(C_TEXT);
-      string = "No scan data is available!:Number of parameter is 0.";
+      string = "Error: No scan data is available! Number of parameter is 0.";
       textSize(FONT_HEIGHT*3);
       text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
@@ -257,7 +257,7 @@ class Data {
       // Sets the color used to draw lines and borders around shapes.
       fill(C_TEXT);
       stroke(C_TEXT);
-      string = "Number of points invalide!:Number of points is" + n_points + ".";
+      string = "Error: Number of points invalid! Number of points is" + n_points + ".";
       textSize(FONT_HEIGHT*3);
       text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
