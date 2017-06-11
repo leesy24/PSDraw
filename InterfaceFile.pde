@@ -7,7 +7,8 @@ static long FILE_last_modified_time = 0;
 
 void interface_file_reset()
 {
-  // Nothing to do.
+  FILE_last_modified_time = 0;
+
 }
 
 void interface_file_setup()

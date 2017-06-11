@@ -9,7 +9,8 @@ final color C_BG = #F8F8F8; // White - 0x8
 final color C_TEXT = #000000; // Black
 
 // Define window title string.
-String Title = "DASAN-InfoTEK - PSDraw - ";
+final String TITLE = "DASAN-InfoTEK - PSDraw - ";
+String Title;
 
 // Define zoom factor variables.
 float ZOOM_FACTOR = 100;
@@ -56,6 +57,7 @@ void setup() {
   // Specifies the number of frames to be displayed every second. 
   frameRate(30);
 
+  Title = TITLE;
   data_setup();
 
   screen_setup();
@@ -63,6 +65,8 @@ void setup() {
 
   // Set window title
   surface.setTitle(Title);
+  
+  interface_setup();
 }
 
 // Called directly after setup()
@@ -71,15 +75,25 @@ void setup() {
 //  and should never be called explicitly.
 // All Processing programs update the screen at the end of draw(), never earlier.
 void draw() {
-
   // Ready to draw from here!
   // To clear the display window at the beginning of each frame,
   background(C_BG);
 
+  if (INTERFACE_changed) {
+    Title = TITLE;
+    data_setup();
+    screen_setup();
+    button_setup();
+    // Set window title
+    surface.setTitle(Title);
+    interface_setup();
+  }
+  
   if (screen_check_update()) {
     //data_setup();
     screen_setup();
     button_setup();
+    interface_setup();
   }
 
   grid_draw();

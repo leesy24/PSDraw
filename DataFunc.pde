@@ -29,15 +29,23 @@ long old_time_stamp = -1;
 
 void data_setup() {
   // Append interface name to window title
-  Title += ((DATA_interface == 0)?"File":"UART");
+  if(DATA_interface == 0) 
+    Title += "File";
+  else if(DATA_interface == 1)
+    Title += "UART";
+  else /* if(DATA_interface == 2) */
+    Title += "UDP Client";
 
   interface_file_reset();
   interface_UART_reset();
   if(DATA_interface == 0) {
     interface_file_setup();
   }
-  else {
+  else if(DATA_interface == 1) {
     interface_UART_setup();
+  }
+  else {
+    // Nothing to do
   }
 
   PS_Data = new Data();
@@ -71,8 +79,11 @@ class Data {
     if(DATA_interface == 0) {
       return interface_file_load();
     }
-    else {
+    else if(DATA_interface == 1) {
       return interface_UART_load();
+    }
+    else /*if(DATA_interface == 2)*/ {
+      return false;
     }
   }
 
