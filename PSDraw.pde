@@ -85,29 +85,27 @@ void draw() {
     // Set window title
     surface.setTitle(Title);
   }
-  
   if (screen_check_update()) {
     //data_setup();
     screen_setup();
     button_setup();
     interface_setup();
   }
+  button_update();
 
   grid_draw();
-  button_update();
-  button_draw();
-  colorbar_draw();
 
   if (PS_Data.load() == true) {
     if (PS_Data.parse() == false) {
       return;
     }
   }
-  PS_Data.draw_params();
   PS_Data.draw_points();
+  PS_Data.draw_params();
 
+  colorbar_draw();
+  button_draw();
   bubbleinfo_draw();
   colorbar_info_draw();
-  
   interface_draw();
 } 
