@@ -116,9 +116,12 @@ void interface_setup()
 
   if(DATA_interface == 0) {
     Textfield tf;
+    int x, w;
+    w = int(textWidth(FILE_name));
+    x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
     tf = cp5.addTextfield("interface_filename");
-    tf.setPosition(SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - INTERFACE_dropdown_w, TEXT_MARGIN + FONT_HEIGHT * 3 + TEXT_MARGIN*2 + TEXT_MARGIN*2)
-      .setSize(max(INTERFACE_dropdown_w,int(textWidth(FILE_name))), FONT_HEIGHT + TEXT_MARGIN*2)
+    tf.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 3 + TEXT_MARGIN*2 + TEXT_MARGIN*2)
+      .setSize(w, FONT_HEIGHT + TEXT_MARGIN*2)
       //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
       .setAutoClear(false)
       ;
@@ -133,9 +136,12 @@ void interface_setup()
   }
   else if(DATA_interface == 1) {
     Textfield tf1, tf2;
+    int x, w;
+    w = int(textWidth(UART_port_name));
+    x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
     tf1 = cp5.addTextfield("interface_UARTport");
-    tf1.setPosition(SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - INTERFACE_dropdown_w, TEXT_MARGIN + FONT_HEIGHT * 3 + TEXT_MARGIN*2 + TEXT_MARGIN*2)
-      .setSize(max(INTERFACE_dropdown_w,int(textWidth(UART_port_name))), FONT_HEIGHT + TEXT_MARGIN*2)
+    tf1.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 3 + TEXT_MARGIN*2 + TEXT_MARGIN*2)
+      .setSize(w, FONT_HEIGHT + TEXT_MARGIN*2)
       //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
       .setAutoClear(false)
       ;
@@ -147,9 +153,11 @@ void interface_setup()
         .setSize(FONT_HEIGHT)
         //.toUpperCase(false)
         ;
+    w = int(textWidth(Integer.toString(UART_baud_rate)));
+    x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
     tf2 = cp5.addTextfield("interface_UARTbaud");
-    tf2.setPosition(SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - INTERFACE_dropdown_w, TEXT_MARGIN + FONT_HEIGHT * 4 + TEXT_MARGIN*2*2 + TEXT_MARGIN*2 + TEXT_MARGIN)
-      .setSize(max(INTERFACE_dropdown_w,int(textWidth(Integer.toString(UART_baud_rate)))), FONT_HEIGHT + TEXT_MARGIN*2)
+    tf2.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 4 + TEXT_MARGIN*2*2 + TEXT_MARGIN*2 + TEXT_MARGIN)
+      .setSize(w, FONT_HEIGHT + TEXT_MARGIN*2)
       //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
       .setAutoClear(false)
       ;
@@ -179,7 +187,7 @@ void interface_draw()
   fill(C_INTERFACE_TEXT);
   
   string = "Interface";
-  text(string, SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - max(int(textWidth(string)), INTERFACE_dropdown_w), TEXT_MARGIN + FONT_HEIGHT * 2);
+  text(string, SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - int(textWidth(string)), TEXT_MARGIN + FONT_HEIGHT * 2);
 }
 
 public void controlEvent(ControlEvent ce)

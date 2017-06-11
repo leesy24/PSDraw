@@ -10,6 +10,9 @@ final int MIN_SCREEN_HEIGHT = 480;
 //int SCREEN_HEIGHT = 1080;
 int SCREEN_WIDTH = 1024;
 int SCREEN_HEIGHT = 768;
+//int SCREEN_WIDTH = 640;
+//int SCREEN_HEIGHT = 480;
+
 
 // Define just font height variables.
 int FONT_HEIGHT;
@@ -30,7 +33,7 @@ void screen_setup() {
   // Set font height of text to follow min(Width, Height) of screen.
   FONT_HEIGHT = (SCREEN_WIDTH < SCREEN_HEIGHT) ? (SCREEN_WIDTH / 60) : (SCREEN_HEIGHT / 60);
   if (FONT_HEIGHT > 15) FONT_HEIGHT = 15;
-  if (FONT_HEIGHT < 10) FONT_HEIGHT = 10;
+  if (FONT_HEIGHT < 12) FONT_HEIGHT = 12;
   if (PRINT_ScreenFunc) println("FONT_HEIGHT=" + FONT_HEIGHT);
   textSize(FONT_HEIGHT);
 }
