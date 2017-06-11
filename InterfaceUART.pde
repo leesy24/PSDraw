@@ -1,7 +1,9 @@
 import processing.serial.*;
 
-final boolean UART_READ_PRINT = false; 
-final boolean UART_LOAD_PRINT = false; 
+final boolean PRINT_UART_READ = false; 
+final boolean PRINT_UART_READ_ERROR = false; 
+final boolean PRINT_UART_LOAD = false; 
+final boolean PRINT_UART_LOAD_ERROR = false; 
 
 Serial UART_handle = null;  // The handle of serial port
 
@@ -30,7 +32,7 @@ boolean SCAN_DONE = false;
 
 void interface_UART_reset()
 {
-  //println("UART reset! " + UART_port_name);
+  if(PRINT_UART_LOAD) println("UART reset! " + UART_port_name);
   // Check UART port config changed
   if(UART_handle != null) {
     UART_handle.stop();
@@ -57,6 +59,8 @@ void interface_UART_setup()
   else
     Title += UART_stop_bits + ")";
 
+  //printArray(Serial.list());
+
   // Check UART_port_name with the available serial ports
   for( String port : Serial.list() ) {
     if(port.equals(UART_port_name)) {
@@ -65,7 +69,7 @@ void interface_UART_setup()
     }
   }
   if(!found) {
-    println("Can not find com port error! " + UART_port_name);
+    if(PRINT_UART_LOAD_ERROR) println("Can not find com port error! " + UART_port_name);
     return;
   }
 
@@ -81,12 +85,27 @@ void interface_UART_setup()
 
 boolean interface_UART_load()
 {
+  String string;
   int err;
+
+  if(UART_handle == null) {
+    interface_UART_setup();
+    if(UART_handle == null) {
+      fill(C_TEXT);
+      stroke(C_TEXT);
+      string = "Error: UART port not exist! " + UART_port_name;
+      textSize(FONT_HEIGHT*3);
+      text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+      textSize(FONT_HEIGHT);
+      if (PRINT_UART_LOAD_ERROR) println("UART port not exist!:" + UART_port_name);
+      return false;
+    }
+  }
 
   if(SCAN_DONE == false) {
     err = PS_perform_SCAN(1);
     if(err < 0) {
-      println("PS_perform_SCAN() error! " + err);
+      if (PRINT_UART_LOAD_ERROR) println("PS_perform_SCAN() error! " + err);
     }
     else if(err > 0) {
       //println("PS_perform_SCAN() pending! " + err);
@@ -100,7 +119,7 @@ boolean interface_UART_load()
   else {
     err = PS_perform_GSCN(0);
     if(err < 0) {
-      println("PS_perform_GSCN() error! " + err);
+      if (PRINT_UART_LOAD_ERROR) println("PS_perform_GSCN() error! " + err);
       return false;
     }
     else if(err > 0) {
@@ -118,7 +137,7 @@ boolean interface_UART_load()
 void UART_config_timeout(int msec)
 {
   UART_CMD_timeout = msec;
-  println("UART_CMD_timeout = " + UART_CMD_timeout + " sec(s)");
+  if (PRINT_UART_LOAD) println("UART_CMD_timeout = " + UART_CMD_timeout + " sec(s)");
 }
 
 void UART_clear()
@@ -157,13 +176,13 @@ void serialEvent(Serial p)
       }
       data = p.readBytes(inLength);
       if(inLength != data.length) {
-        println("Read inLength error! " + inLength + "," + data.length);
+        if (PRINT_UART_READ_ERROR) println("Read inLength error! " + inLength + "," + data.length);
         UART_CMD_state = UART_CMD_STATE_ERROR;
         return;
       }
       arrayCopy(data, 0, UART_inBuffer, UART_total, inLength);
       UART_total += inLength;
-      if (UART_READ_PRINT) println("Read bytes and total! " + inLength + "," + UART_total);
+      if (PRINT_UART_READ) println("Read bytes and total! " + inLength + "," + UART_total);
   
       // If state machine is getting length data.
       if (UART_state == 0) {
@@ -171,10 +190,10 @@ void serialEvent(Serial p)
         if (UART_total >= 8) {
           // Get length data from network endians data.
           UART_len = get_int32_bytes(UART_inBuffer, 4);
-          if (UART_READ_PRINT) println("Read format Length = " + UART_len);
+          if (PRINT_UART_READ) println("Read format Length = " + UART_len);
           if ((UART_len > UART_inBuffer.length - 12) ||
               (UART_len < 4)) {
-            println("Read format Length error! " + UART_len + "," + inLength + "," + UART_total + "," + p.available()/* + "," + UART_inBuffer*/);
+            if (PRINT_UART_READ_ERROR) println("Read format Length error! " + UART_len + "," + inLength + "," + UART_total + "," + p.available()/* + "," + UART_inBuffer*/);
             //printArray(UART_inBuffer);
             //printArray(data);
             UART_CMD_state = UART_CMD_STATE_ERROR;
@@ -194,7 +213,7 @@ void serialEvent(Serial p)
     }
   }
   catch (Exception e) {
-    //println("Initialization exception! " + e);
+    if (PRINT_UART_READ_ERROR) println("Initialization exception! " + e);
   }
 } 
 
@@ -234,7 +253,7 @@ int PS_perform_SCAN(int on)
   else if(UART_CMD_state == UART_CMD_STATE_SENT) {
     // Check time out
     if(millis() - UART_CMD_start_time > UART_CMD_timeout) {
-      println("PS_perform_SCAN timeout! " + UART_CMD_inLength + "," + UART_total);
+      if(PRINT_UART_LOAD_ERROR) println("PS_perform_SCAN timeout! " + UART_CMD_inLength + "," + UART_total);
       UART_CMD_state = UART_CMD_STATE_NONE;
       return -1;
     }
@@ -249,7 +268,7 @@ int PS_perform_SCAN(int on)
     crc_c = get_int32_bytes(UART_inBuffer, UART_CMD_inLength - 4);
     if(crc != crc_c) {
       UART_CMD_state = UART_CMD_STATE_NONE;
-      println("get_crc32 error! " + crc + "," + crc_c + "," + UART_CMD_inLength + "," + UART_total);
+      if(PRINT_UART_LOAD_ERROR) println("get_crc32 error! " + crc + "," + crc_c + "," + UART_CMD_inLength + "," + UART_total);
       return -1;
     }
     // Check function code
@@ -290,7 +309,7 @@ int PS_perform_GSCN(int scan_number)
   else if(UART_CMD_state == UART_CMD_STATE_SENT) {
     // Check time out
     if(millis() - UART_CMD_start_time > UART_CMD_timeout) {
-      println("PS_perform_SCAN timeout! " + UART_CMD_inLength + "," + UART_total);
+      if(PRINT_UART_LOAD_ERROR) println("PS_perform_SCAN timeout! " + UART_CMD_inLength + "," + UART_total);
       UART_CMD_state = UART_CMD_STATE_NONE;
       return -1;
     }
@@ -305,7 +324,7 @@ int PS_perform_GSCN(int scan_number)
     crc_c = get_int32_bytes(UART_inBuffer, UART_CMD_inLength - 4);
     if(crc != crc_c) {
       UART_CMD_state = UART_CMD_STATE_NONE;
-      println("get_crc32 error! " + crc + "," + crc_c + "," + UART_CMD_inLength + "," + UART_total);
+      if(PRINT_UART_LOAD_ERROR) println("get_crc32 error! " + crc + "," + crc_c + "," + UART_CMD_inLength + "," + UART_total);
       return -1;
     }
     // Check function code

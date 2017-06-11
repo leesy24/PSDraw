@@ -2,7 +2,8 @@
 final String OS = System.getProperty("os.name");
 
 // Define default binary buf filename and path 
-static String FILE_name = "data.bin";
+final static String FILE_NAME = "data.bin";
+static String FILE_name;
 static long FILE_last_modified_time = 0;
 
 void interface_file_reset()
@@ -13,18 +14,21 @@ void interface_file_reset()
 
 void interface_file_setup()
 {
-  // Check OS
-  if (OS.equals("Linux")) {
-    // Define binary data filename and path for Linux OS
-    FILE_name = "/tmp/data.bin";
+  // 
+  if (FILE_name.equals(FILE_NAME) == true) {
+    // Check OS
+    if (OS.equals("Linux")) {
+      // Define binary data filename and path for Linux OS
+      FILE_name = "/tmp/data.bin";
+    }
+    // Assume Windows OS 
+    else {
+      // Define binary data filename and path for Windows OS
+      //FILE_name = "C:\\work\\git\\PSDemoProgram\\Release-windows\\data.bin";
+      FILE_name = "C:\\Temp\\data.bin";
+    }
+    config_save();
   }
-  // Assume Windows OS 
-  else {
-    // Define binary data filename and path for Windows OS
-    //FILE_name = "C:\\work\\git\\PSDemoProgram\\Release-windows\\data.bin";
-    FILE_name = "C:\\Temp\\data.bin";
-  }
-  config_save();
   Title += "(" + FILE_name + ")";
 }
 
@@ -39,7 +43,7 @@ boolean interface_file_load()
     // Sets the color used to draw lines and borders around shapes.
     fill(C_TEXT);
     stroke(C_TEXT);
-    string = "File not exist at " + FILE_name;
+    string = "Error: File not exist! " + FILE_name;
     textSize(FONT_HEIGHT*3);
     text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
     textSize(FONT_HEIGHT);
@@ -66,7 +70,7 @@ boolean interface_file_load()
     // Sets the color used to draw lines and borders around shapes.
     fill(C_TEXT);
     stroke(C_TEXT);
-    string = "File size is invalid!: " + data_buf.length;
+    string = "Error: File size is invalid! " + data_buf.length;
     textSize(FONT_HEIGHT*3);
     text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
     textSize(FONT_HEIGHT);

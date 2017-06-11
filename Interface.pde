@@ -11,32 +11,52 @@
 import controlP5.*;
 import java.util.*;
 
+final static color C_INTERFACE_NORMAL = #FFFFFF; // White
+final static color C_INTERFACE_HIGHLIGHT = #C0C0C0; //
+final static color C_INTERFACE_TEXT = #000000; // Black
+
 boolean INTERFACE_changed = false;
+int INTERFACE_dropdown_w;
 
-ControlFont cf1;
-ControlP5 cp5;
-controlP5.ScrollableList ddl;
+ControlFont cf1 = null;
+ControlP5 cp5 = null;
+controlP5.ScrollableList ddl = null;
 
-void interface_setup() {
+void interface_setup()
+{
   INTERFACE_changed = false;
 
-  cf1 = new ControlFont(createFont("SansSerif",12),FONT_HEIGHT);
-  cp5 = new ControlP5(this);
+  if(cf1 == null) {
+    cf1 = new ControlFont(createFont("SansSerif",12),12);
+  }
+  if(cp5 == null) {
+    cp5 = new ControlP5(this, cf1);
+  }
+  else {
+    cp5.remove("interface_dropdown");
+    cp5.remove("interface_filename");
+    cp5.remove("interface_UARTport");
+    cp5.remove("interface_UARTbaud");
+    
+    cp5.setGraphics(this,0,0);
+  }
+
   List l = Arrays.asList("File", "UART", "UDP Client");
-  int w = int(max(textWidth(l.get(0).toString()), textWidth(l.get(1).toString()), textWidth(l.get(2).toString()))) + 20;
+  INTERFACE_dropdown_w = int(max(textWidth(l.get(0).toString()), textWidth(l.get(1).toString()), textWidth(l.get(2).toString())));
+  INTERFACE_dropdown_w += 20;
 
   /* add a ScrollableList, by default it behaves like a DropdownList */
-  ddl = cp5.addScrollableList("dropdown"/*l.get(0).toString()*/);
+  ddl = cp5.addScrollableList("interface_dropdown"/*l.get(0).toString()*/);
   ddl.setBackgroundColor( color(255,0,255) /*color( 255 , 128 )*/ )
      .setColorBackground( color(255,255,0) /*color(200)*/ )
      .setColorForeground( color(0,255,255) /*color(235)*/ )
      .setColorActive( color(255,0,0) /*(color(255)*/ )
      .setColorValueLabel( color(0,255,0) /*color(100)*/ )
      .setColorCaptionLabel( color(0,0,255) /*color(50)*/ )
-     .setPosition(SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w, TEXT_MARGIN + FONT_HEIGHT * 2)
-     .setSize(w, FONT_HEIGHT + (FONT_HEIGHT + 1) * 3)
-     .setBarHeight(FONT_HEIGHT)
-     .setItemHeight(FONT_HEIGHT+1)
+     .setPosition(SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - INTERFACE_dropdown_w, TEXT_MARGIN + FONT_HEIGHT * 2 + TEXT_MARGIN)
+     .setSize(INTERFACE_dropdown_w, FONT_HEIGHT + TEXT_MARGIN*2 + (FONT_HEIGHT + TEXT_MARGIN*2 + 1) * 3)
+     .setBarHeight(FONT_HEIGHT + TEXT_MARGIN*2)
+     .setItemHeight(FONT_HEIGHT + TEXT_MARGIN*2 + 1)
      //.setBarHeight(100)
      //.setItemHeight(100)
      .setOpen(false)
@@ -45,8 +65,8 @@ void interface_setup() {
      ;
   ddl.setCaptionLabel(l.get(DATA_interface).toString());
   ddl.getCaptionLabel()
-      .setFont(cf1)
-      //.setSize(32)
+      //.setFont(cf1)
+      .setSize(FONT_HEIGHT)
       .toUpperCase(false)
       ;
   ddl.getCaptionLabel()
@@ -57,8 +77,8 @@ void interface_setup() {
         .marginTop = int(float(FONT_HEIGHT)/2.0-float(FONT_HEIGHT)/6.0);
         ;
   ddl.getValueLabel()
-      .setFont(cf1)
-      //.setSize(32)
+      //.setFont(cf1)
+      .setSize(FONT_HEIGHT)
       .toUpperCase(false)
       ;
   ddl.getValueLabel()
@@ -94,37 +114,81 @@ void interface_setup() {
   c.setBackground(color(255,0,0));
   ddl.getItem(DATA_interface).put("color", c);
 
+  if(DATA_interface == 0) {
+    Textfield tf;
+    tf = cp5.addTextfield("interface_filename");
+    tf.setPosition(SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - INTERFACE_dropdown_w, TEXT_MARGIN + FONT_HEIGHT * 3 + TEXT_MARGIN*2 + TEXT_MARGIN*2)
+      .setSize(max(INTERFACE_dropdown_w,int(textWidth(FILE_name))), FONT_HEIGHT + TEXT_MARGIN*2)
+      //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
+      .setAutoClear(false)
+      ;
+    //println("tf.getText() = ", tf.getText());
+    tf.setCaptionLabel("");
+    tf.setText(FILE_name);
+    tf.getValueLabel()
+        //.setFont(cf1)
+        .setSize(FONT_HEIGHT)
+        //.toUpperCase(false)
+        ;
+  }
+  else if(DATA_interface == 1) {
+    Textfield tf1, tf2;
+    tf1 = cp5.addTextfield("interface_UARTport");
+    tf1.setPosition(SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - INTERFACE_dropdown_w, TEXT_MARGIN + FONT_HEIGHT * 3 + TEXT_MARGIN*2 + TEXT_MARGIN*2)
+      .setSize(max(INTERFACE_dropdown_w,int(textWidth(UART_port_name))), FONT_HEIGHT + TEXT_MARGIN*2)
+      //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
+      .setAutoClear(false)
+      ;
+    //println("tf.getText() = ", tf.getText());
+    tf1.setCaptionLabel("");
+    tf1.setText(UART_port_name);
+    tf1.getValueLabel()
+        //.setFont(cf1)
+        .setSize(FONT_HEIGHT)
+        //.toUpperCase(false)
+        ;
+    tf2 = cp5.addTextfield("interface_UARTbaud");
+    tf2.setPosition(SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - INTERFACE_dropdown_w, TEXT_MARGIN + FONT_HEIGHT * 4 + TEXT_MARGIN*2*2 + TEXT_MARGIN*2 + TEXT_MARGIN)
+      .setSize(max(INTERFACE_dropdown_w,int(textWidth(Integer.toString(UART_baud_rate)))), FONT_HEIGHT + TEXT_MARGIN*2)
+      //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
+      .setAutoClear(false)
+      ;
+    //println("tf.getText() = ", tf.getText());
+    tf2.setCaptionLabel("");
+    tf2.setText(Integer.toString(UART_baud_rate));
+    tf2.getValueLabel()
+        //.setFont(cf1)
+        .setSize(FONT_HEIGHT)
+        //.toUpperCase(false)
+        ;
+  }
+  else /*if(DATA_interface == 2)*/ {
+  }
+  
+  ddl.bringToFront();
   //println(ddl.getBackgroundColor());
   //printArray(PFont.list());
 }
 
-/*
-void draw() {
-  background(240);
-  String s = "The quick brown fox jumped over the lazy dog.";
-  textSize(32);
-  fill(50);
-  text(s, 10, 210, 270, 280);  // Text wraps within text box
-  textSize(32);
-  text("File", 10, 30); 
-  text("UART", 110, 30); 
-  text("UDP Client", 210, 30); 
-  fill(0, 102, 153);
-  text("File", 10, 60); 
-  text("UART", 110, 60); 
-  text("UDP Client", 210, 60); 
-  fill(0, 102, 153, 51);
-  text("File", 10, 90);
-  text("UART", 110, 90);
-  text("UDP Client", 210, 90);
-}
-*/
+void interface_draw()
+{
+  String string;
 
-public void controlEvent(ControlEvent ce) {
-  println(ce);
+  // Sets the color used to draw lines and borders around shapes.
+  stroke(C_INTERFACE_TEXT);
+  fill(C_INTERFACE_TEXT);
+  
+  string = "Interface";
+  text(string, SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - max(int(textWidth(string)), INTERFACE_dropdown_w), TEXT_MARGIN + FONT_HEIGHT * 2);
 }
 
-void dropdown(int n) {
+public void controlEvent(ControlEvent ce)
+{
+  //println(ce);
+}
+
+void interface_dropdown(int n)
+{
   /* request the selected item based on index n */
   //println("dropdown", n, cp5.get(ScrollableList.class, "dropdown").getItem(n));
   
@@ -148,6 +212,42 @@ void dropdown(int n) {
 
   if( DATA_interface != n ) {
     DATA_interface = n;
+    config_save();
+    INTERFACE_changed = true;
+  }
+}
+
+void interface_filename(String theText)
+{
+  // automatically receives results from controller input
+  //println("a textfield event for controller 'input' : "+theText);
+
+  if(theText.equals(FILE_name) != true) {
+    FILE_name = theText;
+    config_save();
+    INTERFACE_changed = true;
+  }
+}
+
+void interface_UARTport(String theText)
+{
+  // automatically receives results from controller input
+  //println("a textfield event for controller 'input' : "+theText);
+
+  if(theText.equals(UART_port_name) != true) {
+    UART_port_name = theText;
+    config_save();
+    INTERFACE_changed = true;
+  }
+}
+
+void interface_UARTbaud(String theText)
+{
+  // automatically receives results from controller input
+  //println("a textfield event for controller 'input' : "+theText);
+
+  if(theText.equals(Integer.toString(UART_baud_rate)) != true) {
+    UART_baud_rate = Integer.parseInt(theText);
     config_save();
     INTERFACE_changed = true;
   }

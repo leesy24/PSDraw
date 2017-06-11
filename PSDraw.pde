@@ -59,14 +59,11 @@ void setup() {
 
   Title = TITLE;
   data_setup();
-
   screen_setup();
   button_setup();
-
+  interface_setup();
   // Set window title
   surface.setTitle(Title);
-  
-  interface_setup();
 }
 
 // Called directly after setup()
@@ -84,9 +81,9 @@ void draw() {
     data_setup();
     screen_setup();
     button_setup();
+    interface_setup();
     // Set window title
     surface.setTitle(Title);
-    interface_setup();
   }
   
   if (screen_check_update()) {
@@ -111,4 +108,6 @@ void draw() {
 
   bubbleinfo_draw();
   colorbar_info_draw();
+  
+  interface_draw();
 } 
