@@ -76,7 +76,6 @@ void interface_setup()
         //.setPaddingTop((32 - 12 ) / 2)
         //.padding(10,10,10,10)
         .marginTop = int(float(FONT_HEIGHT)/2.0-float(FONT_HEIGHT)/6.0);
-        ;
   ddl.getValueLabel()
       //.setFont(cf1)
       .setSize(FONT_HEIGHT)
@@ -89,7 +88,6 @@ void interface_setup()
         //.padding(10,10,10,10)
         //.marginTop = 32/2-4;
         .marginTop = int(float(FONT_HEIGHT)/2.0-float(FONT_HEIGHT)/6.0) - 1;
-        ;
 /*
   println("margin =",
     ddl.getCaptionLabel()
@@ -118,7 +116,7 @@ void interface_setup()
   if(DATA_interface == 0) {
     Textfield tf;
     int x, w;
-    w = int(textWidth(FILE_name));
+    w = int(textWidth(FILE_name)) + TEXT_MARGIN*2;
     x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
     tf = cp5.addTextfield("interface_filename");
     tf.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 3 + TEXT_MARGIN*2 + TEXT_MARGIN*2)
@@ -134,12 +132,18 @@ void interface_setup()
         .setSize(FONT_HEIGHT)
         //.toUpperCase(false)
         ;
+    tf.getValueLabel()
+        .getStyle()
+          .marginTop = -1;
+    tf.getValueLabel()
+        .getStyle()
+          .marginLeft = TEXT_MARGIN;
   }
   else if(DATA_interface == 1) {
     Textfield tf1, tf2, tf3;
     int x, w;
     String str;
-    w = int(textWidth(UART_port_name));
+    w = int(textWidth(UART_port_name)) + TEXT_MARGIN*2;
     x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
     tf1 = cp5.addTextfield("interface_UARTport");
     tf1.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 3 + TEXT_MARGIN*2 + TEXT_MARGIN + TEXT_MARGIN)
@@ -155,9 +159,15 @@ void interface_setup()
         .setSize(FONT_HEIGHT)
         //.toUpperCase(false)
         ;
-    str = Integer.toString(UART_baud_rate);
+    tf1.getValueLabel()
+        .getStyle()
+          .marginTop = -1;
+    tf1.getValueLabel()
+        .getStyle()
+          .marginLeft = TEXT_MARGIN;
 
-    w = int(textWidth(str));
+    str = Integer.toString(UART_baud_rate);
+    w = int(textWidth(str)) + TEXT_MARGIN*2;
     x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
     tf2 = cp5.addTextfield("interface_UARTbaud");
     tf2.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 4 + TEXT_MARGIN*2*2 + TEXT_MARGIN*2 + TEXT_MARGIN)
@@ -173,13 +183,19 @@ void interface_setup()
         .setSize(FONT_HEIGHT)
         //.toUpperCase(false)
         ;
+    tf2.getValueLabel()
+        .getStyle()
+          .marginTop = -1;
+    tf2.getValueLabel()
+        .getStyle()
+          .marginLeft = TEXT_MARGIN;
 
     str = Integer.toString(UART_data_bits) + UART_parity;
     if(int(UART_stop_bits*10.0)%10 == 0)
       str += int(UART_stop_bits);
     else
       str += UART_stop_bits;
-    w = int(textWidth(str));
+    w = int(textWidth(str)) + TEXT_MARGIN*2;
     x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
     tf3 = cp5.addTextfield("interface_UARTdps");
     tf3.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 5 + TEXT_MARGIN*2*3 + TEXT_MARGIN*3 + TEXT_MARGIN)
@@ -195,6 +211,12 @@ void interface_setup()
         .setSize(FONT_HEIGHT)
         //.toUpperCase(false)
         ;
+    tf3.getValueLabel()
+        .getStyle()
+          .marginTop = -1;
+    tf3.getValueLabel()
+        .getStyle()
+          .marginLeft = TEXT_MARGIN;
   }
   else /*if(DATA_interface == 2)*/ {
   }
