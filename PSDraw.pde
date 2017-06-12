@@ -54,8 +54,10 @@ void setup() {
 
   // To set the background on the first frame of animation. 
   background(C_BG);
-  // Specifies the number of frames to be displayed every second. 
-  frameRate(30);
+  // Specifies the number of frames to be displayed every second.
+  // The default rate is 60 frames per second.
+  //frameRate(1);
+  //frameRate(30);
 
   Title = TITLE;
   data_setup();
@@ -97,7 +99,7 @@ void draw() {
 
   if (PS_Data.load() == true) {
     if (PS_Data.parse() == false) {
-      return;
+      //return;
     }
   }
   PS_Data.draw_points();

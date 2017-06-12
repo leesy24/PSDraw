@@ -1,11 +1,15 @@
-//final boolean PRINT_DataFunc_Load = true; 
-final boolean PRINT_DataFunc_Load = false;
+//final boolean PRINT_DATAFUNC_LOAD_DBG = true; 
+final boolean PRINT_DATAFUNC_LOAD_DBG = false;
+//final boolean PRINT_DATAFUNC_LOAD_ERR = true; 
+final boolean PRINT_DATAFUNC_LOAD_ERR = false;
 
-//final boolean PRINT_DataFunc_Parse = true; 
-final boolean PRINT_DataFunc_Parse = false;
+//final boolean PRINT_DATAFUNC_PARSE_DBG = true; 
+final boolean PRINT_DATAFUNC_PARSE_DBG = false;
+//final boolean PRINT_DATAFUNC_PARSE_ERR = true; 
+final boolean PRINT_DATAFUNC_PARSE_ERR = false;
 
-//final boolean PRINT_DataFunc_Draw = true; 
-final boolean PRINT_DataFunc_Draw = false;
+//final boolean PRINT_DATAFUNC_DRAW_DBG = true; 
+final boolean PRINT_DATAFUNC_DRAW_DBG = false;
 
 //final static color C_DATA_LINE = #808080; //
 //final static color C_DATA_POINT = #000000; //
@@ -71,18 +75,67 @@ class Data {
   int[] distances = new int[DATA_MAX_POINTS];
   int[] pulse_widths = new int[DATA_MAX_POINTS];
   int crc;
+  String str_parse_err = null;
 
   // Create the Data
-  Data() {
+  Data()
+  {
   }
 
   // Load data_buf
-  boolean load() {
+  boolean load()
+  {
+    String str_interface_err;
     if(DATA_interface == 0) {
-      return interface_file_load();
+      if(interface_file_load() != true) {
+        str_interface_err = interface_file_get_error();
+        if(str_interface_err != null) {
+          // Sets the color used to draw lines and borders around shapes.
+          fill(C_TEXT);
+          stroke(C_TEXT);
+          textSize(FONT_HEIGHT*3);
+          text(str_interface_err, SCREEN_WIDTH / 2 - int(textWidth(str_interface_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+          textSize(FONT_HEIGHT);
+          if (PRINT_DATAFUNC_LOAD_ERR) println("interface_file_load() error!:" + str_interface_err);
+        }
+        else if(str_parse_err != null) {
+          // Sets the color used to draw lines and borders around shapes.
+          fill(C_TEXT);
+          stroke(C_TEXT);
+          textSize(FONT_HEIGHT*3);
+          text(str_parse_err, SCREEN_WIDTH / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+          textSize(FONT_HEIGHT);
+          if (PRINT_DATAFUNC_LOAD_ERR) println("parse() error!:" + str_parse_err);
+        }
+        return false;
+      }
+      return true;
     }
     else if(DATA_interface == 1) {
-      return interface_UART_load();
+      if(interface_UART_load() != true) {
+        str_interface_err = interface_UART_get_error();
+        if(str_interface_err != null) {
+          // Sets the color used to draw lines and borders around shapes.
+          fill(C_TEXT);
+          stroke(C_TEXT);
+          textSize(FONT_HEIGHT*3);
+          text(str_interface_err, SCREEN_WIDTH / 2 - int(textWidth(str_interface_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+          textSize(FONT_HEIGHT);
+          if (PRINT_DATAFUNC_LOAD_ERR) println("interface_UART_load() error!:" + str_interface_err);
+        }
+         else if(str_parse_err != null) {
+          // Sets the color used to draw lines and borders around shapes.
+          fill(C_TEXT);
+          stroke(C_TEXT);
+          textSize(FONT_HEIGHT*3);
+          text(str_parse_err, SCREEN_WIDTH / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+          textSize(FONT_HEIGHT);
+          if (PRINT_DATAFUNC_LOAD_ERR) println("parse() error!:" + str_parse_err);
+        }
+       return false;
+      }
+      if (PRINT_DATAFUNC_LOAD_DBG) println("interface_UART_load() ok!");
+      return true;
     }
     else /*if(DATA_interface == 2)*/ {
       return false;
@@ -90,79 +143,112 @@ class Data {
   }
 
   // Parsing data_buf
-  boolean parse() {
-    String string;
+  boolean parse()
+  {
     int i = 0; // index for navigating data_buf.
+    int crc_c; // calculated CRC
+    int t_n_points; // temp n_points
 
     // Get function code.
     func = get_str_bytes(data_buf, i, 4);
+    if (PRINT_DATAFUNC_PARSE_DBG) println("index=" + i + ",func=" + func);
     // Check function code is "GSCN".
     if (func.equals("GSCN") != true) {
       // Sets the color used to draw lines and borders around shapes.
       fill(C_TEXT);
       stroke(C_TEXT);
-      string = "Error: Function code is invalid! " + func;
+      str_parse_err = "Error: Function code is invalid! " + func;
       textSize(FONT_HEIGHT*3);
-      text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+      text(str_parse_err, SCREEN_WIDTH / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
-      if (PRINT_DataFunc_Parse) println("Function code is invalid!:", func);
+      if (PRINT_DATAFUNC_PARSE_ERR) println(str_parse_err);
       return false;
     }
-    if (PRINT_DataFunc_Parse) println("index=" + i + ",func=" + func);
     i = i + 4;
-  
+
     // Get data_buf length.
     // : size of the following data_buf record, without the CRC checksum
     len = get_int32_bytes(data_buf, i);
-    if (PRINT_DataFunc_Parse) println("index=" + i + ",length=" + len);
-    i = i + 4;
-  
+    if (PRINT_DATAFUNC_PARSE_DBG) println("index=" + i + ",length=" + len);
     // Check data_buf record length with binary data_buf length
     if (data_buf.length < (len + 12)) {
       // Sets the color used to draw lines and borders around shapes.
       fill(C_TEXT);
       stroke(C_TEXT);
-      string = "Error: Binary data length is invalid!:" + data_buf.length + "," + len;
+      str_parse_err = "Error: Data buf length is invalid!:" + data_buf.length + "," + len;
       textSize(FONT_HEIGHT*3);
-      text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+      text(str_parse_err, SCREEN_WIDTH / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
-      if (PRINT_DataFunc_Parse) println("Binary data length is invalid!:" + data_buf.length + "," + len);
+      if (PRINT_DATAFUNC_PARSE_ERR) println(str_parse_err);
       return false;
     }
-  
-    // TBD: Check CRC
-    // ...
-  
+    i = i + 4;
+
+    // Get CRC and Calculate CRC
+    crc = get_int32_bytes(data_buf, 4 + 4 + len);
+    if (PRINT_DATAFUNC_PARSE_DBG) println("index=" + (4 + 4 + len) + ",crc=" + crc);
+    crc_c = get_crc32(data_buf, 0, 4 + 4 + len);
+    // Check CRC ok?
+    if(crc != crc_c) {
+      // Sets the color used to draw lines and borders around shapes.
+      fill(C_TEXT);
+      stroke(C_TEXT);
+      str_parse_err = "Error: Data buf crc error!:" + crc + "," + crc_c;
+      textSize(FONT_HEIGHT*3);
+      text(str_parse_err, SCREEN_WIDTH / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+      textSize(FONT_HEIGHT);
+      if (PRINT_DATAFUNC_PARSE_ERR) println(str_parse_err);
+      return false;
+    }
+
     // Get number of parameters.
     // : the number of following parameters. Becomes 0 if no scan is available.
     n_params = get_int32_bytes(data_buf, i);
-    if (PRINT_DataFunc_Parse) println("index=" + i + ",number of parameters=" + n_params);
-    i = i + 4;
+    if (PRINT_DATAFUNC_PARSE_DBG) println("index=" + i + ",number of parameters=" + n_params);
     if (n_params == 0) {
       // Sets the color used to draw lines and borders around shapes.
       fill(C_TEXT);
       stroke(C_TEXT);
-      string = "Error: No scan data is available! Number of parameter is 0.";
+      str_parse_err = "Error: No scan data is available! n_params = 0";
       textSize(FONT_HEIGHT*3);
-      text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+      text(str_parse_err, SCREEN_WIDTH / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
-      if (PRINT_DataFunc_Parse) println("No scan data is available!:Number of parameter is 0.");
+      if (PRINT_DATAFUNC_PARSE_ERR) println(str_parse_err);
       return false;
     }
-  
+    i = i + 4;
+
+    // Get Number of points
+    // : the number of measurement points in the scan.
+    t_n_points = get_int32_bytes(data_buf, 4 + 4 + 4 + n_params * 4);
+    if (PRINT_DATAFUNC_PARSE_DBG) println("index=" + (4 + 4 + 4 + n_params * 4) + ",number of points=" + t_n_points);
+    // Check Number of points
+    if (t_n_points > DATA_MAX_POINTS || t_n_points <= 0) {
+      // Sets the color used to draw lines and borders around shapes.
+      fill(C_TEXT);
+      stroke(C_TEXT);
+      str_parse_err = "Error: Number of points invalid! n_points is " + t_n_points;
+      textSize(FONT_HEIGHT*3);
+      text(str_parse_err, SCREEN_WIDTH / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+      textSize(FONT_HEIGHT);
+      if (PRINT_DATAFUNC_PARSE_ERR) println(str_parse_err);
+      return false;
+    }
+    n_points = t_n_points;
+
     if (n_params >= 1) {
       // Get scan number(index).
       // : the number of the scan (starting with 1), should be the same as in the command request.
       i_scan = get_int32_bytes(data_buf, i);
-      if (PRINT_DataFunc_Parse) println("index=" + i + ",scan number=" + i_scan);
+      if (PRINT_DATAFUNC_PARSE_DBG) println("index=" + i + ",scan number=" + i_scan);
       i = i + 4;
     }
-  
+
     if (n_params >= 2) {
       // Get time stamp.
       // : time stamp of the first measured point in the scan, given in milliseconds since the last SCAN command.
       time_stamp = get_int32_bytes(data_buf, i);
-      if (PRINT_DataFunc_Parse) println("index=" + i + ",time stamp=" + time_stamp);
+      if (PRINT_DATAFUNC_PARSE_DBG) println("index=" + i + ",time stamp=" + time_stamp);
       i = i + 4;
 /*
       // Check time_stamp is changed
@@ -174,7 +260,7 @@ class Data {
         textSize(FONT_HEIGHT*3);
         text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
         textSize(FONT_HEIGHT);
-        if (PRINT_DataFunc_Parse) println("Scan data_buf is not changed!:" + time_stamp);
+        if (PRINT_DATAFUNC_PARSE_DBG) println("Scan data_buf is not changed!:" + time_stamp);
         //return false;
       }
       old_time_stamp = time_stamp;
@@ -185,7 +271,7 @@ class Data {
       // Get Scan start direction.
       // : direction to the first measured point, given in the user angle system (typical unit is 0,001 deg)
       scan_angle_start = get_int32_bytes(data_buf, i) / 1000.0;
-      if (PRINT_DataFunc_Parse) println("index=" + i + ",scan start angle=" + scan_angle_start);
+      if (PRINT_DATAFUNC_PARSE_DBG) println("index=" + i + ",scan start angle=" + scan_angle_start);
       i = i + 4;
     }
   
@@ -193,7 +279,7 @@ class Data {
       // Get Scan angle
       // : the scan angle in the user angle system. Typically 90.000.
       scan_angle_size = get_int32_bytes(data_buf, i) / 1000.0;
-      if (PRINT_DataFunc_Parse) println("index=" + i + ",scan range angle=" + scan_angle_size);
+      if (PRINT_DATAFUNC_PARSE_DBG) println("index=" + i + ",scan range angle=" + scan_angle_size);
       i = i + 4;
     }
   
@@ -201,7 +287,7 @@ class Data {
       // Get Number of echoes per point
       // : the number of echoes measured for each direction.
       n_echos = get_int32_bytes(data_buf, i);
-      if (PRINT_DataFunc_Parse) println("index=" + i + ",number of echos=" + n_echos);
+      if (PRINT_DATAFUNC_PARSE_DBG) println("index=" + i + ",number of echos=" + n_echos);
       i = i + 4;
     }
   
@@ -209,7 +295,7 @@ class Data {
       // Get Incremental count
       // : a direction provided by an external incremental encoder.
       i_encoder = get_int32_bytes(data_buf, i);
-      if (PRINT_DataFunc_Parse) println("index=" + i + ",encoder value=" + i_encoder);
+      if (PRINT_DATAFUNC_PARSE_DBG) println("index=" + i + ",encoder value=" + i_encoder);
       i = i + 4;
     }
   
@@ -218,7 +304,7 @@ class Data {
       // : the temperature as measured inside of the scanner.
       // : This information can be used to control an optional air condition.
       temperature = get_int32_bytes(data_buf, i) / 10f;
-      if (PRINT_DataFunc_Parse) println("index=" + i + ",system temperature=" + temperature);
+      if (PRINT_DATAFUNC_PARSE_DBG) println("index=" + i + ",system temperature=" + temperature);
       i = i + 4;
     }
   
@@ -226,7 +312,7 @@ class Data {
       // Get System status
       // : contains a bit field with about the status of peripheral devices.
       status = get_int32_bytes(data_buf, i);
-      if (PRINT_DataFunc_Parse) println("index=" + i + ",system status=" + status);
+      if (PRINT_DATAFUNC_PARSE_DBG) println("index=" + i + ",system status=" + status);
       i = i + 4;
     }
   
@@ -238,7 +324,7 @@ class Data {
       //    o 8 Bytes: distances in 1/10 mm and pulse widths in picoseconds
       //    o Any other value than 4 be read as "8 Bytes".
       content = get_int32_bytes(data_buf, i);
-      if (PRINT_DataFunc_Parse) println("index=" + i + ",data content=" + content);
+      if (PRINT_DATAFUNC_PARSE_DBG) println("index=" + i + ",data content=" + content);
       i = i + 4;
     }
   
@@ -248,23 +334,26 @@ class Data {
       i = i + 4 * (n_params - 9);
     }
   
+// Skip the get Number of points. this already done above.
+/*
     // Get Number of points
     // : the number of measurement points in the scan.
     n_points = get_int32_bytes(data_buf, i);
-    if (PRINT_DataFunc_Parse) println("index=" + i + ",number of points=" + n_points);
-    i = i + 4;
+    if (PRINT_DATAFUNC_PARSE_DBG) println("index=" + i + ",number of points=" + n_points);
     if (n_points > DATA_MAX_POINTS || n_points <= 0) {
       // Sets the color used to draw lines and borders around shapes.
       fill(C_TEXT);
       stroke(C_TEXT);
-      string = "Error: Number of points invalid! Number of points is" + n_points + ".";
+      str_parse_err = "Error: Number of points invalid! n_points is " + n_points;
       textSize(FONT_HEIGHT*3);
-      text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+      text(str_parse_err, SCREEN_WIDTH / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
-      if (PRINT_DataFunc_Parse) println("Number of points invalide!:Number of points is" + n_points + ".");
+      if (PRINT_DATAFUNC_PARSE_ERR) println(str_parse_err);
       return false;
     }
-  
+*/
+    i = i + 4;
+
     for (int j = 0; j < n_points; j++) {
       // Get Distance
       // : units are 1/10 mm.
@@ -272,7 +361,7 @@ class Data {
       // : The distance value is 2147483647 (0x7FFFFFFF) in case that the echo signal was noisy.
       distances[j] = get_int32_bytes(data_buf, i);
       i = i + 4;
-  
+
       // Check pulse width exist
       if (content != 4) {
         // Get Pulse width
@@ -282,18 +371,25 @@ class Data {
         i = i + 4;
       }
     }
-  
+
+// Skip the get CRC. this already done above.
+/*
     // Get CRC
     // : Checksum
     crc = get_int32_bytes(data_buf, i);
-    if (PRINT_DataFunc_Parse) println("index=" + i + ",crc=" + crc);
-    //i = i + 4;
-    
+    if (PRINT_DATAFUNC_PARSE_DBG) println("index=" + i + ",crc=" + crc);
+    i = i + 4;
+*/  
+
+    // Clear parse error string
+    str_parse_err = null;
+
     return true;
   } // End of parse()
   
   // Draw params of parsed data_buf
-  void draw_params() {
+  void draw_params()
+  {
     String[] strings = new String[10];
 
     strings[0] = "Scan number:" + i_scan;
@@ -331,7 +427,8 @@ class Data {
   } // End of draw_params()
   
   // Draw points of parsed data_buf
-  void draw_points() {
+  void draw_points()
+  {
     int distance;
     int pulse_width = -1, p_pulse_width = -1;
     int x, y;
@@ -360,25 +457,25 @@ class Data {
       }
       // Check No echo
       if (distance == 0x80000000) {
-        if (PRINT_DataFunc_Draw) println("point=", j, ",distance=" + "No echo");
+        if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + "No echo");
         p_x = -1;
         p_y = -1;
       }
       // Check Noisy
       else if (distance == 0x7fffffff) {
-        if (PRINT_DataFunc_Draw) println("point=", j, ",distance=" + "Noise");
+        if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + "Noise");
         p_x = -1;
         p_y = -1;
       }
       else {
-        if (PRINT_DataFunc_Draw) println("point=", j, ",distance=" + distance);
+        if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance);
         angle = scan_angle_start + float(j) * scan_angle_size / float(n_points);
         if (ROTATE_FACTOR == 0) {
           cx = float(distance) * sin(radians(angle));
           cy = float(distance) * cos(radians(angle));
           x = int(cx / ZOOM_FACTOR);
           y = int(cy / ZOOM_FACTOR);
-          if (PRINT_DataFunc_Draw) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
+          if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
           x += TEXT_MARGIN + FONT_HEIGHT / 2;
           if (MIRROR_ENABLE)
             y += SCREEN_HEIGHT / 2;
@@ -390,7 +487,7 @@ class Data {
           cy = float(distance) * sin(radians(angle));
           x = int(cx / ZOOM_FACTOR);
           y = int(cy / ZOOM_FACTOR);
-          if (PRINT_DataFunc_Draw) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
+          if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
           if (MIRROR_ENABLE)
             x = SCREEN_WIDTH / 2 - x;
           else
@@ -402,7 +499,7 @@ class Data {
           cy = float(distance) * cos(radians(angle));
           x = int(cx / ZOOM_FACTOR);
           y = int(cy / ZOOM_FACTOR);
-          if (PRINT_DataFunc_Draw) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
+          if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
           x = SCREEN_WIDTH - x; 
           x -= TEXT_MARGIN + FONT_HEIGHT / 2;
           if (MIRROR_ENABLE)
@@ -415,7 +512,7 @@ class Data {
           cy = float(distance) * sin(radians(angle));
           x = int(cx / ZOOM_FACTOR);
           y = int(cy / ZOOM_FACTOR);
-          if (PRINT_DataFunc_Draw) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
+          if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
           if (MIRROR_ENABLE)
             x += SCREEN_WIDTH / 2;
           else
@@ -507,7 +604,7 @@ class Data {
         // Get Pulse width
         // : indications of the signal's strength and are provided in picoseconds.
         pulse_width = pulse_widths[j];
-        if (PRINT_DataFunc_Draw) println("point=", j, ",pulse width=" + pulse_width);
+        if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",pulse width=" + pulse_width);
       }
 */
     } // End of for (int j = 0; j < n_points; j++)
