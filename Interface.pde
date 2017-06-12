@@ -37,7 +37,8 @@ void interface_setup()
     cp5.remove("interface_filename");
     cp5.remove("interface_UARTport");
     cp5.remove("interface_UARTbaud");
-    
+    cp5.remove("interface_UARTdps");
+
     cp5.setGraphics(this,0,0);
   }
 
@@ -135,12 +136,13 @@ void interface_setup()
         ;
   }
   else if(DATA_interface == 1) {
-    Textfield tf1, tf2;
+    Textfield tf1, tf2, tf3;
     int x, w;
+    String str;
     w = int(textWidth(UART_port_name));
     x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
     tf1 = cp5.addTextfield("interface_UARTport");
-    tf1.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 3 + TEXT_MARGIN*2 + TEXT_MARGIN*2)
+    tf1.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 3 + TEXT_MARGIN*2 + TEXT_MARGIN + TEXT_MARGIN)
       .setSize(w, FONT_HEIGHT + TEXT_MARGIN*2)
       //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
       .setAutoClear(false)
@@ -153,7 +155,9 @@ void interface_setup()
         .setSize(FONT_HEIGHT)
         //.toUpperCase(false)
         ;
-    w = int(textWidth(Integer.toString(UART_baud_rate)));
+    str = Integer.toString(UART_baud_rate);
+
+    w = int(textWidth(str));
     x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
     tf2 = cp5.addTextfield("interface_UARTbaud");
     tf2.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 4 + TEXT_MARGIN*2*2 + TEXT_MARGIN*2 + TEXT_MARGIN)
@@ -163,8 +167,30 @@ void interface_setup()
       ;
     //println("tf.getText() = ", tf.getText());
     tf2.setCaptionLabel("");
-    tf2.setText(Integer.toString(UART_baud_rate));
+    tf2.setText(str);
     tf2.getValueLabel()
+        //.setFont(cf1)
+        .setSize(FONT_HEIGHT)
+        //.toUpperCase(false)
+        ;
+
+    str = Integer.toString(UART_data_bits) + UART_parity;
+    if(int(UART_stop_bits*10.0)%10 == 0)
+      str += int(UART_stop_bits);
+    else
+      str += UART_stop_bits;
+    w = int(textWidth(str));
+    x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
+    tf3 = cp5.addTextfield("interface_UARTdps");
+    tf3.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 5 + TEXT_MARGIN*2*3 + TEXT_MARGIN*3 + TEXT_MARGIN)
+      .setSize(w, FONT_HEIGHT + TEXT_MARGIN*2)
+      //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
+      .setAutoClear(false)
+      ;
+    //println("tf.getText() = ", tf.getText());
+    tf3.setCaptionLabel("");
+    tf3.setText(str);
+    tf3.getValueLabel()
         //.setFont(cf1)
         .setSize(FONT_HEIGHT)
         //.toUpperCase(false)
@@ -254,8 +280,28 @@ void interface_UARTbaud(String theText)
   // automatically receives results from controller input
   //println("a textfield event for controller 'input' : "+theText);
 
-  if(theText.equals(Integer.toString(UART_baud_rate)) != true) {
-    UART_baud_rate = Integer.parseInt(theText);
+  int baud_rate = Integer.parseInt(theText);
+  if(baud_rate != UART_baud_rate) {
+    UART_baud_rate = baud_rate;
+    config_save();
+    INTERFACE_changed = true;
+  }
+}
+
+void interface_UARTdps(String theText)
+{
+  // automatically receives results from controller input
+  //println("a textfield event for controller 'input' : "+theText);
+
+  int data_bits = Character.getNumericValue(theText.charAt(0));
+  char parity = theText.charAt(1);
+  float stop_bits = Float.valueOf(theText.substring(2));
+  if( data_bits != UART_data_bits ||
+      parity != UART_parity ||
+      stop_bits != UART_stop_bits) {
+    UART_data_bits = data_bits;
+    UART_parity = parity;
+    UART_stop_bits = stop_bits;
     config_save();
     INTERFACE_changed = true;
   }
