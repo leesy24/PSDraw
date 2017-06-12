@@ -75,7 +75,8 @@ void interface_UART_setup()
 
   SCAN_DONE = false;
 
-  UART_config_timeout(10000); // timeout 10secs
+  //UART_config_timeout(10000); // timeout 10secs
+  UART_config_timeout(2000); // timeout 2secs
 
   // Open the port you are using at the rate you want:
   UART_handle = new Serial(this, UART_port_name, UART_baud_rate, UART_parity, UART_data_bits, UART_stop_bits);
@@ -105,6 +106,13 @@ boolean interface_UART_load()
   if(SCAN_DONE == false) {
     err = PS_perform_SCAN(1);
     if(err < 0) {
+      // Sets the color used to draw lines and borders around shapes.
+      fill(C_TEXT);
+      stroke(C_TEXT);
+      string = "Error: UART port SCN err! " + err;
+      textSize(FONT_HEIGHT*3);
+      text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+      textSize(FONT_HEIGHT);
       if (PRINT_UART_LOAD_ERROR) println("PS_perform_SCAN() error! " + err);
     }
     else if(err > 0) {
@@ -119,6 +127,13 @@ boolean interface_UART_load()
   else {
     err = PS_perform_GSCN(0);
     if(err < 0) {
+      // Sets the color used to draw lines and borders around shapes.
+      fill(C_TEXT);
+      stroke(C_TEXT);
+      string = "Error: UART port GSCN err! " + err;
+      textSize(FONT_HEIGHT*3);
+      text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+      textSize(FONT_HEIGHT);
       if (PRINT_UART_LOAD_ERROR) println("PS_perform_GSCN() error! " + err);
       return false;
     }
