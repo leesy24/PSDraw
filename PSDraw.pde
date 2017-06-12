@@ -99,7 +99,7 @@ void draw() {
 
   if (PS_Data.load() == true) {
     if (PS_Data.parse() == false) {
-      //return;
+      data_setup();
     }
   }
   PS_Data.draw_points();
