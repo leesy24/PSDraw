@@ -12,28 +12,45 @@ import controlP5.*;
 import java.util.*;
 
 final static color C_INTERFACE_NORMAL = #FFFFFF; // White
-final static color C_INTERFACE_HIGHLIGHT = #C0C0C0; //
+final static color C_INTERFACE_HIGHLIGHT = #C0C0C0; // White - 0x40
 final static color C_INTERFACE_TEXT = #000000; // Black
+final static color C_INTERFACE_TL_TEXT = C_INTERFACE_TEXT; // Black
+final static color C_INTERFACE_DD_TEXT = C_INTERFACE_TEXT; // Black
+final static color C_INTERFACE_DD_BORDER_NORMAL = #000000; // Black
+final static color C_INTERFACE_DD_BORDER_HIGHLIGHT = #FF0000; // Red
+final static color C_INTERFACE_DD_NORMAL = #FFFFFF; // White
+final static color C_INTERFACE_DD_FOREGROUND = #C0C0C0; // White - 0x40
+final static color C_INTERFACE_DD_ACTIVE = #FF0000; // Red
+final static color C_INTERFACE_TF_TEXT = C_INTERFACE_TEXT; // Black
+final static color C_INTERFACE_TF_FILL = #FFFFFF; // White
+final static color C_INTERFACE_TF_NORMAL = #000000; // Black
+final static color C_INTERFACE_TF_HIGHLIGHT = #FF0000; // Red
+final static color C_INTERFACE_TF_CURSOR = #0000FF; // Blue
+
 
 boolean INTERFACE_changed = false;
-int INTERFACE_dropdown_w;
 
 ControlFont cf1 = null;
 ControlP5 cp5 = null;
-controlP5.ScrollableList ddl = null;
 
 void interface_setup()
 {
   INTERFACE_changed = false;
+  int x, y;
+  int w, h;
+  String str;
 
   if(cf1 == null) {
     cf1 = new ControlFont(createFont("SansSerif",12),12);
   }
   if(cp5 == null) {
     cp5 = new ControlP5(this, cf1);
+    cp5.setBackground(C_INTERFACE_NORMAL);
   }
   else {
-    cp5.remove("interface_dropdown");
+    cp5.remove("interface_ddmenu");
+    cp5.remove("interface_ddborder");
+    cp5.remove("interface_ddlabel");
     cp5.remove("interface_filename");
     cp5.remove("interface_UARTport");
     cp5.remove("interface_UARTbaud");
@@ -46,153 +63,200 @@ void interface_setup()
   }
 
   List l = Arrays.asList("File", "UART", "UDP");
-  INTERFACE_dropdown_w = int(max(textWidth(l.get(0).toString()), textWidth(l.get(1).toString()), textWidth(l.get(2).toString())));
-  INTERFACE_dropdown_w += 20;
+  str = l.get(DATA_interface).toString();
+  w = int(max(textWidth(l.get(0).toString()), textWidth(l.get(1).toString()), textWidth(l.get(2).toString())));
+  w += 20;
+  x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w;
+  h = FONT_HEIGHT + TEXT_MARGIN*2;
+  y = TEXT_MARGIN + FONT_HEIGHT * 1 + TEXT_MARGIN;
+/*
+  Textarea ta_ddborder; 
+  ta_ddborder = cp5.addTextarea("interface_ddborder");
+  ta_ddborder.setPosition(x, y)
+    .setSize(w, h)
+    .setLineHeight(1)
+    .setColorBackground(C_INTERFACE_DD_BORDER_NORMAL)
+    .setText("")
+    .setLock(true)
+    ;
+*/
+/* */
+  Textfield tf_ddborder;
+  tf_ddborder = cp5.addTextfield("interface_ddborder");
+  tf_ddborder.setPosition(x+1, y)
+    .setSize(w - 2, h)
+    //.setColorBackground(C_INTERFACE_DD_BORDER_NORMAL)
+    .setColorForeground( C_INTERFACE_DD_BORDER_NORMAL )
+    .setText("")
+    .setLock(true)
+    ;
+/* */
 
   /* add a ScrollableList, by default it behaves like a DropdownList */
-  ddl = cp5.addScrollableList("interface_dropdown"/*l.get(0).toString()*/);
-  ddl.setBackgroundColor( color(255,0,255) /*color( 255 , 128 )*/ )
-     .setColorBackground( color(255,255,0) /*color(200)*/ )
-     .setColorForeground( color(0,255,255) /*color(235)*/ )
-     .setColorActive( color(255,0,0) /*(color(255)*/ )
-     .setColorValueLabel( color(0,255,0) /*color(100)*/ )
-     .setColorCaptionLabel( color(0,0,255) /*color(50)*/ )
-     .setPosition(SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - INTERFACE_dropdown_w, TEXT_MARGIN + FONT_HEIGHT * 2 + TEXT_MARGIN)
-     .setSize(INTERFACE_dropdown_w, FONT_HEIGHT + TEXT_MARGIN*2 + (FONT_HEIGHT + TEXT_MARGIN*2 + 1) * 3)
-     .setBarHeight(FONT_HEIGHT + TEXT_MARGIN*2)
-     .setItemHeight(FONT_HEIGHT + TEXT_MARGIN*2 + 1)
+  ScrollableList sl_ddmenu;
+  sl_ddmenu = cp5.addScrollableList("interface_ddmenu"/*l.get(0).toString()*/);
+  sl_ddmenu.setBackgroundColor( C_INTERFACE_DD_BORDER_HIGHLIGHT /*color(255,0,255)*/ /*color( 255 , 128 )*/ )
+     .setColorBackground( C_INTERFACE_DD_NORMAL /*color(255,255,0)*/ /*color(200)*/ )
+     .setColorForeground( C_INTERFACE_DD_FOREGROUND /*color(0,255,255)*/ /*color(235)*/ )
+     .setColorActive( C_INTERFACE_DD_ACTIVE /*color(255,0,0)*/ /*(color(255)*/ )
+     .setColorValueLabel( C_INTERFACE_DD_TEXT /*color(0,255,0)*/ /*color(100)*/ )
+     .setColorCaptionLabel( C_INTERFACE_DD_TEXT /*color(0,0,255)*/ /*color(50)*/ )
+     .setPosition(x + 1, y + 1)
+     .setSize(w - 2, h + (h + 1) * 3 - 2)
+     .setBarHeight(h - 2)
+     .setItemHeight(h + 1 - 2)
      //.setBarHeight(100)
      //.setItemHeight(100)
      .setOpen(false)
      .addItems(l)
+     .setCaptionLabel(str)
      //.setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
      ;
-  ddl.setCaptionLabel(l.get(DATA_interface).toString());
-  ddl.getCaptionLabel()
+  //y += h;
+  sl_ddmenu.getCaptionLabel()
       //.setFont(cf1)
       .setSize(FONT_HEIGHT)
       .toUpperCase(false)
       ;
-  ddl.getCaptionLabel()
+  sl_ddmenu.getCaptionLabel()
       .getStyle()
         //.setPaddingTop(32/2 - 4)
         //.setPaddingTop((32 - 12 ) / 2)
         //.padding(10,10,10,10)
         .marginTop = int(float(FONT_HEIGHT)/2.0-float(FONT_HEIGHT)/6.0);
-  ddl.getValueLabel()
+  sl_ddmenu.getValueLabel()
       //.setFont(cf1)
       .setSize(FONT_HEIGHT)
       .toUpperCase(false)
       ;
-  ddl.getValueLabel()
+  sl_ddmenu.getValueLabel()
       .getStyle()
         //.setPaddingTop(32/2 - 4)
         //.setPaddingTop((32 - 12 ) / 2)
         //.padding(10,10,10,10)
         //.marginTop = 32/2-4;
         .marginTop = int(float(FONT_HEIGHT)/2.0-float(FONT_HEIGHT)/6.0) - 1;
-/*
-  println("margin =",
-    ddl.getCaptionLabel()
-        .getStyle()
-          .marginTop
-    ,
-    ddl.getCaptionLabel()
-        .getStyle()
-          .marginBottom
-    ,
-    ddl.getCaptionLabel()
-        .getStyle()
-          .marginLeft
-    ,
-    ddl.getCaptionLabel()
-        .getStyle()
-          .marginRight
-  );
-*/
-  //ddl.getValueLabel().getStyle().padding(4,4,3,3);
-
+  //sl_ddmenu.getValueLabel().getStyle().padding(4,4,3,3);
   CColor c = new CColor();
-  c.setBackground(color(255,0,0));
-  ddl.getItem(DATA_interface).put("color", c);
+  c.setBackground(C_INTERFACE_DD_ACTIVE);
+  sl_ddmenu.getItem(DATA_interface).put("color", c);
 
+  str = "Interface:";
+  w = int(textWidth(str));
+  x -= w + TEXT_MARGIN;
+  h = FONT_HEIGHT + TEXT_MARGIN*2;
+  Textlabel tl_ddlabel;
+  tl_ddlabel = cp5.addTextlabel("interface_ddlabel");
+  tl_ddlabel.setText(str)
+    .setPosition(x, y)
+    .setColorValue(C_INTERFACE_TL_TEXT)
+    .setHeight(h)
+    ;
+  tl_ddlabel.get()
+      .setSize(FONT_HEIGHT)
+      ;
+
+  y += h;
+
+  Textfield tf_param1, tf_param2, tf_param3;
   if(DATA_interface == 0) {
-    Textfield tf;
-    int x, w;
-    w = int(textWidth(FILE_name)) + TEXT_MARGIN*2;
+    str = FILE_name;
+    w = int(textWidth(str)) + TEXT_MARGIN*2;
     x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
-    tf = cp5.addTextfield("interface_filename");
-    tf.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 3 + TEXT_MARGIN*2 + TEXT_MARGIN*2)
-      .setSize(w, FONT_HEIGHT + TEXT_MARGIN*2)
+    h = FONT_HEIGHT + TEXT_MARGIN*2;
+    y += TEXT_MARGIN;
+    tf_param1 = cp5.addTextfield("interface_filename");
+    tf_param1.setPosition(x, y)
+      .setSize(w, h)
       //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
       .setAutoClear(false)
+      .setColorBackground( C_INTERFACE_TF_FILL )
+      .setColorForeground( C_INTERFACE_TF_NORMAL )
+      .setColorActive( C_INTERFACE_TF_HIGHLIGHT )
+      .setColorValueLabel( C_INTERFACE_TF_TEXT )
+      .setColorCursor( C_INTERFACE_TF_CURSOR )
+      .setCaptionLabel("")
+      .setText(str)
       ;
+    y += h;
     //println("tf.getText() = ", tf.getText());
-    tf.setCaptionLabel("");
-    tf.setText(FILE_name);
-    tf.getValueLabel()
+    tf_param1.getValueLabel()
         //.setFont(cf1)
         .setSize(FONT_HEIGHT)
         //.toUpperCase(false)
         ;
-    tf.getValueLabel()
+    tf_param1.getValueLabel()
         .getStyle()
           .marginTop = -1;
 /*
-    tf.getValueLabel()
+    tf_param1.getValueLabel()
         .getStyle()
           .marginLeft = TEXT_MARGIN;
 */
-}
+  }
   else if(DATA_interface == 1) {
-    Textfield tf1, tf2, tf3;
-    int x, w;
-    String str;
-    w = int(textWidth(UART_port_name)) + TEXT_MARGIN*2;
+    str = UART_port_name;
+    w = int(textWidth(str)) + TEXT_MARGIN*2;
     x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
-    tf1 = cp5.addTextfield("interface_UARTport");
-    tf1.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 3 + TEXT_MARGIN*2 + TEXT_MARGIN + TEXT_MARGIN)
-      .setSize(w, FONT_HEIGHT + TEXT_MARGIN*2)
+    h = FONT_HEIGHT + TEXT_MARGIN*2;
+    y += TEXT_MARGIN;
+    tf_param1 = cp5.addTextfield("interface_UARTport");
+    tf_param1.setPosition(x, y)
+      .setSize(w, h)
       //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
       .setAutoClear(false)
+      .setColorBackground( C_INTERFACE_TF_FILL )
+      .setColorForeground( C_INTERFACE_TF_NORMAL )
+      .setColorActive( C_INTERFACE_TF_HIGHLIGHT )
+      .setColorValueLabel( C_INTERFACE_TF_TEXT )
+      .setColorCursor( C_INTERFACE_TF_CURSOR )
+      .setCaptionLabel("")
+      .setText(str)
       ;
-    tf1.setCaptionLabel("");
-    tf1.setText(UART_port_name);
-    tf1.getValueLabel()
+    y += h;
+    tf_param1.getValueLabel()
         //.setFont(cf1)
         .setSize(FONT_HEIGHT)
         //.toUpperCase(false)
         ;
-    tf1.getValueLabel()
+    tf_param1.getValueLabel()
         .getStyle()
           .marginTop = -1;
 /*
-    tf1.getValueLabel()
+    tf_param1.getValueLabel()
         .getStyle()
           .marginLeft = TEXT_MARGIN;
 */
     str = Integer.toString(UART_baud_rate);
     w = int(textWidth(str)) + TEXT_MARGIN*2;
     x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
-    tf2 = cp5.addTextfield("interface_UARTbaud");
-    tf2.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 4 + TEXT_MARGIN*2*2 + TEXT_MARGIN*2 + TEXT_MARGIN)
-      .setSize(w, FONT_HEIGHT + TEXT_MARGIN*2)
+    h = FONT_HEIGHT + TEXT_MARGIN*2;
+    y += TEXT_MARGIN;
+    tf_param2 = cp5.addTextfield("interface_UARTbaud");
+    tf_param2.setPosition(x, y)
+      .setSize(w, h)
       //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
       .setAutoClear(false)
+      .setColorBackground( C_INTERFACE_TF_FILL )
+      .setColorForeground( C_INTERFACE_TF_NORMAL )
+      .setColorActive( C_INTERFACE_TF_HIGHLIGHT )
+      .setColorValueLabel( C_INTERFACE_TF_TEXT )
+      .setColorCursor( C_INTERFACE_TF_CURSOR )
+      .setCaptionLabel("")
+      .setText(str)
       ;
+    y += h;
     //println("tf.getText() = ", tf.getText());
-    tf2.setCaptionLabel("");
-    tf2.setText(str);
-    tf2.getValueLabel()
+    tf_param2.getValueLabel()
         //.setFont(cf1)
         .setSize(FONT_HEIGHT)
         //.toUpperCase(false)
         ;
-    tf2.getValueLabel()
+    tf_param2.getValueLabel()
         .getStyle()
           .marginTop = -1;
 /*
-    tf2.getValueLabel()
+    tf_param2.getValueLabel()
         .getStyle()
           .marginLeft = TEXT_MARGIN;
 */
@@ -204,54 +268,70 @@ void interface_setup()
       str += UART_stop_bits;
     w = int(textWidth(str)) + TEXT_MARGIN*2;
     x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
-    tf3 = cp5.addTextfield("interface_UARTdps");
-    tf3.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 5 + TEXT_MARGIN*2*3 + TEXT_MARGIN*3 + TEXT_MARGIN)
-      .setSize(w, FONT_HEIGHT + TEXT_MARGIN*2)
+    h = FONT_HEIGHT + TEXT_MARGIN*2;
+    y += TEXT_MARGIN;
+    tf_param3 = cp5.addTextfield("interface_UARTdps");
+    tf_param3.setPosition(x, y)
+      .setSize(w, h)
       //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
       .setAutoClear(false)
+      .setColorBackground( C_INTERFACE_TF_FILL )
+      .setColorForeground( C_INTERFACE_TF_NORMAL )
+      .setColorActive( C_INTERFACE_TF_HIGHLIGHT )
+      .setColorValueLabel( C_INTERFACE_TF_TEXT )
+      .setColorCursor( C_INTERFACE_TF_CURSOR )
+      .setCaptionLabel("")
+      .setText(str)
       ;
+    y += h;
     //println("tf.getText() = ", tf.getText());
-    tf3.setCaptionLabel("");
-    tf3.setText(str);
-    tf3.getValueLabel()
+    tf_param3.getValueLabel()
         //.setFont(cf1)
         .setSize(FONT_HEIGHT)
         //.toUpperCase(false)
         ;
-    tf3.getValueLabel()
+    tf_param3.getValueLabel()
         .getStyle()
           .marginTop = -1;
 /*
-    tf3.getValueLabel()
+    tf_param3.getValueLabel()
         .getStyle()
           .marginLeft = TEXT_MARGIN;
 */
   }
   else /*if(DATA_interface == 2)*/ {
-    Textfield tf1, tf2, tf3;
-    int x, w;
-    String str;
-    w = int(textWidth(UDP_remote_ip)) + TEXT_MARGIN*2;
+    str = UDP_remote_ip;
+    w = int(textWidth(str)) + TEXT_MARGIN*2;
     x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
-    tf1 = cp5.addTextfield("interface_UDPremoteip");
-    tf1.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 3 + TEXT_MARGIN*2 + TEXT_MARGIN + TEXT_MARGIN)
-      .setSize(w, FONT_HEIGHT + TEXT_MARGIN*2)
+    h = FONT_HEIGHT + TEXT_MARGIN*2;
+    y += TEXT_MARGIN;
+    tf_param1 = cp5.addTextfield("interface_UDPremoteip");
+    tf_param1.setPosition(x, y)
+      .setSize(w, h)
       //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
       .setAutoClear(false)
+      .setColorBackground( C_INTERFACE_TF_FILL )
+      .setColorForeground( C_INTERFACE_TF_NORMAL )
+      .setColorActive( C_INTERFACE_TF_HIGHLIGHT )
+      .setColorValueLabel( C_INTERFACE_TF_TEXT )
+      .setColorCursor( C_INTERFACE_TF_CURSOR )
+      .setCaptionLabel("")
+      .setText(str)
       ;
+    //Textfield.cursorWidth = 10;
+    //controlP5.Textfield.cursorWidth = 10;
+    y += h;
     //println("tf.getText() = ", tf.getText());
-    tf1.setCaptionLabel("");
-    tf1.setText(UDP_remote_ip);
-    tf1.getValueLabel()
+    tf_param1.getValueLabel()
         //.setFont(cf1)
         .setSize(FONT_HEIGHT)
         //.toUpperCase(false)
         ;
-    tf1.getValueLabel()
+    tf_param1.getValueLabel()
         .getStyle()
           .marginTop = -1;
 /*
-    tf1.getValueLabel()
+    tf_param1.getValueLabel()
         .getStyle()
           .marginLeft = TEXT_MARGIN;
 */
@@ -259,25 +339,33 @@ void interface_setup()
     str = Integer.toString(UDP_remote_port);
     w = int(textWidth(str)) + TEXT_MARGIN*2;
     x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
-    tf2 = cp5.addTextfield("interface_UDPremoteport");
-    tf2.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 4 + TEXT_MARGIN*2*2 + TEXT_MARGIN*2 + TEXT_MARGIN)
-      .setSize(w, FONT_HEIGHT + TEXT_MARGIN*2)
+    h = FONT_HEIGHT + TEXT_MARGIN*2;
+    y += TEXT_MARGIN;
+    tf_param2 = cp5.addTextfield("interface_UDPremoteport");
+    tf_param2.setPosition(x, y)
+      .setSize(w, h)
       //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
       .setAutoClear(false)
+      .setColorBackground( C_INTERFACE_TF_FILL )
+      .setColorForeground( C_INTERFACE_TF_NORMAL )
+      .setColorActive( C_INTERFACE_TF_HIGHLIGHT )
+      .setColorValueLabel( C_INTERFACE_TF_TEXT )
+      .setColorCursor( C_INTERFACE_TF_CURSOR )
+      .setCaptionLabel("")
+      .setText(str)
       ;
+    y += h;
     //println("tf.getText() = ", tf.getText());
-    tf2.setCaptionLabel("");
-    tf2.setText(str);
-    tf2.getValueLabel()
+    tf_param2.getValueLabel()
         //.setFont(cf1)
         .setSize(FONT_HEIGHT)
         //.toUpperCase(false)
         ;
-    tf2.getValueLabel()
+    tf_param2.getValueLabel()
         .getStyle()
           .marginTop = -1;
 /*
-    tf2.getValueLabel()
+    tf_param2.getValueLabel()
         .getStyle()
           .marginLeft = TEXT_MARGIN;
 */
@@ -285,53 +373,82 @@ void interface_setup()
     str = Integer.toString(UDP_local_port);
     w = int(textWidth(str)) + TEXT_MARGIN*2;
     x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
-    tf3 = cp5.addTextfield("interface_UDPlocalport");
-    tf3.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 5 + TEXT_MARGIN*2*3 + TEXT_MARGIN*3 + TEXT_MARGIN)
-      .setSize(w, FONT_HEIGHT + TEXT_MARGIN*2)
+    h = FONT_HEIGHT + TEXT_MARGIN*2;
+    y += TEXT_MARGIN;
+    tf_param3 = cp5.addTextfield("interface_UDPlocalport");
+    tf_param3.setPosition(x, y)
+      .setSize(w, h)
       //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
       .setAutoClear(false)
+      .setColorBackground( C_INTERFACE_TF_FILL )
+      .setColorForeground( C_INTERFACE_TF_NORMAL )
+      .setColorActive( C_INTERFACE_TF_HIGHLIGHT )
+      .setColorValueLabel( C_INTERFACE_TF_TEXT )
+      .setColorCursor( C_INTERFACE_TF_CURSOR )
+      .setCaptionLabel("")
+      .setText(str)
       ;
+    y += h;
     //println("tf.getText() = ", tf.getText());
-    tf3.setCaptionLabel("");
-    tf3.setText(str);
-    tf3.getValueLabel()
+    tf_param3.getValueLabel()
         //.setFont(cf1)
         .setSize(FONT_HEIGHT)
         //.toUpperCase(false)
         ;
-    tf3.getValueLabel()
+    tf_param3.getValueLabel()
         .getStyle()
           .marginTop = -1;
 /*
-    tf3.getValueLabel()
+    tf_param3.getValueLabel()
         .getStyle()
           .marginLeft = TEXT_MARGIN;
 */
   }
   
-  ddl.bringToFront();
-  //println(ddl.getBackgroundColor());
+  sl_ddmenu.bringToFront();
+  //println(sl_ddmenu.getBackgroundColor());
   //printArray(PFont.list());
 }
 
 void interface_draw()
 {
+/*
   String string;
 
   // Sets the color used to draw lines and borders around shapes.
-  stroke(C_INTERFACE_TEXT);
-  fill(C_INTERFACE_TEXT);
+  stroke(C_INTERFACE_TL_TEXT);
+  fill(C_INTERFACE_TL_TEXT);
+  //stroke(#FF0000);
+  //fill(#ff0000);
   
   string = "Interface";
   text(string, SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - int(textWidth(string)), TEXT_MARGIN + FONT_HEIGHT * 2);
+*/
 }
 
-public void controlEvent(ControlEvent ce)
+void interface_mousePressed() {
+/*
+  // print the current mouseoverlist on mouse pressed
+  print("The Current mouseoverlist:\t");
+  println(cp5.getWindow().getMouseOverList());
+  ScrollableList sl_ddmenu;
+*/
+}
+
+/*
+void controlEvent(ControlEvent theEvent)
 {
-  //println(ce);
-}
+  String ControllerName = theEvent.getController().getName();
+  println("got a control event from controller with name "+","+ControllerName);
 
-void interface_dropdown(int n)
+  if (ControllerName.equals("interface_ddmenu") == true) {
+    println("this event was triggered by Controller interface_ddmenu");
+  }
+  
+}
+*/
+
+void interface_ddmenu(int n)
 {
   /* request the selected item based on index n */
   //println("dropdown", n, cp5.get(ScrollableList.class, "dropdown").getItem(n));

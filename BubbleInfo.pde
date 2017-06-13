@@ -18,12 +18,11 @@ final static int BUBBLEINFO_POINT_WH = 10;
 
 void bubbleinfo_draw()
 {
-  String string1, string2, string3, string4, string5, string6;
+  String[] strings = new String[6];
   int x, y, w, h, tl = 5, tr = 5, br = 0, bl = 5;
 
   if(BUBBLEINFO_AVAILABLE || (millis() - BUBBLEINFO_TIMER) < BUBBLEINFO_TIMEOUT)
   {
-    String[] strings = new String[6];
 
     BUBBLEINFO_DISPLAY = true;
     if(BUBBLEINFO_AVAILABLE) {

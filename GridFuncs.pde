@@ -1,7 +1,7 @@
-//color C_GRID_LINE = #808080; //
-//color C_GRID_TEXT = #404040; //
-final static color C_GRID_LINE = #C0C0C0; //
-final static color C_GRID_TEXT = #808080; //
+//final static color C_GRID_LINE = #808080; // Black + 0x80
+final static color C_GRID_LINE = #C0C0C0; // Black + 0xC0
+final static color C_GRID_TEXT = #404040; // Black + 0x40
+//final static color C_GRID_TEXT = #808080; //Black + 0x80
 
 int GRID_OFFSET_X = 0;
 int GRID_OFFSET_Y = 0;

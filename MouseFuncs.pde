@@ -15,6 +15,7 @@ int mousePressedX;
 int mousePressedY;
 
 void mousePressed() {
+  interface_mousePressed();
   if (PRINT_MouseFunc_Pressed) println("Mouse pressed! ");
 
   if (PRINT_MouseFunc_Pressed) println("mouseX=" + mouseX + ", mouseY=" + mouseY);

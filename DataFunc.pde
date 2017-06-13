@@ -42,7 +42,7 @@ void data_setup() {
   else if(DATA_interface == 1)
     Title += "UART";
   else /* if(DATA_interface == 2) */
-    Title += "UDP Client";
+    Title += "UDP";
 
   interface_file_reset();
   interface_UART_reset();
@@ -439,7 +439,7 @@ class Data {
     // Draw rect
     fill(C_DATA_RECT_FILL);
     stroke(C_DATA_RECT_STROKE);
-    rect(FONT_HEIGHT * 3, FONT_HEIGHT * 1, witdh_max + TEXT_MARGIN*2, FONT_HEIGHT * 10 + TEXT_MARGIN*2, 5, 5, 5, 5);
+    rect(FONT_HEIGHT * 3, TEXT_MARGIN*2 + FONT_HEIGHT * 1, witdh_max + TEXT_MARGIN*2, FONT_HEIGHT * 10 + TEXT_MARGIN*2, 5, 5, 5, 5);
 
     // Sets the color used to draw lines and borders around shapes.
     fill(C_DATA_RECT_TEXT);
@@ -447,7 +447,7 @@ class Data {
     int i = 0;
     for( String string:strings)
     {
-      text(string, TEXT_MARGIN + FONT_HEIGHT * 3, TEXT_MARGIN + FONT_HEIGHT * (2 + i));
+      text(string, FONT_HEIGHT * 3 + TEXT_MARGIN, TEXT_MARGIN*2 + FONT_HEIGHT * 1 + TEXT_MARGIN + FONT_HEIGHT * (1 + i));
       i ++;
     }
   } // End of draw_params()
