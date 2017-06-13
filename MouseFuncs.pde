@@ -102,6 +102,7 @@ void mousePressed() {
 }
 
 void mouseReleased() {
+  interface_mouseReleased();
   if (PRINT_MouseFunc_Released) println("Mouse released! ");
   mousePressed = false;
 }
@@ -287,9 +288,4 @@ void mouseWheel(MouseEvent event) {
     config_save();
     //println("dx=" + dx + ", dy=" + dy);
   }
-}
-
-void mouseClicked()
-{
-  interface_mouseClicked();
 }

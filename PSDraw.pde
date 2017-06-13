@@ -32,6 +32,8 @@ void settings() {
 // There can only be one setup() function for each program
 //  and it shouldn't be called again after its initial execution.
 void setup() {
+  SCREEN_PFront = createFont("SansSerif",32);
+  textFont(SCREEN_PFront);
   //config_settings();
 /*
   // fullScreen() opens a sketch using the full size of the computer's display.

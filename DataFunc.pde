@@ -19,7 +19,11 @@ final static color C_DATA_RECT_FILL = 0xC0F8F8F8; // White - 0x8 w/ Opaque 75%
 final static color C_DATA_RECT_STROKE = #000000; // Black
 final static color C_DATA_RECT_TEXT = #404040; // Black + 0x40
 
-int DATA_interface = 0; // 0 = File, 1 = UART, 2 = UDP
+final static int DATA_INTERFACE_FILE = 0;
+final static int DATA_INTERFACE_UART = 1;
+final static int DATA_INTERFACE_UDP = 2;
+
+int DATA_interface = DATA_INTERFACE_FILE;
 
 final int DATA_MAX_POINTS = 1000;
 final int DATA_POINT_WH = 3;
@@ -37,23 +41,23 @@ long old_time_stamp = -1;
 
 void data_setup() {
   // Append interface name to window title
-  if(DATA_interface == 0) 
+  if(DATA_interface == DATA_INTERFACE_FILE) 
     Title += "File";
-  else if(DATA_interface == 1)
+  else if(DATA_interface == DATA_INTERFACE_UART)
     Title += "UART";
-  else /* if(DATA_interface == 2) */
+  else /* if(DATA_interface == DATA_INTERFACE_UDP) */
     Title += "UDP";
 
   interface_file_reset();
   interface_UART_reset();
   interface_UDP_reset();
-  if(DATA_interface == 0) {
+  if(DATA_interface == DATA_INTERFACE_FILE) {
     interface_file_setup();
   }
-  else if(DATA_interface == 1) {
+  else if(DATA_interface == DATA_INTERFACE_UART) {
     interface_UART_setup();
   }
-  else {
+  else /*if(DATA_interface == DATA_INTERFACE_UDP)*/ {
     interface_UDP_setup();
   }
 
@@ -89,7 +93,7 @@ class Data {
   boolean load()
   {
     String str_interface_err;
-    if(DATA_interface == 0) {
+    if(DATA_interface == DATA_INTERFACE_FILE) {
       if(interface_file_load() != true) {
         str_interface_err = interface_file_get_error();
         if(str_interface_err != null) {
@@ -114,7 +118,7 @@ class Data {
       }
       return true;
     }
-    else if(DATA_interface == 1) {
+    else if(DATA_interface == DATA_INTERFACE_UART) {
       if(interface_UART_load() != true) {
         str_interface_err = interface_UART_get_error();
         if(str_interface_err != null) {
@@ -140,7 +144,7 @@ class Data {
       if (PRINT_DATAFUNC_LOAD_DBG) println("interface_UART_load() ok!");
       return true;
     }
-    else /*if(DATA_interface == 2)*/ {
+    else /*if(DATA_interface == DATA_INTERFACE_UDP)*/ {
       if(interface_UDP_load() != true) {
         str_interface_err = interface_UDP_get_error();
         if(str_interface_err != null) {

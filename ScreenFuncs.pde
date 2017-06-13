@@ -19,6 +19,7 @@ int FONT_HEIGHT;
 
 // Define just text area margin variables.
 int TEXT_MARGIN;
+PFont SCREEN_PFront;
 
 void screen_settings() {
   // Defines the dimension of the display window width and height in units of pixels.
@@ -33,7 +34,7 @@ void screen_setup() {
   // Set font height of text to follow min(Width, Height) of screen.
   FONT_HEIGHT = (SCREEN_WIDTH < SCREEN_HEIGHT) ? (SCREEN_WIDTH / 60) : (SCREEN_HEIGHT / 60);
   if (FONT_HEIGHT > 15) FONT_HEIGHT = 15;
-  if (FONT_HEIGHT < 12) FONT_HEIGHT = 12;
+  if (FONT_HEIGHT < 10) FONT_HEIGHT = 10;
   if (PRINT_ScreenFunc) println("FONT_HEIGHT=" + FONT_HEIGHT);
   textSize(FONT_HEIGHT);
 }

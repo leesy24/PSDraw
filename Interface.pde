@@ -43,7 +43,7 @@ void interface_setup()
   String str;
 
   if(cf1 == null) {
-    cf1 = new ControlFont(createFont("SansSerif",12),12);
+    cf1 = new ControlFont(SCREEN_PFront,12);
   }
   if(cp5 == null) {
     cp5 = new ControlP5(this, cf1);
@@ -155,7 +155,7 @@ void interface_setup()
   y += h;
 
   Textfield tf_param1, tf_param2, tf_param3;
-  if(DATA_interface == 0) {
+  if(DATA_interface == DATA_INTERFACE_FILE) {
     str = FILE_name;
     w = int(textWidth(str)) + TEXT_MARGIN*2;
     x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
@@ -190,7 +190,7 @@ void interface_setup()
           .marginLeft = TEXT_MARGIN;
 */
   }
-  else if(DATA_interface == 1) {
+  else if(DATA_interface == DATA_INTERFACE_UART) {
     str = UART_port_name;
     w = int(textWidth(str)) + TEXT_MARGIN*2;
     x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
@@ -295,7 +295,7 @@ void interface_setup()
           .marginLeft = TEXT_MARGIN;
 */
   }
-  else /*if(DATA_interface == 2)*/ {
+  else /*if(DATA_interface == DATA_INTERFACE_UDP)*/ {
     str = UDP_remote_ip;
     w = int(textWidth(str)) + TEXT_MARGIN*2;
     x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
@@ -423,46 +423,98 @@ void interface_draw()
 */
 }
 
-void interface_mouseClicked()
+void interface_mouseReleased()
 {
-  if(cp5.getWindow().getMouseOverList().size() == 0) return;
-
-  Controller controller = (Controller)cp5.getWindow().getMouseOverList().get(0);
-
-  if (controller.getName().equals("interface_ddmenu") == true) {
-    ScrollableList sl_ddmenu = (ScrollableList)controller;
-    int x, y, w, h;
-    Textfield tf_ddborder;
-    int c;
-
-    w = 0;
-    for(String s: INTERFACE_str_array) {
-      w = int(max(w, int(textWidth(s))));
+  try {
+    Controller controller = (Controller)cp5.getWindow().getMouseOverList().get(0);
+    if(controller.getName().equals("interface_ddmenu") == true) {
+      ScrollableList sl_ddmenu = (ScrollableList)controller;
+      int x, y, w, h;
+      Textfield tf_ddborder;
+      int c;
+  
+      w = 0;
+      for(String s: INTERFACE_str_array) {
+        w = int(max(w, int(textWidth(s))));
+      }
+      w += 20;
+      x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w;
+      y = TEXT_MARGIN + FONT_HEIGHT * 1 + TEXT_MARGIN;
+      if(sl_ddmenu.isOpen()) {
+        h = FONT_HEIGHT + TEXT_MARGIN*2 + (FONT_HEIGHT + TEXT_MARGIN*2 + 1 - 2) * (INTERFACE_str_array.length - 1);
+        c = C_INTERFACE_DD_BORDER_HIGHLIGHT;
+      }
+      else {
+        h = FONT_HEIGHT + TEXT_MARGIN*2;
+        c = C_INTERFACE_DD_BORDER_NORMAL;
+      }
+      tf_ddborder = (Textfield)cp5.getController("interface_ddborder");
+      tf_ddborder
+        .setPosition(x+1, y)
+        .setSize(w - 2, h)
+        .setColorForeground( c )
+        .setText("")
+        .setCaptionLabel("")
+        .setLock(true)
+        ;
+      sl_ddmenu
+        .setItems(INTERFACE_str_array)
+        .removeItem(INTERFACE_str_array[DATA_interface])
+        ;
+      return;
     }
-    w += 20;
-    x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w;
-    y = TEXT_MARGIN + FONT_HEIGHT * 1 + TEXT_MARGIN;
-    if(sl_ddmenu.isOpen()) {
-      h = FONT_HEIGHT + TEXT_MARGIN*2 + (FONT_HEIGHT + TEXT_MARGIN*2 + 1 - 2) * (INTERFACE_str_array.length - 1);
-      c = C_INTERFACE_DD_BORDER_HIGHLIGHT;
+  }
+  catch (Exception e) {
+    // Do nothing
+  }
+
+  Textfield tf_param;
+  String str;
+
+  if(DATA_interface == DATA_INTERFACE_FILE) {
+    tf_param = (Textfield)cp5.get("interface_filename");
+    if( tf_param != null && tf_param.isFocus() == false) {
+      str = FILE_name;
+      tf_param.setText(str);
     }
-    else {
-      h = FONT_HEIGHT + TEXT_MARGIN*2;
-      c = C_INTERFACE_DD_BORDER_NORMAL;
+  }
+  else if(DATA_interface == DATA_INTERFACE_UART) {
+    tf_param = (Textfield)cp5.get("interface_UARTport");
+    if( tf_param != null && tf_param.isFocus() == false) {
+      str = UART_port_name;
+      tf_param.setText(str);
     }
-    tf_ddborder = (Textfield)cp5.getController("interface_ddborder");
-    tf_ddborder
-      .setPosition(x+1, y)
-      .setSize(w - 2, h)
-      .setColorForeground( c )
-      .setText("")
-      .setCaptionLabel("")
-      .setLock(true)
-      ;
-    sl_ddmenu
-      .setItems(INTERFACE_str_array)
-      .removeItem(INTERFACE_str_array[DATA_interface])
-      ;
+    tf_param = (Textfield)cp5.get("interface_UARTbaud");
+    if( tf_param != null && tf_param.isFocus() == false) {
+      str = Integer.toString(UART_baud_rate);
+      tf_param.setText(str);
+    }
+    tf_param = (Textfield)cp5.get("interface_UARTdps");
+     if( tf_param != null && tf_param.isFocus() == false) {
+     str = Integer.toString(UART_data_bits) + UART_parity;
+      if(int(UART_stop_bits*10.0)%10 == 0)
+        str += int(UART_stop_bits);
+      else
+        str += UART_stop_bits;
+      tf_param.setText(str);
+    }
+  }
+  else /*if(DATA_interface == DATA_INTERFACE_UDP)*/ {
+    tf_param = (Textfield)cp5.get("interface_UDPremoteip");
+    if( tf_param != null && tf_param.isFocus() == false) {
+      str = UDP_remote_ip;
+      tf_param.setText(str);
+    }
+    tf_param = (Textfield)cp5.get("interface_UDPremoteport");
+    if( tf_param != null && tf_param.isFocus() == false) {
+      str = Integer.toString(UDP_remote_port);
+      tf_param.setText(str);
+    }
+    tf_param = (Textfield)cp5.get("interface_UDPlocalport");
+    if( tf_param != null && tf_param.isFocus() == false) {
+      str = Integer.toString(UDP_local_port);
+      tf_param.setText(str);
+    }
   }
 }
 
