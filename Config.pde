@@ -38,6 +38,12 @@ void config_settings()
         UART_data_bits = variable.getInt("Value");
       else if(name.equals("UART_stop_bits"))
         UART_stop_bits = variable.getFloat("Value"); 
+      else if(name.equals("UDP_remote_ip"))
+        UDP_remote_ip = variable.getString("Value");
+      else if(name.equals("UDP_remote_port"))
+        UDP_remote_port = variable.getInt("Value");
+      else if(name.equals("UDP_local_port"))
+        UDP_local_port = variable.getInt("Value");
     }
   }
   catch (Exception e) {
@@ -96,6 +102,18 @@ void config_settings()
     variable = config.addRow();
     variable.setString("Name", "UART_stop_bits");
     variable.setFloat("Value", UART_stop_bits);
+
+    variable = config.addRow();
+    variable.setString("Name", "UDP_remote_ip");
+    variable.setString("Value", UDP_remote_ip);
+
+    variable = config.addRow();
+    variable.setString("Name", "UDP_remote_port");
+    variable.setInt("Value", UDP_remote_port);
+
+    variable = config.addRow();
+    variable.setString("Name", "UDP_local_port");
+    variable.setInt("Value", UDP_local_port);
 
     saveTable(config, "data/" + CONFIG_file_name);
   }
@@ -193,6 +211,27 @@ void config_save()
       value_float = variable.getFloat("Value");
       if(value_float != UART_stop_bits) {
         variable.setFloat("Value", UART_stop_bits);
+        changed = true;
+      }
+    }
+    else if(name.equals("UDP_remote_ip")) {
+      value_string = variable.getString("Value");
+      if(value_string.equals(UDP_remote_ip) != true) {
+        variable.setString("Value", UDP_remote_ip);
+        changed = true;
+      }
+    }
+    else if(name.equals("UDP_remote_port")) {
+      value_int = variable.getInt("Value");
+      if(value_int != UDP_remote_port) {
+        variable.setInt("Value", UDP_remote_port);
+        changed = true;
+      }
+    }
+    else if(name.equals("UDP_local_port")) {
+      value_int = variable.getInt("Value");
+      if(value_int != UDP_local_port) {
+        variable.setInt("Value", UDP_local_port);
         changed = true;
       }
     }

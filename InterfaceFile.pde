@@ -6,7 +6,7 @@ final String OS = System.getProperty("os.name");
 
 // Define default binary buf filename and path 
 final static String FILE_NAME = "data.bin";
-static String FILE_name;
+static String FILE_name = "";
 static long FILE_last_modified_time = 0;
 static String FILE_str_err_last = null;
 
@@ -18,8 +18,9 @@ void interface_file_reset()
 
 void interface_file_setup()
 {
-  // 
-  if (FILE_name.equals(FILE_NAME) == true) {
+  // Check config FILE_name
+  if( FILE_name.equals("") == true ||
+      FILE_name.equals(FILE_NAME) == true) {
     // Check OS
     if (OS.equals("Linux")) {
       // Define binary data filename and path for Linux OS

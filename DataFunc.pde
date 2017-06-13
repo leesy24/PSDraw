@@ -19,6 +19,8 @@ final static color C_DATA_RECT_FILL = 0xC0F8F8F8; // White - 0x8 w/ Opaque 75%
 final static color C_DATA_RECT_STROKE = #000000; // Black
 final static color C_DATA_RECT_TEXT = #404040; // Black + 0x40
 
+int DATA_interface = 0; // 0 = File, 1 = UART, 2 = UDP
+
 final int DATA_MAX_POINTS = 1000;
 final int DATA_POINT_WH = 3;
 
@@ -44,6 +46,7 @@ void data_setup() {
 
   interface_file_reset();
   interface_UART_reset();
+  interface_UDP_reset();
   if(DATA_interface == 0) {
     interface_file_setup();
   }
@@ -51,7 +54,7 @@ void data_setup() {
     interface_UART_setup();
   }
   else {
-    // Nothing to do
+    interface_UDP_setup();
   }
 
   PS_Data = new Data();
@@ -123,7 +126,7 @@ class Data {
           textSize(FONT_HEIGHT);
           if (PRINT_DATAFUNC_LOAD_ERR) println("interface_UART_load() error!:" + str_interface_err);
         }
-         else if(str_parse_err != null) {
+        else if(str_parse_err != null) {
           // Sets the color used to draw lines and borders around shapes.
           fill(C_TEXT);
           stroke(C_TEXT);
@@ -132,13 +135,36 @@ class Data {
           textSize(FONT_HEIGHT);
           if (PRINT_DATAFUNC_LOAD_ERR) println("parse() error!:" + str_parse_err);
         }
-       return false;
+        return false;
       }
       if (PRINT_DATAFUNC_LOAD_DBG) println("interface_UART_load() ok!");
       return true;
     }
     else /*if(DATA_interface == 2)*/ {
-      return false;
+      if(interface_UDP_load() != true) {
+        str_interface_err = interface_UDP_get_error();
+        if(str_interface_err != null) {
+          // Sets the color used to draw lines and borders around shapes.
+          fill(C_TEXT);
+          stroke(C_TEXT);
+          textSize(FONT_HEIGHT*3);
+          text(str_interface_err, SCREEN_WIDTH / 2 - int(textWidth(str_interface_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+          textSize(FONT_HEIGHT);
+          if (PRINT_DATAFUNC_LOAD_ERR) println("interface_UDP_load() error!:" + str_interface_err);
+        }
+        else if(str_parse_err != null) {
+          // Sets the color used to draw lines and borders around shapes.
+          fill(C_TEXT);
+          stroke(C_TEXT);
+          textSize(FONT_HEIGHT*3);
+          text(str_parse_err, SCREEN_WIDTH / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+          textSize(FONT_HEIGHT);
+          if (PRINT_DATAFUNC_LOAD_ERR) println("parse() error!:" + str_parse_err);
+        }
+        return false;
+      }
+      if (PRINT_DATAFUNC_LOAD_DBG) println("interface_UDP_load() ok!");
+      return true;
     }
   }
 

@@ -38,11 +38,14 @@ void interface_setup()
     cp5.remove("interface_UARTport");
     cp5.remove("interface_UARTbaud");
     cp5.remove("interface_UARTdps");
+    cp5.remove("interface_UDPremoteip");
+    cp5.remove("interface_UDPremoteport");
+    cp5.remove("interface_UDPlocalport");
 
     cp5.setGraphics(this,0,0);
   }
 
-  List l = Arrays.asList("File", "UART", "UDP Client");
+  List l = Arrays.asList("File", "UART", "UDP");
   INTERFACE_dropdown_w = int(max(textWidth(l.get(0).toString()), textWidth(l.get(1).toString()), textWidth(l.get(2).toString())));
   INTERFACE_dropdown_w += 20;
 
@@ -135,10 +138,12 @@ void interface_setup()
     tf.getValueLabel()
         .getStyle()
           .marginTop = -1;
+/*
     tf.getValueLabel()
         .getStyle()
           .marginLeft = TEXT_MARGIN;
-  }
+*/
+}
   else if(DATA_interface == 1) {
     Textfield tf1, tf2, tf3;
     int x, w;
@@ -151,7 +156,6 @@ void interface_setup()
       //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
       .setAutoClear(false)
       ;
-    //println("tf.getText() = ", tf.getText());
     tf1.setCaptionLabel("");
     tf1.setText(UART_port_name);
     tf1.getValueLabel()
@@ -162,10 +166,11 @@ void interface_setup()
     tf1.getValueLabel()
         .getStyle()
           .marginTop = -1;
+/*
     tf1.getValueLabel()
         .getStyle()
           .marginLeft = TEXT_MARGIN;
-
+*/
     str = Integer.toString(UART_baud_rate);
     w = int(textWidth(str)) + TEXT_MARGIN*2;
     x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
@@ -186,9 +191,11 @@ void interface_setup()
     tf2.getValueLabel()
         .getStyle()
           .marginTop = -1;
+/*
     tf2.getValueLabel()
         .getStyle()
           .marginLeft = TEXT_MARGIN;
+*/
 
     str = Integer.toString(UART_data_bits) + UART_parity;
     if(int(UART_stop_bits*10.0)%10 == 0)
@@ -214,11 +221,92 @@ void interface_setup()
     tf3.getValueLabel()
         .getStyle()
           .marginTop = -1;
+/*
     tf3.getValueLabel()
         .getStyle()
           .marginLeft = TEXT_MARGIN;
+*/
   }
   else /*if(DATA_interface == 2)*/ {
+    Textfield tf1, tf2, tf3;
+    int x, w;
+    String str;
+    w = int(textWidth(UDP_remote_ip)) + TEXT_MARGIN*2;
+    x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
+    tf1 = cp5.addTextfield("interface_UDPremoteip");
+    tf1.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 3 + TEXT_MARGIN*2 + TEXT_MARGIN + TEXT_MARGIN)
+      .setSize(w, FONT_HEIGHT + TEXT_MARGIN*2)
+      //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
+      .setAutoClear(false)
+      ;
+    //println("tf.getText() = ", tf.getText());
+    tf1.setCaptionLabel("");
+    tf1.setText(UDP_remote_ip);
+    tf1.getValueLabel()
+        //.setFont(cf1)
+        .setSize(FONT_HEIGHT)
+        //.toUpperCase(false)
+        ;
+    tf1.getValueLabel()
+        .getStyle()
+          .marginTop = -1;
+/*
+    tf1.getValueLabel()
+        .getStyle()
+          .marginLeft = TEXT_MARGIN;
+*/
+
+    str = Integer.toString(UDP_remote_port);
+    w = int(textWidth(str)) + TEXT_MARGIN*2;
+    x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
+    tf2 = cp5.addTextfield("interface_UDPremoteport");
+    tf2.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 4 + TEXT_MARGIN*2*2 + TEXT_MARGIN*2 + TEXT_MARGIN)
+      .setSize(w, FONT_HEIGHT + TEXT_MARGIN*2)
+      //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
+      .setAutoClear(false)
+      ;
+    //println("tf.getText() = ", tf.getText());
+    tf2.setCaptionLabel("");
+    tf2.setText(str);
+    tf2.getValueLabel()
+        //.setFont(cf1)
+        .setSize(FONT_HEIGHT)
+        //.toUpperCase(false)
+        ;
+    tf2.getValueLabel()
+        .getStyle()
+          .marginTop = -1;
+/*
+    tf2.getValueLabel()
+        .getStyle()
+          .marginLeft = TEXT_MARGIN;
+*/
+
+    str = Integer.toString(UDP_local_port);
+    w = int(textWidth(str)) + TEXT_MARGIN*2;
+    x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
+    tf3 = cp5.addTextfield("interface_UDPlocalport");
+    tf3.setPosition(x, TEXT_MARGIN + FONT_HEIGHT * 5 + TEXT_MARGIN*2*3 + TEXT_MARGIN*3 + TEXT_MARGIN)
+      .setSize(w, FONT_HEIGHT + TEXT_MARGIN*2)
+      //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
+      .setAutoClear(false)
+      ;
+    //println("tf.getText() = ", tf.getText());
+    tf3.setCaptionLabel("");
+    tf3.setText(str);
+    tf3.getValueLabel()
+        //.setFont(cf1)
+        .setSize(FONT_HEIGHT)
+        //.toUpperCase(false)
+        ;
+    tf3.getValueLabel()
+        .getStyle()
+          .marginTop = -1;
+/*
+    tf3.getValueLabel()
+        .getStyle()
+          .marginLeft = TEXT_MARGIN;
+*/
   }
   
   ddl.bringToFront();
@@ -324,6 +412,44 @@ void interface_UARTdps(String theText)
     UART_data_bits = data_bits;
     UART_parity = parity;
     UART_stop_bits = stop_bits;
+    config_save();
+    INTERFACE_changed = true;
+  }
+}
+
+void interface_UDPremoteip(String theText)
+{
+  // automatically receives results from controller input
+  //println("a textfield event for controller 'input' : "+theText);
+
+  if(theText.equals(UDP_remote_ip) != true) {
+    UDP_remote_ip = theText;
+    config_save();
+    INTERFACE_changed = true;
+  }
+}
+
+void interface_UDPremoteport(String theText)
+{
+  // automatically receives results from controller input
+  //println("a textfield event for controller 'input' : "+theText);
+
+  int remote_port = Integer.parseInt(theText);
+  if(remote_port != UDP_remote_port) {
+    UDP_remote_port = remote_port;
+    config_save();
+    INTERFACE_changed = true;
+  }
+}
+
+void interface_UDPlocalport(String theText)
+{
+  // automatically receives results from controller input
+  //println("a textfield event for controller 'input' : "+theText);
+
+  int local_port = Integer.parseInt(theText);
+  if(local_port != UDP_local_port) {
+    UDP_local_port = local_port;
     config_save();
     INTERFACE_changed = true;
   }

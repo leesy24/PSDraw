@@ -2,8 +2,6 @@
 //final boolean PRINT = true; 
 final boolean PRINT = false; 
 
-int DATA_interface = 0; // 0 = File, 1 = UART
-
 //final color C_BG = #FFFFFF; // White
 final color C_BG = #F8F8F8; // White - 0x8
 final color C_TEXT = #000000; // Black
