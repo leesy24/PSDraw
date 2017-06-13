@@ -50,8 +50,9 @@ void interface_UDP_reset()
 
 void interface_UDP_setup()
 {
-  Title += "(" + UDP_remote_ip + UDP_remote_port + ")";
+  Title += "(" + UDP_remote_ip + ":" + UDP_remote_port;
   Title += ":" + UDP_local_port;
+  Title += ")";
 
   UDP_SCAN_DONE = false;
 
