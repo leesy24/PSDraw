@@ -88,6 +88,7 @@ void interface_setup()
     //.setColorBackground(C_INTERFACE_DD_BORDER_NORMAL)
     .setColorForeground( C_INTERFACE_DD_BORDER_NORMAL )
     .setText("")
+    .setCaptionLabel("")
     .setLock(true)
     ;
 /* */
