@@ -429,8 +429,8 @@ void interface_mouseReleased()
     Controller controller = (Controller)cp5.getWindow().getMouseOverList().get(0);
     if(controller.getName().equals("interface_ddmenu") == true) {
       ScrollableList sl_ddmenu = (ScrollableList)controller;
-      int x, y, w, h;
       Textfield tf_ddborder;
+      int x, y, w, h;
       int c;
   
       w = 0;
@@ -453,9 +453,6 @@ void interface_mouseReleased()
         .setPosition(x+1, y)
         .setSize(w - 2, h)
         .setColorForeground( c )
-        .setText("")
-        .setCaptionLabel("")
-        .setLock(true)
         ;
       sl_ddmenu
         .setItems(INTERFACE_str_array)
@@ -468,9 +465,33 @@ void interface_mouseReleased()
     // Do nothing
   }
 
+  ScrollableList sl_ddmenu;
   Textfield tf_param;
   String str;
 
+  sl_ddmenu = (ScrollableList)cp5.get("interface_ddmenu");
+  if( sl_ddmenu != null && sl_ddmenu.isOpen()) {
+    Textfield tf_ddborder;
+    int x, y, w, h;
+    int c;
+
+    w = 0;
+    for(String s: INTERFACE_str_array) {
+      w = int(max(w, int(textWidth(s))));
+    }
+    w += 20;
+    x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w;
+    y = TEXT_MARGIN + FONT_HEIGHT * 1 + TEXT_MARGIN;
+    h = FONT_HEIGHT + TEXT_MARGIN*2;
+    c = C_INTERFACE_DD_BORDER_NORMAL;
+    tf_ddborder = (Textfield)cp5.getController("interface_ddborder");
+    tf_ddborder
+      .setPosition(x+1, y)
+      .setSize(w - 2, h)
+      .setColorForeground( c )
+      ;
+    sl_ddmenu.close();
+  }
   if(DATA_interface == DATA_INTERFACE_FILE) {
     tf_param = (Textfield)cp5.get("interface_filename");
     if( tf_param != null && tf_param.isFocus() == false) {
