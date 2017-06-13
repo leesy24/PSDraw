@@ -16,6 +16,7 @@ final static color C_INTERFACE_HIGHLIGHT = #C0C0C0; // White - 0x40
 final static color C_INTERFACE_TEXT = #000000; // Black
 final static color C_INTERFACE_TL_TEXT = C_INTERFACE_TEXT; // Black
 final static color C_INTERFACE_DD_TEXT = C_INTERFACE_TEXT; // Black
+final static color C_INTERFACE_DD_BORDER_FILL = #FFFFFF; // White
 final static color C_INTERFACE_DD_BORDER_NORMAL = #000000; // Black
 final static color C_INTERFACE_DD_BORDER_HIGHLIGHT = #FF0000; // Red
 final static color C_INTERFACE_DD_NORMAL = #FFFFFF; // White
@@ -29,6 +30,7 @@ final static color C_INTERFACE_TF_CURSOR = #0000FF; // Blue
 
 
 boolean INTERFACE_changed = false;
+String[] INTERFACE_str_array = {"File", "UART", "UDP"};
 
 ControlFont cf1 = null;
 ControlP5 cp5 = null;
@@ -62,36 +64,25 @@ void interface_setup()
     cp5.setGraphics(this,0,0);
   }
 
-  List l = Arrays.asList("File", "UART", "UDP");
-  str = l.get(DATA_interface).toString();
-  w = int(max(textWidth(l.get(0).toString()), textWidth(l.get(1).toString()), textWidth(l.get(2).toString())));
+  w = 0;
+  for(String s: INTERFACE_str_array) {
+    w = int(max(w, int(textWidth(s))));
+  }
   w += 20;
   x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w;
   h = FONT_HEIGHT + TEXT_MARGIN*2;
   y = TEXT_MARGIN + FONT_HEIGHT * 1 + TEXT_MARGIN;
-/*
-  Textarea ta_ddborder; 
-  ta_ddborder = cp5.addTextarea("interface_ddborder");
-  ta_ddborder.setPosition(x, y)
-    .setSize(w, h)
-    .setLineHeight(1)
-    .setColorBackground(C_INTERFACE_DD_BORDER_NORMAL)
-    .setText("")
-    .setLock(true)
-    ;
-*/
-/* */
+
   Textfield tf_ddborder;
   tf_ddborder = cp5.addTextfield("interface_ddborder");
   tf_ddborder.setPosition(x+1, y)
     .setSize(w - 2, h)
-    //.setColorBackground(C_INTERFACE_DD_BORDER_NORMAL)
+    .setColorBackground(C_INTERFACE_DD_BORDER_FILL)
     .setColorForeground( C_INTERFACE_DD_BORDER_NORMAL )
     .setText("")
     .setCaptionLabel("")
     .setLock(true)
     ;
-/* */
 
   /* add a ScrollableList, by default it behaves like a DropdownList */
   ScrollableList sl_ddmenu;
@@ -103,14 +94,15 @@ void interface_setup()
      .setColorValueLabel( C_INTERFACE_DD_TEXT /*color(0,255,0)*/ /*color(100)*/ )
      .setColorCaptionLabel( C_INTERFACE_DD_TEXT /*color(0,0,255)*/ /*color(50)*/ )
      .setPosition(x + 1, y + 1)
-     .setSize(w - 2, h + (h + 1) * 3 - 2)
+     .setSize(w - 2, h + (h + 1) * (INTERFACE_str_array.length - 1) - 2)
      .setBarHeight(h - 2)
      .setItemHeight(h + 1 - 2)
      //.setBarHeight(100)
      //.setItemHeight(100)
      .setOpen(false)
-     .addItems(l)
-     .setCaptionLabel(str)
+     .addItems(INTERFACE_str_array)
+     .setCaptionLabel(INTERFACE_str_array[DATA_interface])
+     .removeItem(INTERFACE_str_array[DATA_interface])
      //.setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
      ;
   //y += h;
@@ -138,9 +130,12 @@ void interface_setup()
         //.marginTop = 32/2-4;
         .marginTop = int(float(FONT_HEIGHT)/2.0-float(FONT_HEIGHT)/6.0) - 1;
   //sl_ddmenu.getValueLabel().getStyle().padding(4,4,3,3);
+/*
   CColor c = new CColor();
   c.setBackground(C_INTERFACE_DD_ACTIVE);
+  //c.setForeground(C_INTERFACE_DD_ACTIVE);
   sl_ddmenu.getItem(DATA_interface).put("color", c);
+*/
 
   str = "Interface:";
   w = int(textWidth(str));
@@ -405,7 +400,8 @@ void interface_setup()
           .marginLeft = TEXT_MARGIN;
 */
   }
-  
+
+  tf_ddborder.bringToFront();
   sl_ddmenu.bringToFront();
   //println(sl_ddmenu.getBackgroundColor());
   //printArray(PFont.list());
@@ -427,13 +423,47 @@ void interface_draw()
 */
 }
 
-void interface_mousePressed() {
-/*
-  // print the current mouseoverlist on mouse pressed
-  print("The Current mouseoverlist:\t");
-  println(cp5.getWindow().getMouseOverList());
-  ScrollableList sl_ddmenu;
-*/
+void interface_mouseClicked()
+{
+  if(cp5.getWindow().getMouseOverList().size() == 0) return;
+
+  Controller controller = (Controller)cp5.getWindow().getMouseOverList().get(0);
+
+  if (controller.getName().equals("interface_ddmenu") == true) {
+    ScrollableList sl_ddmenu = (ScrollableList)controller;
+    int x, y, w, h;
+    Textfield tf_ddborder;
+    int c;
+
+    w = 0;
+    for(String s: INTERFACE_str_array) {
+      w = int(max(w, int(textWidth(s))));
+    }
+    w += 20;
+    x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w;
+    y = TEXT_MARGIN + FONT_HEIGHT * 1 + TEXT_MARGIN;
+    if(sl_ddmenu.isOpen()) {
+      h = FONT_HEIGHT + TEXT_MARGIN*2 + (FONT_HEIGHT + TEXT_MARGIN*2 + 1 - 2) * (INTERFACE_str_array.length - 1);
+      c = C_INTERFACE_DD_BORDER_HIGHLIGHT;
+    }
+    else {
+      h = FONT_HEIGHT + TEXT_MARGIN*2;
+      c = C_INTERFACE_DD_BORDER_NORMAL;
+    }
+    tf_ddborder = (Textfield)cp5.getController("interface_ddborder");
+    tf_ddborder
+      .setPosition(x+1, y)
+      .setSize(w - 2, h)
+      .setColorForeground( c )
+      .setText("")
+      .setCaptionLabel("")
+      .setLock(true)
+      ;
+    sl_ddmenu
+      .setItems(INTERFACE_str_array)
+      .removeItem(INTERFACE_str_array[DATA_interface])
+      ;
+  }
 }
 
 /*
@@ -451,8 +481,14 @@ void controlEvent(ControlEvent theEvent)
 
 void interface_ddmenu(int n)
 {
+/*
+  ScrollableList sl_ddmenu = (ScrollableList)(cp5.get("interface_ddmenu"));
+  //int interface = ((sl_ddmenu.getItem(n)).getValue();
+  Map m = cp5.get(ScrollableList.class, "interface_ddmenu").getItem(n);
+  int interface = m.get("value");
+*/
   /* request the selected item based on index n */
-  //println("dropdown", n, cp5.get(ScrollableList.class, "dropdown").getItem(n));
+  //println("dropdown=", n, ",", cp5.get(ScrollableList.class, "interface_ddmenu").getItem(n));
   
   /* here an item is stored as a Map  with the following key-value pairs:
    * name, the given name of the item
@@ -471,6 +507,7 @@ void interface_ddmenu(int n)
     cp5.get(ScrollableList.class, "dropdown").getItem(i).put("color", c);
   }
 */
+  if( n >= DATA_interface ) n ++;
 
   if( DATA_interface != n ) {
     DATA_interface = n;

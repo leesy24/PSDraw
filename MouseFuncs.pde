@@ -15,7 +15,6 @@ int mousePressedX;
 int mousePressedY;
 
 void mousePressed() {
-  interface_mousePressed();
   if (PRINT_MouseFunc_Pressed) println("Mouse pressed! ");
 
   if (PRINT_MouseFunc_Pressed) println("mouseX=" + mouseX + ", mouseY=" + mouseY);
@@ -288,4 +287,9 @@ void mouseWheel(MouseEvent event) {
     config_save();
     //println("dx=" + dx + ", dy=" + dy);
   }
+}
+
+void mouseClicked()
+{
+  interface_mouseClicked();
 }
