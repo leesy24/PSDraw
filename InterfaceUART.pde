@@ -80,10 +80,15 @@ void interface_UART_setup()
   //UART_config_timeout(10000); // timeout 10secs
   UART_config_timeout(2000); // timeout 2secs
 
-  // Open the port you are using at the rate you want:
-  UART_handle = new Serial(this, UART_port_name, UART_baud_rate, UART_parity, UART_data_bits, UART_stop_bits);
-  UART_handle.clear();
-  UART_handle.buffer(1);
+  try {
+    // Open the port you are using at the rate you want:
+    UART_handle = new Serial(this, UART_port_name, UART_baud_rate, UART_parity, UART_data_bits, UART_stop_bits);
+    UART_handle.clear();
+    UART_handle.buffer(1);
+  }
+  catch (Exception e) {
+    UART_handle = null;
+  }
 }
 
 String interface_UART_get_error()
