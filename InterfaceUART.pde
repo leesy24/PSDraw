@@ -5,6 +5,8 @@ final boolean PRINT_UART_READ_ERR = false;
 final boolean PRINT_UART_LOAD_DBG = false; 
 final boolean PRINT_UART_LOAD_ERR = false; 
 
+final static int UART_PS_MAX_BUFFER = 8*1024;
+
 Serial UART_handle = null;  // The handle of serial port
 
 String UART_port_name = "COM1"; // String: name of the port (COM1 is the default)
@@ -53,6 +55,7 @@ void interface_UART_reset()
 void interface_UART_setup()
 {
   boolean found = false;
+  int timeout;
 
   Title += "(" + UART_port_name + ":" + UART_baud_rate;
   Title += ":" + UART_data_bits + UART_parity;
@@ -76,9 +79,8 @@ void interface_UART_setup()
   }
 
   UART_SCAN_DONE = false;
-
-  //UART_config_timeout(10000); // timeout 10secs
-  UART_config_timeout(2000); // timeout 2secs
+  timeout = 2 * int(float(UART_PS_MAX_BUFFER) * (1.0 + float(UART_data_bits) + (UART_parity=='N'?0.0:1.0) + UART_stop_bits) / float(UART_baud_rate) * 1000.0);
+  UART_config_timeout(timeout);
 
   try {
     // Open the port you are using at the rate you want:
@@ -145,7 +147,7 @@ boolean interface_UART_load()
 void UART_config_timeout(int msec)
 {
   UART_CMD_timeout = msec;
-  if (PRINT_UART_LOAD_DBG) println("UART_CMD_timeout = " + UART_CMD_timeout + " sec(s)");
+  if (PRINT_UART_LOAD_DBG) println("UART_CMD_timeout = " + UART_CMD_timeout + " msec(s)");
 }
 
 void UART_clear()
@@ -163,7 +165,7 @@ void UART_write(byte[] buf)
 
 void UART_prepare_read(int buf_size)
 {
-  UART_inBuffer = new byte[8*buf_size];
+  UART_inBuffer = new byte[buf_size * 2];
   UART_inLength = 0;  // Bytes length by readBytes()
   UART_total = 0; // Init. total received data.
   UART_state = 0; // Init. state machine for getting length data of UDP data format.
@@ -314,7 +316,7 @@ int PS_perform_GSCN(int scan_number)
     // Make command buffer
     outBuffer = PS_make_cmd("GSCN", scan_number);
     // Prepare read
-    UART_prepare_read(8*1024);
+    UART_prepare_read(UART_PS_MAX_BUFFER);
     // Flush buffer
     UART_clear();
     // Prepare UART CMD state

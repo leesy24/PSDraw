@@ -5,6 +5,8 @@ final boolean PRINT_UDP_READ_ERR = false;
 final boolean PRINT_UDP_LOAD_DBG = false; 
 final boolean PRINT_UDP_LOAD_ERR = false; 
 
+final static int UDP_PS_MAX_BUFFER = 8*1024;
+
 UDP UDP_handle = null;  // The handle of UDP
 
 String UDP_remote_ip = "10.0.8.86";
@@ -56,8 +58,7 @@ void interface_UDP_setup()
 
   UDP_SCAN_DONE = false;
 
-  //UDP_config_timeout(10000); // timeout 10secs
-  UDP_config_timeout(2000); // timeout 2secs
+  UDP_config_timeout(1000); // timeout 1secs for UDP
 
   // Create a new datagram connection on local port
   // and wait for incomming message
@@ -120,7 +121,7 @@ boolean interface_UDP_load()
 public void UDP_config_timeout(int msec)
 {
   UDP_CMD_timeout = msec;
-  if (PRINT_UDP_LOAD_DBG) println("UDP_CMD_timeout = " + UDP_CMD_timeout + " sec(s)");
+  if (PRINT_UDP_LOAD_DBG) println("UDP_CMD_timeout = " + UDP_CMD_timeout + " msec(s)");
 }
 
 void UDP_write(byte[] buf)
@@ -132,7 +133,7 @@ void UDP_write(byte[] buf)
 
 void UDP_prepare_read(int buf_size)
 {
-  UDP_inBuffer = new byte[8*buf_size];
+  UDP_inBuffer = new byte[buf_size * 2];
   UDP_inLength = 0;  // Bytes length by readBytes()
   UDP_total = 0; // Init. total received data.
   UDP_state = 0; // Init. state machine for getting length data of UDP data format.
@@ -273,7 +274,7 @@ int UDP_PS_perform_GSCN(int scan_number)
     // Make command buffer
     outBuffer = UDP_PS_make_cmd("GSCN", scan_number);
     // Prepare read
-    UDP_prepare_read(8*1024);
+    UDP_prepare_read(UDP_PS_MAX_BUFFER);
     // Flush buffer
     // Prepare UDP CMD state
     UDP_CMD_state = UDP_CMD_STATE_SENT;
