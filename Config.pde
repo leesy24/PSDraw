@@ -24,14 +24,14 @@ void config_settings()
       String name = variable.getString("Name");
       if(name.equals("DATA_interface"))
         DATA_interface = variable.getInt("Value");
-      else if(name.equals("SCREEN_X"))
-        SCREEN_X = variable.getInt("Value");
-      else if(name.equals("SCREEN_Y"))
-        SCREEN_Y = variable.getInt("Value");
-      else if(name.equals("SCREEN_WIDTH"))
-        SCREEN_WIDTH = variable.getInt("Value");
-      else if(name.equals("SCREEN_HEIGHT"))
-        SCREEN_HEIGHT = variable.getInt("Value");
+      else if(name.equals("SCREEN_x_ratio"))
+        SCREEN_x_ratio = variable.getFloat("Value");
+      else if(name.equals("SCREEN_y_ratio"))
+        SCREEN_y_ratio = variable.getFloat("Value");
+      else if(name.equals("SCREEN_width_ratio"))
+        SCREEN_width_ratio = variable.getFloat("Value");
+      else if(name.equals("SCREEN_height_ratio"))
+        SCREEN_height_ratio = variable.getFloat("Value");
       else if(name.equals("ROTATE_FACTOR"))
         ROTATE_FACTOR = variable.getFloat("Value"); 
       else if(name.equals("MIRROR_ENABLE"))
@@ -76,20 +76,20 @@ void config_settings()
     variable.setInt("Value", DATA_interface);
 
     variable = CONFIG_table.addRow();
-    variable.setString("Name", "SCREEN_X");
-    variable.setInt("Value", SCREEN_X);
+    variable.setString("Name", "SCREEN_x_ratio");
+    variable.setFloat("Value", SCREEN_x_ratio);
 
     variable = CONFIG_table.addRow();
-    variable.setString("Name", "SCREEN_Y");
-    variable.setInt("Value", SCREEN_Y);
+    variable.setString("Name", "SCREEN_y_ratio");
+    variable.setFloat("Value", SCREEN_y_ratio);
 
     variable = CONFIG_table.addRow();
-    variable.setString("Name", "SCREEN_WIDTH");
-    variable.setInt("Value", SCREEN_WIDTH);
+    variable.setString("Name", "SCREEN_width_ratio");
+    variable.setFloat("Value", SCREEN_width_ratio);
 
     variable = CONFIG_table.addRow();
-    variable.setString("Name", "SCREEN_HEIGHT");
-    variable.setInt("Value", SCREEN_HEIGHT);
+    variable.setString("Name", "SCREEN_height_ratio");
+    variable.setFloat("Value", SCREEN_height_ratio);
 
     variable = CONFIG_table.addRow();
     variable.setString("Name", "ROTATE_FACTOR");
@@ -169,31 +169,31 @@ void config_save()
         changed = true;
       }
     }
-    else if(name.equals("SCREEN_X")) {
-      value_int = variable.getInt("Value");
-      if(value_int != SCREEN_X) {
-        variable.setInt("Value", SCREEN_X);
+    else if(name.equals("SCREEN_x_ratio")) {
+      value_float = variable.getInt("Value");
+      if(value_float != SCREEN_x_ratio) {
+        variable.setFloat("Value", SCREEN_x_ratio);
         changed = true;
       }
     }
-    else if(name.equals("SCREEN_Y")) {
-      value_int = variable.getInt("Value");
-      if(value_int != SCREEN_Y) {
-        variable.setInt("Value", SCREEN_Y);
+    else if(name.equals("SCREEN_y_ratio")) {
+      value_float = variable.getInt("Value");
+      if(value_float != SCREEN_y_ratio) {
+        variable.setFloat("Value", SCREEN_y_ratio);
         changed = true;
       }
     }
-    else if(name.equals("SCREEN_WIDTH")) {
-      value_int = variable.getInt("Value");
-      if(value_int != SCREEN_WIDTH) {
-        variable.setInt("Value", SCREEN_WIDTH);
+    else if(name.equals("SCREEN_width_ratio")) {
+      value_float = variable.getInt("Value");
+      if(value_float != SCREEN_width_ratio) {
+        variable.setFloat("Value", SCREEN_width_ratio);
         changed = true;
       }
     }
-    else if(name.equals("SCREEN_HEIGHT")) {
-      value_int = variable.getInt("Value");
-      if(value_int != SCREEN_HEIGHT) {
-        variable.setInt("Value", SCREEN_HEIGHT);
+    else if(name.equals("SCREEN_height_ratio")) {
+      value_float = variable.getInt("Value");
+      if(value_float != SCREEN_height_ratio) {
+        variable.setFloat("Value", SCREEN_height_ratio);
         changed = true;
       }
     }

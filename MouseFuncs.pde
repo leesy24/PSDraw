@@ -1,5 +1,8 @@
-//final static boolean PRINT_MOUSEFUNC_DBG = true;
-final static boolean PRINT_MOUSEFUNC_DBG = false;
+//final static boolean PRINT_MOUSEFUNC_DBG_ALL = true;
+final static boolean PRINT_MOUSEFUNC_DBG_ALL = false;
+
+final static boolean PRINT_MOUSEFUNC_DBG_POS = true;
+//final static boolean PRINT_MOUSEFUNC_DBG_POS = false;
 
 //final static boolean PRINT_MOUSEFUNC_Pressed = true; 
 final static boolean PRINT_MOUSEFUNC_Pressed = false;
@@ -18,10 +21,10 @@ int mousePressedX;
 int mousePressedY;
 
 void mousePressed() {
-  if (PRINT_MOUSEFUNC_Pressed || PRINT_MOUSEFUNC_DBG) println("Mouse pressed! ");
+  if (PRINT_MOUSEFUNC_Pressed || PRINT_MOUSEFUNC_DBG_ALL) println("Mouse pressed! ");
 
-  if (PRINT_MOUSEFUNC_Pressed) println("mouseX=" + mouseX + ", mouseY=" + mouseY);
-  //if (PRINT_MOUSEFUNC_Pressed) println("SCREEN_WIDTH - mouseX=" + (SCREEN_WIDTH - mouseX) + ", mouseY=" + mouseY);
+  if (PRINT_MOUSEFUNC_Pressed || PRINT_MOUSEFUNC_DBG_ALL || PRINT_MOUSEFUNC_DBG_POS) println("mouseX=" + mouseX + ", mouseY=" + mouseY);
+  //if (PRINT_MOUSEFUNC_Pressed) println("SCREEN_width - mouseX=" + (SCREEN_width - mouseX) + ", mouseY=" + mouseY);
 
   mousePressedX = mouseX - GRID_OFFSET_X;
   mousePressedY = mouseY - GRID_OFFSET_Y;
@@ -42,19 +45,19 @@ void mousePressed() {
     save_ox = float(GRID_OFFSET_X);
     save_oy = float(GRID_OFFSET_Y);
     if (ROTATE_FACTOR == 0) { // OK
-      GRID_OFFSET_X =  int(save_oy - (float(SCREEN_HEIGHT) / 2.0) + (float(SCREEN_WIDTH)  / 2.0));
+      GRID_OFFSET_X =  int(save_oy - (float(SCREEN_height) / 2.0) + (float(SCREEN_width)  / 2.0));
       GRID_OFFSET_Y = -int(save_ox);
     }
     else if (ROTATE_FACTOR == 90) { // OK
-      GRID_OFFSET_Y = -int(save_ox + (float(SCREEN_WIDTH)  / 2.0) - (float(SCREEN_HEIGHT) / 2.0));
+      GRID_OFFSET_Y = -int(save_ox + (float(SCREEN_width)  / 2.0) - (float(SCREEN_height) / 2.0));
       GRID_OFFSET_X =  int(save_oy);
     }
     else if (ROTATE_FACTOR == 180) { // OK
-      GRID_OFFSET_X =  int(save_oy + (float(SCREEN_HEIGHT) / 2.0) - (float(SCREEN_WIDTH)  / 2.0));
+      GRID_OFFSET_X =  int(save_oy + (float(SCREEN_height) / 2.0) - (float(SCREEN_width)  / 2.0));
       GRID_OFFSET_Y = -int(save_ox);
     }
     else /*if (ROTATE_FACTOR == 270)*/ { // OK
-      GRID_OFFSET_Y = -int(save_ox - (float(SCREEN_WIDTH)  / 2.0) + (float(SCREEN_HEIGHT) / 2.0));
+      GRID_OFFSET_Y = -int(save_ox - (float(SCREEN_width)  / 2.0) + (float(SCREEN_height) / 2.0));
       GRID_OFFSET_X =  int(save_oy);
     }
     if (PRINT_MOUSEFUNC_Pressed) println("ROTATE_FACTOR=" + ROTATE_FACTOR);
@@ -67,19 +70,19 @@ void mousePressed() {
     save_ox = float(GRID_OFFSET_X);
     save_oy = float(GRID_OFFSET_Y);
     if (ROTATE_FACTOR == 0) { // OK
-      GRID_OFFSET_X = -int(save_oy + (float(SCREEN_HEIGHT) / 2.0) - (float(SCREEN_WIDTH)  / 2.0));
+      GRID_OFFSET_X = -int(save_oy + (float(SCREEN_height) / 2.0) - (float(SCREEN_width)  / 2.0));
       GRID_OFFSET_Y =  int(save_ox);
     }
     else if (ROTATE_FACTOR == 90) { // OK
-      GRID_OFFSET_Y =  int(save_ox - (float(SCREEN_WIDTH)  / 2.0) + (float(SCREEN_HEIGHT) / 2.0));
+      GRID_OFFSET_Y =  int(save_ox - (float(SCREEN_width)  / 2.0) + (float(SCREEN_height) / 2.0));
       GRID_OFFSET_X = -int(save_oy);
     }
     else if (ROTATE_FACTOR == 180) { // OK
-      GRID_OFFSET_X = -int(save_oy - (float(SCREEN_HEIGHT) / 2.0) + (float(SCREEN_WIDTH)  / 2.0));
+      GRID_OFFSET_X = -int(save_oy - (float(SCREEN_height) / 2.0) + (float(SCREEN_width)  / 2.0));
       GRID_OFFSET_Y =  int(save_ox);
     }
     else /*if (ROTATE_FACTOR == 270)*/ { // OK
-      GRID_OFFSET_Y =  int(save_ox + (float(SCREEN_WIDTH)  / 2.0) - (float(SCREEN_HEIGHT) / 2.0));
+      GRID_OFFSET_Y =  int(save_ox + (float(SCREEN_width)  / 2.0) - (float(SCREEN_height) / 2.0));
       GRID_OFFSET_X = -int(save_oy);
     }
     if (PRINT_MOUSEFUNC_Pressed) println("ROTATE_FACTOR=" + ROTATE_FACTOR);
@@ -105,15 +108,15 @@ void mousePressed() {
 }
 
 void mouseReleased() {
-  if (PRINT_MOUSEFUNC_Released || PRINT_MOUSEFUNC_DBG) println("Mouse released! ");
+  if (PRINT_MOUSEFUNC_Released || PRINT_MOUSEFUNC_DBG_ALL) println("Mouse released! ");
   interface_mouseReleased();
   mousePressed = false;
 }
 
 void mouseDragged() 
 {
-  if (PRINT_MOUSEFUNC_Dragged || PRINT_MOUSEFUNC_DBG) println("Mouse dragged!");
-  if (PRINT_MOUSEFUNC_Dragged) println("\t mouseX=" + mouseX + ", mouseY=" + mouseY);
+  if (PRINT_MOUSEFUNC_Dragged || PRINT_MOUSEFUNC_DBG_ALL) println("Mouse dragged!");
+  if (PRINT_MOUSEFUNC_Dragged || PRINT_MOUSEFUNC_DBG_ALL || PRINT_MOUSEFUNC_DBG_POS) println("\t mouseX=" + mouseX + ", mouseY=" + mouseY);
   if (PRINT_MOUSEFUNC_Dragged) println("\t mousePressedX=" + mousePressedX + ", mousePressedY=" + mousePressedY);
   if (mousePressed == true) {
     GRID_OFFSET_X = mouseX - mousePressedX;
@@ -128,7 +131,7 @@ void mouseWheel(MouseEvent event) {
   float zoom_factor_save = ZOOM_FACTOR;
   int dx=0, dy=0;
 
-  if (PRINT_MOUSEFUNC_Wheel || PRINT_MOUSEFUNC_DBG) println("Mouse wheeled! count=" + wheel_count);
+  if (PRINT_MOUSEFUNC_Wheel || PRINT_MOUSEFUNC_DBG_ALL) println("Mouse wheeled! count=" + wheel_count);
   if (wheel_count > 0) {
     for (; wheel_count > 0; wheel_count -= 1) {  
       button_zoom_minus();
@@ -143,7 +146,7 @@ void mouseWheel(MouseEvent event) {
   // Check zoom factor changed.
   if (zoom_factor_save != ZOOM_FACTOR) {
     //println("old ZOOM_FACTOR=" + zoom_factor_save + ", new ZOOM_FACTOR=" + ZOOM_FACTOR);
-    //println("SCREEN_WIDTH - mouseX=" + (SCREEN_WIDTH - mouseX) + ", mouseY=" + mouseY);
+    //println("SCREEN_width - mouseX=" + (SCREEN_width - mouseX) + ", mouseY=" + mouseY);
     //println("GRID_OFFSET_X=" + GRID_OFFSET_X + ", GRID_OFFSET_Y=" + GRID_OFFSET_Y);
     if (ROTATE_FACTOR == 0) {
       dx = 
@@ -168,10 +171,10 @@ void mouseWheel(MouseEvent event) {
         );
       dy =
         int(
-          (mouseY - float(SCREEN_HEIGHT) / 2.0 - float(GRID_OFFSET_Y))
+          (mouseY - float(SCREEN_height) / 2.0 - float(GRID_OFFSET_Y))
           -
           (
-            (mouseY - float(SCREEN_HEIGHT) / 2.0 - float(GRID_OFFSET_Y))
+            (mouseY - float(SCREEN_height) / 2.0 - float(GRID_OFFSET_Y))
             *
             zoom_factor_save
             /
@@ -182,10 +185,10 @@ void mouseWheel(MouseEvent event) {
     else if (ROTATE_FACTOR == 90) { // C
       dx = 
         int(
-          (mouseX - float(SCREEN_WIDTH) / 2.0 - float(GRID_OFFSET_X))
+          (mouseX - float(SCREEN_width) / 2.0 - float(GRID_OFFSET_X))
           -
           (
-            (mouseX - float(SCREEN_WIDTH) / 2.0 - float(GRID_OFFSET_X))
+            (mouseX - float(SCREEN_width) / 2.0 - float(GRID_OFFSET_X))
             *
             zoom_factor_save
             /
@@ -214,13 +217,13 @@ void mouseWheel(MouseEvent event) {
         );
     }
     else if (ROTATE_FACTOR == 180) {
-      //println("(SCREEN_WIDTH - mouseX + GRID_OFFSET_X) * zoom_factor_save / ZOOM_FACTOR=" + ((SCREEN_WIDTH - mouseX + GRID_OFFSET_X) * zoom_factor_save / ZOOM_FACTOR));
-      //println("(SCREEN_WIDTH - mouseX + GRID_OFFSET_X)=" + ((SCREEN_WIDTH - mouseX + GRID_OFFSET_X)));
+      //println("(SCREEN_width - mouseX + GRID_OFFSET_X) * zoom_factor_save / ZOOM_FACTOR=" + ((SCREEN_width - mouseX + GRID_OFFSET_X) * zoom_factor_save / ZOOM_FACTOR));
+      //println("(SCREEN_width - mouseX + GRID_OFFSET_X)=" + ((SCREEN_width - mouseX + GRID_OFFSET_X)));
       dx = 
         int(
           (
             (
-              float(SCREEN_WIDTH) - mouseX + float(GRID_OFFSET_X)
+              float(SCREEN_width) - mouseX + float(GRID_OFFSET_X)
               -
               (float(TEXT_MARGIN) + float(FONT_HEIGHT) / 2.0)
             )
@@ -231,17 +234,17 @@ void mouseWheel(MouseEvent event) {
           )
           -
           (
-            float(SCREEN_WIDTH) - mouseX + float(GRID_OFFSET_X)
+            float(SCREEN_width) - mouseX + float(GRID_OFFSET_X)
             -
             (float(TEXT_MARGIN) + float(FONT_HEIGHT) / 2.0)
           )
         );
       dy =
         int(
-          (mouseY - float(SCREEN_HEIGHT) / 2.0 - float(GRID_OFFSET_Y))
+          (mouseY - float(SCREEN_height) / 2.0 - float(GRID_OFFSET_Y))
           -
           (
-            (mouseY - float(SCREEN_HEIGHT) / 2.0 - float(GRID_OFFSET_Y))
+            (mouseY - float(SCREEN_height) / 2.0 - float(GRID_OFFSET_Y))
             *
             zoom_factor_save
             /
@@ -251,14 +254,14 @@ void mouseWheel(MouseEvent event) {
     }
     else //if (ROTATE_FACTOR == 270)
     {
-      //println("(SCREEN_HEIGHT - mouseY - GRID_OFFSET_Y) * zoom_factor_save / ZOOM_FACTOR=" + ((SCREEN_HEIGHT - mouseY - GRID_OFFSET_Y) * zoom_factor_save / ZOOM_FACTOR));
-      //println("(SCREEN_HEIGHT - mouseY - GRID_OFFSET_Y)=" + ((SCREEN_HEIGHT - mouseY - GRID_OFFSET_Y)));
+      //println("(SCREEN_height - mouseY - GRID_OFFSET_Y) * zoom_factor_save / ZOOM_FACTOR=" + ((SCREEN_height - mouseY - GRID_OFFSET_Y) * zoom_factor_save / ZOOM_FACTOR));
+      //println("(SCREEN_height - mouseY - GRID_OFFSET_Y)=" + ((SCREEN_height - mouseY - GRID_OFFSET_Y)));
       dx = 
         int(
-          (mouseX - float(SCREEN_WIDTH) / 2.0 - float(GRID_OFFSET_X))
+          (mouseX - float(SCREEN_width) / 2.0 - float(GRID_OFFSET_X))
           -
           (
-            (mouseX - float(SCREEN_WIDTH) / 2.0 - float(GRID_OFFSET_X))
+            (mouseX - float(SCREEN_width) / 2.0 - float(GRID_OFFSET_X))
             *
             zoom_factor_save
             /
@@ -269,7 +272,7 @@ void mouseWheel(MouseEvent event) {
         int(
           (
             (
-              float(SCREEN_HEIGHT) - mouseY + float(GRID_OFFSET_Y)
+              float(SCREEN_height) - mouseY + float(GRID_OFFSET_Y)
               -
               (float(TEXT_MARGIN) + float(FONT_HEIGHT) / 2.0)
             )
@@ -280,7 +283,7 @@ void mouseWheel(MouseEvent event) {
           )
           -
           (
-            float(SCREEN_HEIGHT) - mouseY + float(GRID_OFFSET_Y)
+            float(SCREEN_height) - mouseY + float(GRID_OFFSET_Y)
             -
             (float(TEXT_MARGIN) + float(FONT_HEIGHT) / 2.0)
           )

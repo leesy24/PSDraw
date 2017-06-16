@@ -29,32 +29,32 @@ void button_setup()
   button_zoom_minus_width = FONT_HEIGHT * 2;
   button_zoom_minus_height = FONT_HEIGHT * 2;
   button_zoom_minus_x = TEXT_MARGIN + FONT_HEIGHT * 3;
-  button_zoom_minus_y = SCREEN_HEIGHT - button_zoom_minus_height - TEXT_MARGIN - FONT_HEIGHT * 1;
+  button_zoom_minus_y = SCREEN_height - button_zoom_minus_height - TEXT_MARGIN - FONT_HEIGHT * 1;
 
   button_zoom_pluse_width = FONT_HEIGHT * 2;
   button_zoom_pluse_height = FONT_HEIGHT * 2;
   button_zoom_pluse_x = TEXT_MARGIN + FONT_HEIGHT * 3;
-  button_zoom_pluse_y = SCREEN_HEIGHT - button_zoom_pluse_height - TEXT_MARGIN - FONT_HEIGHT * 3;
+  button_zoom_pluse_y = SCREEN_height - button_zoom_pluse_height - TEXT_MARGIN - FONT_HEIGHT * 3;
 
   button_rotate_ccw_width = FONT_HEIGHT * 2;
   button_rotate_ccw_height = FONT_HEIGHT * 2;
   button_rotate_ccw_x = TEXT_MARGIN + FONT_HEIGHT * 6;
-  button_rotate_ccw_y = SCREEN_HEIGHT - button_rotate_ccw_height - TEXT_MARGIN - FONT_HEIGHT * 1;
+  button_rotate_ccw_y = SCREEN_height - button_rotate_ccw_height - TEXT_MARGIN - FONT_HEIGHT * 1;
 
   button_rotate_cw_width = FONT_HEIGHT * 2;
   button_rotate_cw_height = FONT_HEIGHT * 2;
   button_rotate_cw_x = TEXT_MARGIN + FONT_HEIGHT * 6;
-  button_rotate_cw_y = SCREEN_HEIGHT - button_rotate_cw_height - TEXT_MARGIN - FONT_HEIGHT * 3;
+  button_rotate_cw_y = SCREEN_height - button_rotate_cw_height - TEXT_MARGIN - FONT_HEIGHT * 3;
 
   button_mirror_en_width = FONT_HEIGHT * 2;
   button_mirror_en_height = FONT_HEIGHT * 2;
   button_mirror_en_x = TEXT_MARGIN + FONT_HEIGHT * 9;
-  button_mirror_en_y = SCREEN_HEIGHT - button_mirror_en_height - TEXT_MARGIN - FONT_HEIGHT * 1;
+  button_mirror_en_y = SCREEN_height - button_mirror_en_height - TEXT_MARGIN - FONT_HEIGHT * 1;
 
   button_reset_en_width = FONT_HEIGHT * 2;
   button_reset_en_height = FONT_HEIGHT * 2;
   button_reset_en_x = TEXT_MARGIN + FONT_HEIGHT * 12;
-  button_reset_en_y = SCREEN_HEIGHT - button_mirror_en_height - TEXT_MARGIN - FONT_HEIGHT * 1;
+  button_reset_en_y = SCREEN_height - button_mirror_en_height - TEXT_MARGIN - FONT_HEIGHT * 1;
 }
 
 void button_draw()

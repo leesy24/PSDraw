@@ -25,33 +25,33 @@ void grid_draw_rotate_0()
   // Sets the color used to draw lines and borders around shapes.
   fill(C_GRID_LINE);
   stroke(C_GRID_LINE);
-  for (iy = -1; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
+  for (iy = -1; iy <= SCREEN_height / 100 + 1; iy ++) {
     // if even number.
-    if ((SCREEN_HEIGHT / 100) % 2 == 0) {
-      line(0,            iy * 100 + (SCREEN_HEIGHT % 100) / 2 + (GRID_OFFSET_Y % 100),
-           SCREEN_WIDTH, iy * 100 + (SCREEN_HEIGHT % 100) / 2 + (GRID_OFFSET_Y % 100));
+    if ((SCREEN_height / 100) % 2 == 0) {
+      line(0,            iy * 100 + (SCREEN_height % 100) / 2 + (GRID_OFFSET_Y % 100),
+           SCREEN_width, iy * 100 + (SCREEN_height % 100) / 2 + (GRID_OFFSET_Y % 100));
     }
     // else odd number
     else {
-      line(0,            iy * 100 + (SCREEN_HEIGHT % 100) / 2 + 50 + (GRID_OFFSET_Y % 100),
-           SCREEN_WIDTH, iy * 100 + (SCREEN_HEIGHT % 100) / 2 + 50 + (GRID_OFFSET_Y % 100));
+      line(0,            iy * 100 + (SCREEN_height % 100) / 2 + 50 + (GRID_OFFSET_Y % 100),
+           SCREEN_width, iy * 100 + (SCREEN_height % 100) / 2 + 50 + (GRID_OFFSET_Y % 100));
     }
   }
-  for (ix = 0; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
+  for (ix = 0; ix <= SCREEN_width / 100 + 1; ix ++) {
     line(ix * 100 + TEXT_MARGIN + FONT_HEIGHT / 2 + (GRID_OFFSET_X % 100), 0,
-         ix * 100 + TEXT_MARGIN + FONT_HEIGHT / 2 + (GRID_OFFSET_X % 100), SCREEN_HEIGHT);
+         ix * 100 + TEXT_MARGIN + FONT_HEIGHT / 2 + (GRID_OFFSET_X % 100), SCREEN_height);
   }
 
   // Sets the color used to draw text and borders around shapes.
   fill(C_GRID_TEXT);
   stroke(C_GRID_TEXT);
-  for (iy = -1; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
+  for (iy = -1; iy <= SCREEN_height / 100 + 1; iy ++) {
     if (MIRROR_ENABLE) {
       string =
         (
           float(
             int(
-              ZOOM_FACTOR / 100.0 * float((iy - SCREEN_HEIGHT / 100 / 2) * 100)
+              ZOOM_FACTOR / 100.0 * float((iy - SCREEN_height / 100 / 2) * 100)
             )
             -
             int(
@@ -69,7 +69,7 @@ void grid_draw_rotate_0()
         (
           float(
             int(
-              ZOOM_FACTOR / 100.0 * float((SCREEN_HEIGHT / 100 / 2 - iy) * 100)
+              ZOOM_FACTOR / 100.0 * float((SCREEN_height / 100 / 2 - iy) * 100)
             )
             +
             int(
@@ -83,23 +83,23 @@ void grid_draw_rotate_0()
         "m";
     }
     // if even number.
-    if ((SCREEN_HEIGHT / 100) % 2 == 0) {
-      y = iy * 100 + (SCREEN_HEIGHT % 100) / 2 + FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100);
+    if ((SCREEN_height / 100) % 2 == 0) {
+      y = iy * 100 + (SCREEN_height % 100) / 2 + FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100);
     }
     // else odd number
     else {
-      y = iy * 100 + (SCREEN_HEIGHT % 100) / 2 + 50 + FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100);
+      y = iy * 100 + (SCREEN_height % 100) / 2 + 50 + FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100);
     }
     x = TEXT_MARGIN + FONT_HEIGHT / 2 - int(textWidth(string) / 2.0) + GRID_OFFSET_X;
     if (x < TEXT_MARGIN) x = TEXT_MARGIN;
-    if (x > SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN) x = SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN;
+    if (x > SCREEN_width - int(textWidth(string)) - TEXT_MARGIN) x = SCREEN_width - int(textWidth(string)) - TEXT_MARGIN;
     text(string, x, y);
     if(string.equals("0.0m")) {
       image_y = y - FONT_HEIGHT / 2;
     }
     //println("iy=" + iy + ", string=" + string + ", x=" + x + ", y=" + y);
   }
-  for (ix = 0; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
+  for (ix = 0; ix <= SCREEN_width / 100 + 1; ix ++) {
     if (
       int(
         ZOOM_FACTOR / 100.0 * float(ix * 100)
@@ -126,9 +126,9 @@ void grid_draw_rotate_0()
         )
         +
         "m";
-      y = SCREEN_HEIGHT / 2 + FONT_HEIGHT / 2 + GRID_OFFSET_Y;
+      y = SCREEN_height / 2 + FONT_HEIGHT / 2 + GRID_OFFSET_Y;
       if (y < TEXT_MARGIN + FONT_HEIGHT) y = TEXT_MARGIN + FONT_HEIGHT;
-      if (y > SCREEN_HEIGHT - TEXT_MARGIN) y = SCREEN_HEIGHT - TEXT_MARGIN;
+      if (y > SCREEN_height - TEXT_MARGIN) y = SCREEN_height - TEXT_MARGIN;
       x = ix * 100 + TEXT_MARGIN + FONT_HEIGHT / 2 - int(textWidth(string) / 2.0) + (GRID_OFFSET_X % 100);
       text(string, x, y);
       if(string.equals("0.0m")) {
@@ -137,7 +137,7 @@ void grid_draw_rotate_0()
     }
   }
 
-  if( (image_x >= 0 && image_x < SCREEN_WIDTH) && (image_y >= 0 && image_y < SCREEN_HEIGHT) ) {
+  if( (image_x >= 0 && image_x < SCREEN_width) && (image_y >= 0 && image_y < SCREEN_height) ) {
     //image(PS_image, image_x, image_y);
     image(PS_image, image_x - PS_image.width / 2, image_y - PS_image.height / 2);
   }
@@ -161,33 +161,33 @@ void grid_draw_rotate_90()
   // Sets the color used to draw lines and borders around shapes.
   fill(C_GRID_LINE);
   stroke(C_GRID_LINE);
-  for (ix = -1; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
+  for (ix = -1; ix <= SCREEN_width / 100 + 1; ix ++) {
     // if even number.
-    if ((SCREEN_WIDTH / 100) % 2 == 0) {
-      line(ix * 100 + (SCREEN_WIDTH % 100) / 2 + (GRID_OFFSET_X % 100), 0,
-           ix * 100 + (SCREEN_WIDTH % 100) / 2 + (GRID_OFFSET_X % 100), SCREEN_HEIGHT);
+    if ((SCREEN_width / 100) % 2 == 0) {
+      line(ix * 100 + (SCREEN_width % 100) / 2 + (GRID_OFFSET_X % 100), 0,
+           ix * 100 + (SCREEN_width % 100) / 2 + (GRID_OFFSET_X % 100), SCREEN_height);
     }
     // else odd number
     else {
-      line(ix * 100 + (SCREEN_WIDTH % 100) / 2 + 50 + (GRID_OFFSET_X % 100), 0,
-           ix * 100 + (SCREEN_WIDTH % 100) / 2 + 50 + (GRID_OFFSET_X % 100), SCREEN_HEIGHT);
+      line(ix * 100 + (SCREEN_width % 100) / 2 + 50 + (GRID_OFFSET_X % 100), 0,
+           ix * 100 + (SCREEN_width % 100) / 2 + 50 + (GRID_OFFSET_X % 100), SCREEN_height);
     }
   }
-  for (iy = 0; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
+  for (iy = 0; iy <= SCREEN_height / 100 + 1; iy ++) {
     line(0,            iy * 100 + TEXT_MARGIN + FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100),
-         SCREEN_WIDTH, iy * 100 + TEXT_MARGIN + FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100));
+         SCREEN_width, iy * 100 + TEXT_MARGIN + FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100));
   }
 
   // Sets the color used to draw text and borders around shapes.
   fill(C_GRID_TEXT);
   stroke(C_GRID_TEXT);
-  for (ix = -1; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
+  for (ix = -1; ix <= SCREEN_width / 100 + 1; ix ++) {
     if (MIRROR_ENABLE) {
       string =
         (
           float(
             int(
-              ZOOM_FACTOR / 100.0 * float((SCREEN_WIDTH / 100 / 2 - ix) * 100)
+              ZOOM_FACTOR / 100.0 * float((SCREEN_width / 100 / 2 - ix) * 100)
             )
             +
             int(
@@ -205,7 +205,7 @@ void grid_draw_rotate_90()
         (
           float(
             int(
-              ZOOM_FACTOR / 100.0 * float((ix - SCREEN_WIDTH / 100 / 2) * 100)
+              ZOOM_FACTOR / 100.0 * float((ix - SCREEN_width / 100 / 2) * 100)
             )
             -
             int(
@@ -219,22 +219,22 @@ void grid_draw_rotate_90()
         "m";
     }
     // if even number.
-    if ((SCREEN_WIDTH / 100) % 2 == 0) {
-      x = ix * 100 + (SCREEN_WIDTH % 100) / 2 - int(textWidth(string) / 2.0) + (GRID_OFFSET_X % 100);
+    if ((SCREEN_width / 100) % 2 == 0) {
+      x = ix * 100 + (SCREEN_width % 100) / 2 - int(textWidth(string) / 2.0) + (GRID_OFFSET_X % 100);
     }
     // else odd number
     else {
-      x = ix * 100 + (SCREEN_WIDTH % 100) / 2 + 50 - int(textWidth(string) / 2.0) + (GRID_OFFSET_X % 100);
+      x = ix * 100 + (SCREEN_width % 100) / 2 + 50 - int(textWidth(string) / 2.0) + (GRID_OFFSET_X % 100);
     }
     y = TEXT_MARGIN + FONT_HEIGHT + GRID_OFFSET_Y;
     if (y < TEXT_MARGIN + FONT_HEIGHT) y = TEXT_MARGIN + FONT_HEIGHT;
-    if (y > SCREEN_HEIGHT - TEXT_MARGIN) y = SCREEN_HEIGHT - TEXT_MARGIN;
+    if (y > SCREEN_height - TEXT_MARGIN) y = SCREEN_height - TEXT_MARGIN;
     text(string, x, y);
     if(string.equals("0.0m")) {
       image_x = x + int(textWidth(string) / 2.0);
     }
   }
-  for (iy = 0; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
+  for (iy = 0; iy <= SCREEN_height / 100 + 1; iy ++) {
     if (
       int(
         ZOOM_FACTOR / 100.0 * float(iy * 100)
@@ -261,9 +261,9 @@ void grid_draw_rotate_90()
         )
         +
         "m";
-      x = SCREEN_WIDTH / 2 - int(textWidth(string)/2) + GRID_OFFSET_X;
+      x = SCREEN_width / 2 - int(textWidth(string)/2) + GRID_OFFSET_X;
       if (x < TEXT_MARGIN) x = TEXT_MARGIN;
-      if (x > SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN) x = SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN;
+      if (x > SCREEN_width - int(textWidth(string)) - TEXT_MARGIN) x = SCREEN_width - int(textWidth(string)) - TEXT_MARGIN;
       y = iy * 100 + TEXT_MARGIN + FONT_HEIGHT / 2 + FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100);
       text(string, x, y);
       if(string.equals("0.0m")) {
@@ -272,7 +272,7 @@ void grid_draw_rotate_90()
     }
   }
 
-  if( (image_x >= 0 && image_x < SCREEN_WIDTH) && (image_y >= 0 && image_y < SCREEN_HEIGHT) ) {
+  if( (image_x >= 0 && image_x < SCREEN_width) && (image_y >= 0 && image_y < SCREEN_height) ) {
     //image(PS_image, image_x, image_y);
     image(PS_image, image_x - PS_image.width / 2, image_y - PS_image.height / 2);
   }
@@ -296,33 +296,33 @@ void grid_draw_rotate_180()
   // Sets the color used to draw lines and borders around shapes.
   fill(C_GRID_LINE);
   stroke(C_GRID_LINE);
-  for (iy = -1; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
+  for (iy = -1; iy <= SCREEN_height / 100 + 1; iy ++) {
     // if even number.
-    if ((SCREEN_HEIGHT / 100) % 2 == 0) {
-      line(0,            iy * 100 + (SCREEN_HEIGHT % 100) / 2 + (GRID_OFFSET_Y % 100),
-           SCREEN_WIDTH, iy * 100 + (SCREEN_HEIGHT % 100) / 2 + (GRID_OFFSET_Y % 100));
+    if ((SCREEN_height / 100) % 2 == 0) {
+      line(0,            iy * 100 + (SCREEN_height % 100) / 2 + (GRID_OFFSET_Y % 100),
+           SCREEN_width, iy * 100 + (SCREEN_height % 100) / 2 + (GRID_OFFSET_Y % 100));
     }
     // else odd number
     else {
-      line(0,            iy * 100 + (SCREEN_HEIGHT % 100) / 2 + 50 + (GRID_OFFSET_Y % 100),
-           SCREEN_WIDTH, iy * 100 + (SCREEN_HEIGHT % 100) / 2 + 50 + (GRID_OFFSET_Y % 100));
+      line(0,            iy * 100 + (SCREEN_height % 100) / 2 + 50 + (GRID_OFFSET_Y % 100),
+           SCREEN_width, iy * 100 + (SCREEN_height % 100) / 2 + 50 + (GRID_OFFSET_Y % 100));
     }
   }
-  for (ix = 0; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
-    line(SCREEN_WIDTH - ix * 100 - (TEXT_MARGIN + FONT_HEIGHT / 2) + (GRID_OFFSET_X % 100), 0,
-         SCREEN_WIDTH - ix * 100 - (TEXT_MARGIN + FONT_HEIGHT / 2) + (GRID_OFFSET_X % 100), SCREEN_HEIGHT);
+  for (ix = 0; ix <= SCREEN_width / 100 + 1; ix ++) {
+    line(SCREEN_width - ix * 100 - (TEXT_MARGIN + FONT_HEIGHT / 2) + (GRID_OFFSET_X % 100), 0,
+         SCREEN_width - ix * 100 - (TEXT_MARGIN + FONT_HEIGHT / 2) + (GRID_OFFSET_X % 100), SCREEN_height);
   }
 
   // Sets the color used to draw text and borders around shapes.
   fill(C_GRID_TEXT);
   stroke(C_GRID_TEXT);
-  for (iy = -1; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
+  for (iy = -1; iy <= SCREEN_height / 100 + 1; iy ++) {
     if (MIRROR_ENABLE) {
       string =
         (
           float(
             int(
-              ZOOM_FACTOR / 100.0 * float((SCREEN_HEIGHT / 100 / 2 - iy) * 100)
+              ZOOM_FACTOR / 100.0 * float((SCREEN_height / 100 / 2 - iy) * 100)
             )
             +
             int(
@@ -340,7 +340,7 @@ void grid_draw_rotate_180()
         (
           float(
             int(
-              ZOOM_FACTOR / 100.0 * float((iy - SCREEN_HEIGHT / 100 / 2) * 100)
+              ZOOM_FACTOR / 100.0 * float((iy - SCREEN_height / 100 / 2) * 100)
             )
             -
             int(
@@ -354,23 +354,23 @@ void grid_draw_rotate_180()
         "m";
     }
     // if even number.
-    if ((SCREEN_HEIGHT / 100) % 2 == 0) {
-      y = iy * 100 + (SCREEN_HEIGHT % 100) / 2 + FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100);
+    if ((SCREEN_height / 100) % 2 == 0) {
+      y = iy * 100 + (SCREEN_height % 100) / 2 + FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100);
     }
     // else odd number
     else {
-      y = iy * 100 + (SCREEN_HEIGHT % 100) / 2 + 50 + FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100);
+      y = iy * 100 + (SCREEN_height % 100) / 2 + 50 + FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100);
     }
-    x = SCREEN_WIDTH - (TEXT_MARGIN + FONT_HEIGHT / 2) - int(textWidth(string) / 2.0) + GRID_OFFSET_X;
+    x = SCREEN_width - (TEXT_MARGIN + FONT_HEIGHT / 2) - int(textWidth(string) / 2.0) + GRID_OFFSET_X;
     if (x < TEXT_MARGIN) x = TEXT_MARGIN;
-    if (x > SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN) x = SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN;
+    if (x > SCREEN_width - int(textWidth(string)) - TEXT_MARGIN) x = SCREEN_width - int(textWidth(string)) - TEXT_MARGIN;
     text(string, x, y);
     if(string.equals("0.0m")) {
       image_y = y - FONT_HEIGHT / 2;
     }
     //println("iy=" + iy + ", string=" + string + ", x=" + x + ", y=" + y);
   }
-  for (ix = 0; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
+  for (ix = 0; ix <= SCREEN_width / 100 + 1; ix ++) {
     if (
       int(
         ZOOM_FACTOR / 100.0 * float(ix * 100)
@@ -397,18 +397,18 @@ void grid_draw_rotate_180()
         )
         +
         "m";
-      y = SCREEN_HEIGHT / 2 + FONT_HEIGHT / 2 + GRID_OFFSET_Y;
+      y = SCREEN_height / 2 + FONT_HEIGHT / 2 + GRID_OFFSET_Y;
       if (y < TEXT_MARGIN + FONT_HEIGHT) y = TEXT_MARGIN + FONT_HEIGHT;
-      if (y > SCREEN_HEIGHT - TEXT_MARGIN) y = SCREEN_HEIGHT - TEXT_MARGIN;
-      x = SCREEN_WIDTH - ix * 100 - (TEXT_MARGIN + FONT_HEIGHT / 2) - int(textWidth(string) / 2.0) + (GRID_OFFSET_X % 100);
+      if (y > SCREEN_height - TEXT_MARGIN) y = SCREEN_height - TEXT_MARGIN;
+      x = SCREEN_width - ix * 100 - (TEXT_MARGIN + FONT_HEIGHT / 2) - int(textWidth(string) / 2.0) + (GRID_OFFSET_X % 100);
       text(string, x, y);
       if(string.equals("0.0m")) {
-        image_x = SCREEN_WIDTH - ix * 100 - (TEXT_MARGIN + FONT_HEIGHT / 2) + (GRID_OFFSET_X % 100);
+        image_x = SCREEN_width - ix * 100 - (TEXT_MARGIN + FONT_HEIGHT / 2) + (GRID_OFFSET_X % 100);
       }
     }
   }
 
-  if( (image_x >= 0 && image_x < SCREEN_WIDTH) && (image_y >= 0 && image_y < SCREEN_HEIGHT) ) {
+  if( (image_x >= 0 && image_x < SCREEN_width) && (image_y >= 0 && image_y < SCREEN_height) ) {
     //image(PS_image, image_x, image_y);
     image(PS_image, image_x - PS_image.width / 2, image_y - PS_image.height / 2);
   }
@@ -432,33 +432,33 @@ void grid_draw_rotate_270()
   // Sets the color used to draw lines and borders around shapes.
   fill(C_GRID_LINE);
   stroke(C_GRID_LINE);
-  for (ix = -1; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
+  for (ix = -1; ix <= SCREEN_width / 100 + 1; ix ++) {
     // if even number.
-    if ((SCREEN_WIDTH / 100) % 2 == 0) {
-      line(ix * 100 + (SCREEN_WIDTH % 100) / 2 + (GRID_OFFSET_X % 100), 0,
-           ix * 100 + (SCREEN_WIDTH % 100) / 2 + (GRID_OFFSET_X % 100), SCREEN_HEIGHT);
+    if ((SCREEN_width / 100) % 2 == 0) {
+      line(ix * 100 + (SCREEN_width % 100) / 2 + (GRID_OFFSET_X % 100), 0,
+           ix * 100 + (SCREEN_width % 100) / 2 + (GRID_OFFSET_X % 100), SCREEN_height);
     }
     // else odd number
     else {
-      line(ix * 100 + (SCREEN_WIDTH % 100) / 2 + 50 + (GRID_OFFSET_X % 100), 0,
-           ix * 100 + (SCREEN_WIDTH % 100) / 2 + 50 + (GRID_OFFSET_X % 100), SCREEN_HEIGHT);
+      line(ix * 100 + (SCREEN_width % 100) / 2 + 50 + (GRID_OFFSET_X % 100), 0,
+           ix * 100 + (SCREEN_width % 100) / 2 + 50 + (GRID_OFFSET_X % 100), SCREEN_height);
     }
   }
-  for (iy = 0; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
-    line(0,            SCREEN_HEIGHT - iy * 100 - (TEXT_MARGIN + FONT_HEIGHT / 2) + (GRID_OFFSET_Y % 100),
-         SCREEN_WIDTH, SCREEN_HEIGHT - iy * 100 - (TEXT_MARGIN + FONT_HEIGHT / 2) + (GRID_OFFSET_Y % 100));
+  for (iy = 0; iy <= SCREEN_height / 100 + 1; iy ++) {
+    line(0,            SCREEN_height - iy * 100 - (TEXT_MARGIN + FONT_HEIGHT / 2) + (GRID_OFFSET_Y % 100),
+         SCREEN_width, SCREEN_height - iy * 100 - (TEXT_MARGIN + FONT_HEIGHT / 2) + (GRID_OFFSET_Y % 100));
   }
 
   // Sets the color used to draw text and borders around shapes.
   fill(C_GRID_TEXT);
   stroke(C_GRID_TEXT);
-  for (ix = -1; ix <= SCREEN_WIDTH / 100 + 1; ix ++) {
+  for (ix = -1; ix <= SCREEN_width / 100 + 1; ix ++) {
     if (MIRROR_ENABLE) {
       string =
         (
           float(
             int(
-              ZOOM_FACTOR / 100.0 * float((ix - SCREEN_WIDTH / 100 / 2) * 100)
+              ZOOM_FACTOR / 100.0 * float((ix - SCREEN_width / 100 / 2) * 100)
             )
             -
             int(
@@ -476,7 +476,7 @@ void grid_draw_rotate_270()
         (
           float(
             int(
-              ZOOM_FACTOR / 100.0 * float((SCREEN_WIDTH / 100 / 2 - ix) * 100)
+              ZOOM_FACTOR / 100.0 * float((SCREEN_width / 100 / 2 - ix) * 100)
             )
             +
             int(
@@ -490,22 +490,22 @@ void grid_draw_rotate_270()
         "m";
     }
     // if even number.
-    if ((SCREEN_WIDTH / 100) % 2 == 0) {
-      x = ix * 100 + (SCREEN_WIDTH % 100) / 2 - int(textWidth(string) / 2.0) + (GRID_OFFSET_X % 100);
+    if ((SCREEN_width / 100) % 2 == 0) {
+      x = ix * 100 + (SCREEN_width % 100) / 2 - int(textWidth(string) / 2.0) + (GRID_OFFSET_X % 100);
     }
     // else odd number
     else {
-      x = ix * 100 + (SCREEN_WIDTH % 100) / 2 + 50 - int(textWidth(string) / 2.0) + (GRID_OFFSET_X % 100);
+      x = ix * 100 + (SCREEN_width % 100) / 2 + 50 - int(textWidth(string) / 2.0) + (GRID_OFFSET_X % 100);
     }
-    y = SCREEN_HEIGHT - TEXT_MARGIN + GRID_OFFSET_Y;
+    y = SCREEN_height - TEXT_MARGIN + GRID_OFFSET_Y;
     if (y < TEXT_MARGIN + FONT_HEIGHT) y = TEXT_MARGIN + FONT_HEIGHT;
-    if (y > SCREEN_HEIGHT - TEXT_MARGIN) y = SCREEN_HEIGHT - TEXT_MARGIN;
+    if (y > SCREEN_height - TEXT_MARGIN) y = SCREEN_height - TEXT_MARGIN;
     text(string, x, y);
     if(string.equals("0.0m")) {
       image_x = x + int(textWidth(string) / 2.0);
     }
   }
-  for (iy = 0; iy <= SCREEN_HEIGHT / 100 + 1; iy ++) {
+  for (iy = 0; iy <= SCREEN_height / 100 + 1; iy ++) {
     if (
       int(
         ZOOM_FACTOR / 100.0 * float(iy * 100)
@@ -532,18 +532,18 @@ void grid_draw_rotate_270()
         )
         +
         "m";
-      x = SCREEN_WIDTH / 2 - int(textWidth(string)/2) + GRID_OFFSET_X;
+      x = SCREEN_width / 2 - int(textWidth(string)/2) + GRID_OFFSET_X;
       if (x < TEXT_MARGIN) x = TEXT_MARGIN;
-      if (x > SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN) x = SCREEN_WIDTH - int(textWidth(string)) - TEXT_MARGIN;
-      y = SCREEN_HEIGHT - iy * 100 - TEXT_MARGIN + (GRID_OFFSET_Y % 100);
+      if (x > SCREEN_width - int(textWidth(string)) - TEXT_MARGIN) x = SCREEN_width - int(textWidth(string)) - TEXT_MARGIN;
+      y = SCREEN_height - iy * 100 - TEXT_MARGIN + (GRID_OFFSET_Y % 100);
       text(string, x, y);
       if(string.equals("0.0m")) {
-        image_y = SCREEN_HEIGHT - iy * 100 - TEXT_MARGIN - FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100);
+        image_y = SCREEN_height - iy * 100 - TEXT_MARGIN - FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100);
       }
     }
   }
 
-  if( (image_x >= 0 && image_x < SCREEN_WIDTH) && (image_y >= 0 && image_y < SCREEN_HEIGHT) ) {
+  if( (image_x >= 0 && image_x < SCREEN_width) && (image_y >= 0 && image_y < SCREEN_height) ) {
     //image(PS_image, image_x, image_y);
     image(PS_image, image_x - PS_image.width / 2, image_y - PS_image.height / 2);
   }

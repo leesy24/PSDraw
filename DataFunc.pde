@@ -101,7 +101,7 @@ class Data {
           fill(C_TEXT);
           stroke(C_TEXT);
           textSize(FONT_HEIGHT*3);
-          text(str_interface_err, SCREEN_WIDTH / 2 - int(textWidth(str_interface_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+          text(str_interface_err, SCREEN_width / 2 - int(textWidth(str_interface_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
           if (PRINT_DATAFUNC_LOAD_ERR) println("interface_file_load() error!:" + str_interface_err);
         }
@@ -110,7 +110,7 @@ class Data {
           fill(C_TEXT);
           stroke(C_TEXT);
           textSize(FONT_HEIGHT*3);
-          text(str_parse_err, SCREEN_WIDTH / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+          text(str_parse_err, SCREEN_width / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
           if (PRINT_DATAFUNC_LOAD_ERR) println("parse() error!:" + str_parse_err);
         }
@@ -126,7 +126,7 @@ class Data {
           fill(C_TEXT);
           stroke(C_TEXT);
           textSize(FONT_HEIGHT*3);
-          text(str_interface_err, SCREEN_WIDTH / 2 - int(textWidth(str_interface_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+          text(str_interface_err, SCREEN_width / 2 - int(textWidth(str_interface_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
           if (PRINT_DATAFUNC_LOAD_ERR) println("interface_UART_load() error!:" + str_interface_err);
         }
@@ -135,7 +135,7 @@ class Data {
           fill(C_TEXT);
           stroke(C_TEXT);
           textSize(FONT_HEIGHT*3);
-          text(str_parse_err, SCREEN_WIDTH / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+          text(str_parse_err, SCREEN_width / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
           if (PRINT_DATAFUNC_LOAD_ERR) println("parse() error!:" + str_parse_err);
         }
@@ -152,7 +152,7 @@ class Data {
           fill(C_TEXT);
           stroke(C_TEXT);
           textSize(FONT_HEIGHT*3);
-          text(str_interface_err, SCREEN_WIDTH / 2 - int(textWidth(str_interface_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+          text(str_interface_err, SCREEN_width / 2 - int(textWidth(str_interface_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
           if (PRINT_DATAFUNC_LOAD_ERR) println("interface_UDP_load() error!:" + str_interface_err);
         }
@@ -161,7 +161,7 @@ class Data {
           fill(C_TEXT);
           stroke(C_TEXT);
           textSize(FONT_HEIGHT*3);
-          text(str_parse_err, SCREEN_WIDTH / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+          text(str_parse_err, SCREEN_width / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
           if (PRINT_DATAFUNC_LOAD_ERR) println("parse() error!:" + str_parse_err);
         }
@@ -189,7 +189,7 @@ class Data {
       stroke(C_TEXT);
       str_parse_err = "Error: Function code is invalid! " + func;
       textSize(FONT_HEIGHT*3);
-      text(str_parse_err, SCREEN_WIDTH / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+      text(str_parse_err, SCREEN_width / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
       if (PRINT_DATAFUNC_PARSE_ERR) println(str_parse_err);
       return false;
@@ -207,7 +207,7 @@ class Data {
       stroke(C_TEXT);
       str_parse_err = "Error: Data buf length is invalid!:" + data_buf.length + "," + len;
       textSize(FONT_HEIGHT*3);
-      text(str_parse_err, SCREEN_WIDTH / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+      text(str_parse_err, SCREEN_width / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
       if (PRINT_DATAFUNC_PARSE_ERR) println(str_parse_err);
       return false;
@@ -225,7 +225,7 @@ class Data {
       stroke(C_TEXT);
       str_parse_err = "Error: Data buf crc error!:" + crc + "," + crc_c;
       textSize(FONT_HEIGHT*3);
-      text(str_parse_err, SCREEN_WIDTH / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+      text(str_parse_err, SCREEN_width / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
       if (PRINT_DATAFUNC_PARSE_ERR) println(str_parse_err);
       return false;
@@ -241,7 +241,7 @@ class Data {
       stroke(C_TEXT);
       str_parse_err = "Error: No scan data is available! n_params = 0";
       textSize(FONT_HEIGHT*3);
-      text(str_parse_err, SCREEN_WIDTH / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+      text(str_parse_err, SCREEN_width / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
       if (PRINT_DATAFUNC_PARSE_ERR) println(str_parse_err);
       return false;
@@ -259,7 +259,7 @@ class Data {
       stroke(C_TEXT);
       str_parse_err = "Error: Number of points invalid! n_points is " + t_n_points;
       textSize(FONT_HEIGHT*3);
-      text(str_parse_err, SCREEN_WIDTH / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+      text(str_parse_err, SCREEN_width / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
       if (PRINT_DATAFUNC_PARSE_ERR) println(str_parse_err);
       return false;
@@ -288,7 +288,7 @@ class Data {
         stroke(C_TEXT);
         string = "Scan data_buf is not changed!:" + time_stamp;
         textSize(FONT_HEIGHT*3);
-        text(string, SCREEN_WIDTH / 2 - int(textWidth(string) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+        text(string, SCREEN_width / 2 - int(textWidth(string) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
         textSize(FONT_HEIGHT);
         if (PRINT_DATAFUNC_PARSE_DBG) println("Scan data_buf is not changed!:" + time_stamp);
         //return false;
@@ -376,7 +376,7 @@ class Data {
       stroke(C_TEXT);
       str_parse_err = "Error: Number of points invalid! n_points is " + n_points;
       textSize(FONT_HEIGHT*3);
-      text(str_parse_err, SCREEN_WIDTH / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_HEIGHT / 2 - FONT_HEIGHT);
+      text(str_parse_err, SCREEN_width / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
       if (PRINT_DATAFUNC_PARSE_ERR) println(str_parse_err);
       return false;
@@ -508,9 +508,9 @@ class Data {
           if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
           x += TEXT_MARGIN + FONT_HEIGHT / 2;
           if (MIRROR_ENABLE)
-            y += SCREEN_HEIGHT / 2;
+            y += SCREEN_height / 2;
           else
-            y = SCREEN_HEIGHT / 2 - y;
+            y = SCREEN_height / 2 - y;
         }
         else if (ROTATE_FACTOR == 90) {
           cx = float(distance) * cos(radians(angle));
@@ -519,9 +519,9 @@ class Data {
           y = int(cy / ZOOM_FACTOR);
           if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
           if (MIRROR_ENABLE)
-            x = SCREEN_WIDTH / 2 - x;
+            x = SCREEN_width / 2 - x;
           else
-            x += SCREEN_WIDTH / 2;
+            x += SCREEN_width / 2;
           y += TEXT_MARGIN + FONT_HEIGHT / 2;
         }
         else if (ROTATE_FACTOR == 180) {
@@ -530,12 +530,12 @@ class Data {
           x = int(cx / ZOOM_FACTOR);
           y = int(cy / ZOOM_FACTOR);
           if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
-          x = SCREEN_WIDTH - x; 
+          x = SCREEN_width - x; 
           x -= TEXT_MARGIN + FONT_HEIGHT / 2;
           if (MIRROR_ENABLE)
-            y = SCREEN_HEIGHT / 2 - y;
+            y = SCREEN_height / 2 - y;
           else
-            y += SCREEN_HEIGHT / 2;
+            y += SCREEN_height / 2;
         }
         else /*if (ROTATE_FACTOR == 270)*/ {
           cx = float(distance) * cos(radians(angle));
@@ -544,10 +544,10 @@ class Data {
           y = int(cy / ZOOM_FACTOR);
           if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
           if (MIRROR_ENABLE)
-            x += SCREEN_WIDTH / 2;
+            x += SCREEN_width / 2;
           else
-            x = SCREEN_WIDTH / 2 - x;
-          y = SCREEN_HEIGHT - y;
+            x = SCREEN_width / 2 - x;
+          y = SCREEN_height - y;
           y -= TEXT_MARGIN + FONT_HEIGHT / 2;
         }
         // Check pulse width exist

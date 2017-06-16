@@ -56,11 +56,6 @@ void setup() {
   SCREEN_HEIGHT = height;
 */
 
-  // This is only pertains to the desktop version of Processing (not JavaScript or Android),
-  //  because it's the only one to use windows and frames.
-  // It's possible to make the window resizable.
-  surface.setResizable(true);
-
   // To set the background on the first frame of animation. 
   background(C_BG);
   // Specifies the number of frames to be displayed every second.

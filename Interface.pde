@@ -69,7 +69,7 @@ void interface_setup()
     w = int(max(w, int(textWidth(s))));
   }
   w += 20;
-  x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w;
+  x = SCREEN_width - TEXT_MARGIN - FONT_HEIGHT * 3 - w;
   h = FONT_HEIGHT + TEXT_MARGIN*2;
   y = TEXT_MARGIN + FONT_HEIGHT * 1 + TEXT_MARGIN;
 
@@ -158,7 +158,7 @@ void interface_setup()
   if(DATA_interface == DATA_INTERFACE_FILE) {
     str = FILE_name;
     w = int(textWidth(str)) + TEXT_MARGIN*2;
-    x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
+    x = SCREEN_width - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
     h = FONT_HEIGHT + TEXT_MARGIN*2;
     y += TEXT_MARGIN;
     tf_param1 = cp5.addTextfield("interface_filename");
@@ -193,7 +193,7 @@ void interface_setup()
   else if(DATA_interface == DATA_INTERFACE_UART) {
     str = UART_port_name;
     w = int(textWidth(str)) + TEXT_MARGIN*2;
-    x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
+    x = SCREEN_width - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
     h = FONT_HEIGHT + TEXT_MARGIN*2;
     y += TEXT_MARGIN;
     tf_param1 = cp5.addTextfield("interface_UARTport");
@@ -225,7 +225,7 @@ void interface_setup()
 */
     str = Integer.toString(UART_baud_rate);
     w = int(textWidth(str)) + TEXT_MARGIN*2;
-    x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
+    x = SCREEN_width - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
     h = FONT_HEIGHT + TEXT_MARGIN*2;
     y += TEXT_MARGIN;
     tf_param2 = cp5.addTextfield("interface_UARTbaud");
@@ -263,7 +263,7 @@ void interface_setup()
     else
       str += UART_stop_bits;
     w = int(textWidth(str)) + TEXT_MARGIN*2;
-    x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
+    x = SCREEN_width - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
     h = FONT_HEIGHT + TEXT_MARGIN*2;
     y += TEXT_MARGIN;
     tf_param3 = cp5.addTextfield("interface_UARTdps");
@@ -298,7 +298,7 @@ void interface_setup()
   else /*if(DATA_interface == DATA_INTERFACE_UDP)*/ {
     str = UDP_remote_ip;
     w = int(textWidth(str)) + TEXT_MARGIN*2;
-    x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
+    x = SCREEN_width - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
     h = FONT_HEIGHT + TEXT_MARGIN*2;
     y += TEXT_MARGIN;
     tf_param1 = cp5.addTextfield("interface_UDPremoteip");
@@ -334,7 +334,7 @@ void interface_setup()
 
     str = Integer.toString(UDP_remote_port);
     w = int(textWidth(str)) + TEXT_MARGIN*2;
-    x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
+    x = SCREEN_width - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
     h = FONT_HEIGHT + TEXT_MARGIN*2;
     y += TEXT_MARGIN;
     tf_param2 = cp5.addTextfield("interface_UDPremoteport");
@@ -368,7 +368,7 @@ void interface_setup()
 
     str = Integer.toString(UDP_local_port);
     w = int(textWidth(str)) + TEXT_MARGIN*2;
-    x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
+    x = SCREEN_width - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
     h = FONT_HEIGHT + TEXT_MARGIN*2;
     y += TEXT_MARGIN;
     tf_param3 = cp5.addTextfield("interface_UDPlocalport");
@@ -419,7 +419,7 @@ void interface_draw()
   //fill(#ff0000);
   
   string = "Interface";
-  text(string, SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - int(textWidth(string)), TEXT_MARGIN + FONT_HEIGHT * 2);
+  text(string, SCREEN_width - TEXT_MARGIN - FONT_HEIGHT * 3 - int(textWidth(string)), TEXT_MARGIN + FONT_HEIGHT * 2);
 */
 }
 
@@ -438,7 +438,7 @@ void interface_mouseReleased()
         w = int(max(w, int(textWidth(s))));
       }
       w += 20;
-      x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w;
+      x = SCREEN_width - TEXT_MARGIN - FONT_HEIGHT * 3 - w;
       y = TEXT_MARGIN + FONT_HEIGHT * 1 + TEXT_MARGIN;
       if(sl_ddmenu.isOpen()) {
         h = FONT_HEIGHT + TEXT_MARGIN*2 + (FONT_HEIGHT + TEXT_MARGIN*2 + 1 - 2) * (INTERFACE_str_array.length - 1);
@@ -480,7 +480,7 @@ void interface_mouseReleased()
       w = int(max(w, int(textWidth(s))));
     }
     w += 20;
-    x = SCREEN_WIDTH - TEXT_MARGIN - FONT_HEIGHT * 3 - w;
+    x = SCREEN_width - TEXT_MARGIN - FONT_HEIGHT * 3 - w;
     y = TEXT_MARGIN + FONT_HEIGHT * 1 + TEXT_MARGIN;
     h = FONT_HEIGHT + TEXT_MARGIN*2;
     c = C_INTERFACE_DD_BORDER_NORMAL;
