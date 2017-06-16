@@ -1,27 +1,27 @@
-//final boolean PRINT_MOUSEFUNC_DBG = true;
-final boolean PRINT_MOUSEFUNC_DBG = false;
+//final static boolean PRINT_MOUSEFUNC_DBG = true;
+final static boolean PRINT_MOUSEFUNC_DBG = false;
 
-//final boolean PRINT_MouseFunc_Pressed = true; 
-final boolean PRINT_MouseFunc_Pressed = false;
+//final static boolean PRINT_MOUSEFUNC_Pressed = true; 
+final static boolean PRINT_MOUSEFUNC_Pressed = false;
 
-//final boolean PRINT_MouseFunc_Released = true; 
-final boolean PRINT_MouseFunc_Released = false;
+//final static boolean PRINT_MOUSEFUNC_Released = true; 
+final static boolean PRINT_MOUSEFUNC_Released = false;
 
-//final boolean PRINT_MouseFunc_Dragged = true; 
-final boolean PRINT_MouseFunc_Dragged = false;
+//final static boolean PRINT_MOUSEFUNC_Dragged = true; 
+final static boolean PRINT_MOUSEFUNC_Dragged = false;
 
-//final boolean PRINT_MouseFunc_Wheel = true; 
-final boolean PRINT_MouseFunc_Wheel = false;
+//final static boolean PRINT_MOUSEFUNC_Wheel = true; 
+final static boolean PRINT_MOUSEFUNC_Wheel = false;
 
 boolean mousePressed = false;
 int mousePressedX;
 int mousePressedY;
 
 void mousePressed() {
-  if (PRINT_MouseFunc_Pressed || PRINT_MOUSEFUNC_DBG) println("Mouse pressed! ");
+  if (PRINT_MOUSEFUNC_Pressed || PRINT_MOUSEFUNC_DBG) println("Mouse pressed! ");
 
-  if (PRINT_MouseFunc_Pressed) println("mouseX=" + mouseX + ", mouseY=" + mouseY);
-  //if (PRINT_MouseFunc_Pressed) println("SCREEN_WIDTH - mouseX=" + (SCREEN_WIDTH - mouseX) + ", mouseY=" + mouseY);
+  if (PRINT_MOUSEFUNC_Pressed) println("mouseX=" + mouseX + ", mouseY=" + mouseY);
+  //if (PRINT_MOUSEFUNC_Pressed) println("SCREEN_WIDTH - mouseX=" + (SCREEN_WIDTH - mouseX) + ", mouseY=" + mouseY);
 
   mousePressedX = mouseX - GRID_OFFSET_X;
   mousePressedY = mouseY - GRID_OFFSET_Y;
@@ -57,7 +57,7 @@ void mousePressed() {
       GRID_OFFSET_Y = -int(save_ox - (float(SCREEN_WIDTH)  / 2.0) + (float(SCREEN_HEIGHT) / 2.0));
       GRID_OFFSET_X =  int(save_oy);
     }
-    if (PRINT_MouseFunc_Pressed) println("ROTATE_FACTOR=" + ROTATE_FACTOR);
+    if (PRINT_MOUSEFUNC_Pressed) println("ROTATE_FACTOR=" + ROTATE_FACTOR);
     config_save();
   }
   if (button_rotate_cw_over) {
@@ -82,21 +82,21 @@ void mousePressed() {
       GRID_OFFSET_Y =  int(save_ox + (float(SCREEN_WIDTH)  / 2.0) - (float(SCREEN_HEIGHT) / 2.0));
       GRID_OFFSET_X = -int(save_oy);
     }
-    if (PRINT_MouseFunc_Pressed) println("ROTATE_FACTOR=" + ROTATE_FACTOR);
+    if (PRINT_MOUSEFUNC_Pressed) println("ROTATE_FACTOR=" + ROTATE_FACTOR);
     config_save();
   }
   //println("new GRID_OFFSET_X=" + GRID_OFFSET_X + ", GRID_OFFSET_Y=" + GRID_OFFSET_Y);
 
   if (button_mirror_en_over) {
     MIRROR_ENABLE = !MIRROR_ENABLE;
-    if (PRINT_MouseFunc_Pressed) println("MIRROR_ENABLE=" + MIRROR_ENABLE);
+    if (PRINT_MOUSEFUNC_Pressed) println("MIRROR_ENABLE=" + MIRROR_ENABLE);
     config_save();
   }
 
   if (button_reset_en_over) {
-    if (PRINT_MouseFunc_Pressed) println("ZOOM_FACTOR=" + ZOOM_FACTOR);
-    if (PRINT_MouseFunc_Pressed) println("MIRROR_ENABLE=" + MIRROR_ENABLE);
-    if (PRINT_MouseFunc_Pressed) println("GRID_OFFSET_X=" + GRID_OFFSET_X + ", GRID_OFFSET_Y=" + GRID_OFFSET_Y);
+    if (PRINT_MOUSEFUNC_Pressed) println("ZOOM_FACTOR=" + ZOOM_FACTOR);
+    if (PRINT_MOUSEFUNC_Pressed) println("MIRROR_ENABLE=" + MIRROR_ENABLE);
+    if (PRINT_MOUSEFUNC_Pressed) println("GRID_OFFSET_X=" + GRID_OFFSET_X + ", GRID_OFFSET_Y=" + GRID_OFFSET_Y);
     GRID_OFFSET_X = GRID_OFFSET_Y = 0;
     MIRROR_ENABLE = false;
     ZOOM_FACTOR = 100;
@@ -105,22 +105,22 @@ void mousePressed() {
 }
 
 void mouseReleased() {
-  if (PRINT_MouseFunc_Released || PRINT_MOUSEFUNC_DBG) println("Mouse released! ");
+  if (PRINT_MOUSEFUNC_Released || PRINT_MOUSEFUNC_DBG) println("Mouse released! ");
   interface_mouseReleased();
   mousePressed = false;
 }
 
 void mouseDragged() 
 {
-  if (PRINT_MouseFunc_Dragged || PRINT_MOUSEFUNC_DBG) println("Mouse dragged!");
-  if (PRINT_MouseFunc_Dragged) println("\t mouseX=" + mouseX + ", mouseY=" + mouseY);
-  if (PRINT_MouseFunc_Dragged) println("\t mousePressedX=" + mousePressedX + ", mousePressedY=" + mousePressedY);
+  if (PRINT_MOUSEFUNC_Dragged || PRINT_MOUSEFUNC_DBG) println("Mouse dragged!");
+  if (PRINT_MOUSEFUNC_Dragged) println("\t mouseX=" + mouseX + ", mouseY=" + mouseY);
+  if (PRINT_MOUSEFUNC_Dragged) println("\t mousePressedX=" + mousePressedX + ", mousePressedY=" + mousePressedY);
   if (mousePressed == true) {
     GRID_OFFSET_X = mouseX - mousePressedX;
     GRID_OFFSET_Y = mouseY - mousePressedY;
     config_save();
   }
-  if (PRINT_MouseFunc_Dragged) println("\t GRID_OFFSET_X:" + GRID_OFFSET_X + ", GRID_OFFSET_Y:" + GRID_OFFSET_Y);
+  if (PRINT_MOUSEFUNC_Dragged) println("\t GRID_OFFSET_X:" + GRID_OFFSET_X + ", GRID_OFFSET_Y:" + GRID_OFFSET_Y);
 }
 
 void mouseWheel(MouseEvent event) {
@@ -128,7 +128,7 @@ void mouseWheel(MouseEvent event) {
   float zoom_factor_save = ZOOM_FACTOR;
   int dx=0, dy=0;
 
-  if (PRINT_MouseFunc_Wheel || PRINT_MOUSEFUNC_DBG) println("Mouse wheeled! count=" + wheel_count);
+  if (PRINT_MOUSEFUNC_Wheel || PRINT_MOUSEFUNC_DBG) println("Mouse wheeled! count=" + wheel_count);
   if (wheel_count > 0) {
     for (; wheel_count > 0; wheel_count -= 1) {  
       button_zoom_minus();
