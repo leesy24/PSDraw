@@ -1,3 +1,6 @@
+//final boolean PRINT_MOUSEFUNC_DBG = true;
+final boolean PRINT_MOUSEFUNC_DBG = false;
+
 //final boolean PRINT_MouseFunc_Pressed = true; 
 final boolean PRINT_MouseFunc_Pressed = false;
 
@@ -15,7 +18,7 @@ int mousePressedX;
 int mousePressedY;
 
 void mousePressed() {
-  if (PRINT_MouseFunc_Pressed) println("Mouse pressed! ");
+  if (PRINT_MouseFunc_Pressed || PRINT_MOUSEFUNC_DBG) println("Mouse pressed! ");
 
   if (PRINT_MouseFunc_Pressed) println("mouseX=" + mouseX + ", mouseY=" + mouseY);
   //if (PRINT_MouseFunc_Pressed) println("SCREEN_WIDTH - mouseX=" + (SCREEN_WIDTH - mouseX) + ", mouseY=" + mouseY);
@@ -102,14 +105,14 @@ void mousePressed() {
 }
 
 void mouseReleased() {
+  if (PRINT_MouseFunc_Released || PRINT_MOUSEFUNC_DBG) println("Mouse released! ");
   interface_mouseReleased();
-  if (PRINT_MouseFunc_Released) println("Mouse released! ");
   mousePressed = false;
 }
 
 void mouseDragged() 
 {
-  if (PRINT_MouseFunc_Dragged) println("Mouse dragged!");
+  if (PRINT_MouseFunc_Dragged || PRINT_MOUSEFUNC_DBG) println("Mouse dragged!");
   if (PRINT_MouseFunc_Dragged) println("\t mouseX=" + mouseX + ", mouseY=" + mouseY);
   if (PRINT_MouseFunc_Dragged) println("\t mousePressedX=" + mousePressedX + ", mousePressedY=" + mousePressedY);
   if (mousePressed == true) {
@@ -125,7 +128,7 @@ void mouseWheel(MouseEvent event) {
   float zoom_factor_save = ZOOM_FACTOR;
   int dx=0, dy=0;
 
-  if (PRINT_MouseFunc_Wheel) println("Mouse wheeled! count=" + wheel_count);
+  if (PRINT_MouseFunc_Wheel || PRINT_MOUSEFUNC_DBG) println("Mouse wheeled! count=" + wheel_count);
   if (wheel_count > 0) {
     for (; wheel_count > 0; wheel_count -= 1) {  
       button_zoom_minus();

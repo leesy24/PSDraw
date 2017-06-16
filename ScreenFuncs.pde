@@ -5,13 +5,15 @@ final boolean PRINT_ScreenFunc = false;
 final int MIN_SCREEN_WIDTH = 640;
 final int MIN_SCREEN_HEIGHT = 480;
 
-// Define default screen width and height.
-//int SCREEN_WIDTH = 1920;
-//int SCREEN_HEIGHT = 1080;
-int SCREEN_WIDTH = 1024;
-int SCREEN_HEIGHT = 768;
-//int SCREEN_WIDTH = 640;
-//int SCREEN_HEIGHT = 480;
+// Define default screen x, y, width and height.
+static int SCREEN_X = 0;
+static int SCREEN_Y = 0;
+//static int SCREEN_WIDTH = 1920;
+//static int SCREEN_HEIGHT = 1080;
+static int SCREEN_WIDTH = 1024;
+static int SCREEN_HEIGHT = 768;
+//static int SCREEN_WIDTH = 640;
+//static int SCREEN_HEIGHT = 480;
 
 
 // Define just font height variables.
@@ -27,6 +29,7 @@ void screen_settings() {
 }
 
 void screen_setup() {
+  surface.setLocation(SCREEN_X, SCREEN_Y);
   // Set text margin to follow min(Width, Height) of screen.
   TEXT_MARGIN = (SCREEN_WIDTH < SCREEN_HEIGHT) ? (SCREEN_WIDTH / 200) : (SCREEN_HEIGHT / 200);
   if (PRINT_ScreenFunc) println("TEXT_MARGIN=" + TEXT_MARGIN);
@@ -39,11 +42,35 @@ void screen_setup() {
   textSize(FONT_HEIGHT);
 }
 
+static final javax.swing.JFrame getJFrame(final PSurface surf) {
+  return
+    (javax.swing.JFrame)
+    ((processing.awt.PSurfaceAWT.SmoothCanvas)
+    surf.getNative()).getFrame();
+}
+
 boolean screen_check_update() {
   int new_width, new_height;
+  int new_x, new_y;
+  boolean updated = false;
+
+  new_x = getJFrame(getSurface()).getX();
+  new_y = getJFrame(getSurface()).getY();
+  //println("screen pos x=" + new_x + ", y=" + new_y);
+  // Check screen position x or y changed.
+  if(new_x != SCREEN_X || new_y != SCREEN_Y) {
+    if(new_x < 0 || new_y < 0) {
+      if(new_x < 0) new_x = 0;
+      if(new_y < 0) new_y = 0;
+      surface.setLocation(new_x, new_y);
+    }
+    SCREEN_X = new_x;
+    SCREEN_Y = new_y;
+
+    updated = true;
+  }
 
   //println("screen size width=" + width + ", height=" + height);
-  
   // Check screen size changed.
   if (SCREEN_WIDTH != width || SCREEN_HEIGHT != height) {
     new_width = width;
@@ -84,10 +111,12 @@ boolean screen_check_update() {
     SCREEN_WIDTH = new_width;
     SCREEN_HEIGHT = new_height;
 
-    config_save();
-
-    return true;
+    updated = true;
   }
 
-  return false;
+  if(updated) {
+    config_save();
+  }
+
+  return updated;
 }

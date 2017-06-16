@@ -5,7 +5,7 @@ static String CONFIG_file_full_name;
 static int CONFIG_instance_number = 0;
 
 // A Table object
-static Table config;
+static Table CONFIG_table;
 
 void config_settings()
 {
@@ -17,13 +17,21 @@ void config_settings()
     }
     // Load config file(CSV type) into a Table object
     // "header" option indicates the file has a header row
-    config = loadTable(CONFIG_file_full_name, "header");
+    CONFIG_table = loadTable(CONFIG_file_full_name, "header");
   
-    for (TableRow variable : config.rows()) {
+    for (TableRow variable : CONFIG_table.rows()) {
       // You can access the fields via their column name (or index)
       String name = variable.getString("Name");
       if(name.equals("DATA_interface"))
         DATA_interface = variable.getInt("Value");
+      else if(name.equals("SCREEN_X"))
+        SCREEN_X = variable.getInt("Value");
+      else if(name.equals("SCREEN_Y"))
+        SCREEN_Y = variable.getInt("Value");
+      else if(name.equals("SCREEN_WIDTH"))
+        SCREEN_WIDTH = variable.getInt("Value");
+      else if(name.equals("SCREEN_HEIGHT"))
+        SCREEN_HEIGHT = variable.getInt("Value");
       else if(name.equals("ROTATE_FACTOR"))
         ROTATE_FACTOR = variable.getFloat("Value"); 
       else if(name.equals("MIRROR_ENABLE"))
@@ -59,71 +67,87 @@ void config_settings()
 
     //println("loadTable exception! " + e);
 
-    config = new Table();
-    config.addColumn("Name");
-    config.addColumn("Value");
+    CONFIG_table = new Table();
+    CONFIG_table.addColumn("Name");
+    CONFIG_table.addColumn("Value");
 
-    variable = config.addRow();
+    variable = CONFIG_table.addRow();
     variable.setString("Name", "DATA_interface");
     variable.setInt("Value", DATA_interface);
 
-    variable = config.addRow();
+    variable = CONFIG_table.addRow();
+    variable.setString("Name", "SCREEN_X");
+    variable.setInt("Value", SCREEN_X);
+
+    variable = CONFIG_table.addRow();
+    variable.setString("Name", "SCREEN_Y");
+    variable.setInt("Value", SCREEN_Y);
+
+    variable = CONFIG_table.addRow();
+    variable.setString("Name", "SCREEN_WIDTH");
+    variable.setInt("Value", SCREEN_WIDTH);
+
+    variable = CONFIG_table.addRow();
+    variable.setString("Name", "SCREEN_HEIGHT");
+    variable.setInt("Value", SCREEN_HEIGHT);
+
+    variable = CONFIG_table.addRow();
     variable.setString("Name", "ROTATE_FACTOR");
     variable.setFloat("Value", ROTATE_FACTOR);
 
-    variable = config.addRow();
+    variable = CONFIG_table.addRow();
     variable.setString("Name", "MIRROR_ENABLE");
     variable.setString("Value", ((MIRROR_ENABLE)?"true":"flase"));
 
-    variable = config.addRow();
+    variable = CONFIG_table.addRow();
     variable.setString("Name", "ZOOM_FACTOR");
     variable.setFloat("Value", ZOOM_FACTOR);
 
-    variable = config.addRow();
+    variable = CONFIG_table.addRow();
     variable.setString("Name", "GRID_OFFSET_X");
     variable.setInt("Value", GRID_OFFSET_X);
 
-    variable = config.addRow();
+    variable = CONFIG_table.addRow();
     variable.setString("Name", "GRID_OFFSET_Y");
     variable.setInt("Value", GRID_OFFSET_Y);
 
-    variable = config.addRow();
+    variable = CONFIG_table.addRow();
     variable.setString("Name", "FILE_name");
     variable.setString("Value", FILE_name);
 
-    variable = config.addRow();
+    variable = CONFIG_table.addRow();
     variable.setString("Name", "UART_port_name");
     variable.setString("Value", UART_port_name);
 
-    variable = config.addRow();
+    variable = CONFIG_table.addRow();
     variable.setString("Name", "UART_baud_rate");
     variable.setInt("Value", UART_baud_rate);
 
-    variable = config.addRow();
+    variable = CONFIG_table.addRow();
     variable.setString("Name", "UART_parity");
     variable.setString("Value", Character.toString(UART_parity));
 
-    variable = config.addRow();
+    variable = CONFIG_table.addRow();
     variable.setString("Name", "UART_data_bits");
     variable.setInt("Value", UART_data_bits);
 
-    variable = config.addRow();
+    variable = CONFIG_table.addRow();
     variable.setString("Name", "UART_stop_bits");
     variable.setFloat("Value", UART_stop_bits);
 
-    variable = config.addRow();
+    variable = CONFIG_table.addRow();
     variable.setString("Name", "UDP_remote_ip");
     variable.setString("Value", UDP_remote_ip);
 
-    variable = config.addRow();
+    variable = CONFIG_table.addRow();
     variable.setString("Name", "UDP_remote_port");
     variable.setInt("Value", UDP_remote_port);
 
-    variable = config.addRow();
+    variable = CONFIG_table.addRow();
     variable.setString("Name", "UDP_local_port");
     variable.setInt("Value", UDP_local_port);
 
-    saveTable(config, "data/" + CONFIG_file_full_name);
+    saveTable(CONFIG_table, "data/" + CONFIG_file_full_name);
   }
 }
 
@@ -135,13 +159,41 @@ void config_save()
   String value_string;
   boolean changed = false;
 
-  for (TableRow variable : config.rows()) {
+  for (TableRow variable : CONFIG_table.rows()) {
     // You can access the fields via their column name (or index)
     String name = variable.getString("Name");
     if(name.equals("DATA_interface")) {
       value_int = variable.getInt("Value");
       if(value_int != DATA_interface) {
         variable.setInt("Value", DATA_interface);
+        changed = true;
+      }
+    }
+    else if(name.equals("SCREEN_X")) {
+      value_int = variable.getInt("Value");
+      if(value_int != SCREEN_X) {
+        variable.setInt("Value", SCREEN_X);
+        changed = true;
+      }
+    }
+    else if(name.equals("SCREEN_Y")) {
+      value_int = variable.getInt("Value");
+      if(value_int != SCREEN_Y) {
+        variable.setInt("Value", SCREEN_Y);
+        changed = true;
+      }
+    }
+    else if(name.equals("SCREEN_WIDTH")) {
+      value_int = variable.getInt("Value");
+      if(value_int != SCREEN_WIDTH) {
+        variable.setInt("Value", SCREEN_WIDTH);
+        changed = true;
+      }
+    }
+    else if(name.equals("SCREEN_HEIGHT")) {
+      value_int = variable.getInt("Value");
+      if(value_int != SCREEN_HEIGHT) {
+        variable.setInt("Value", SCREEN_HEIGHT);
         changed = true;
       }
     }
@@ -248,6 +300,6 @@ void config_save()
   // Check config changed
   if(changed) {
     // Writing the config file(CSV type) back to the same file
-    saveTable(config, "data/" + CONFIG_file_full_name);
+    saveTable(CONFIG_table, "data/" + CONFIG_file_full_name);
   }
 }
