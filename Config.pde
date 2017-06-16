@@ -1,15 +1,23 @@
 // Define default binary buf filename and path 
-final static String CONFIG_file_name = "config.csv";
+final static String CONFIG_FILE_NAME = "config";
+final static String CONFIG_FILE_EXT = ".csv";
+static String CONFIG_file_full_name;
+static int CONFIG_instance_number = 0;
 
 // A Table object
 static Table config;
 
 void config_settings()
 {
+  CONFIG_file_full_name = CONFIG_FILE_NAME + CONFIG_FILE_EXT;
+  
   try {
+    if(CONFIG_instance_number != 0) {
+      CONFIG_file_full_name = CONFIG_FILE_NAME + "_" + CONFIG_instance_number + CONFIG_FILE_EXT;
+    }
     // Load config file(CSV type) into a Table object
     // "header" option indicates the file has a header row
-    config = loadTable(CONFIG_file_name, "header");
+    config = loadTable(CONFIG_file_full_name, "header");
   
     for (TableRow variable : config.rows()) {
       // You can access the fields via their column name (or index)
@@ -115,7 +123,7 @@ void config_settings()
     variable.setString("Name", "UDP_local_port");
     variable.setInt("Value", UDP_local_port);
 
-    saveTable(config, "data/" + CONFIG_file_name);
+    saveTable(config, "data/" + CONFIG_file_full_name);
   }
 }
 
@@ -240,6 +248,6 @@ void config_save()
   // Check config changed
   if(changed) {
     // Writing the config file(CSV type) back to the same file
-    saveTable(config, "data/" + CONFIG_file_name);
+    saveTable(config, "data/" + CONFIG_file_full_name);
   }
 }

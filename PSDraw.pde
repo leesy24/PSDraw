@@ -7,7 +7,7 @@ final color C_BG = #F8F8F8; // White - 0x8
 final color C_TEXT = #000000; // Black
 
 // Define window title string.
-final String TITLE = "DASAN-InfoTEK - PSDraw - ";
+final String TITLE = "DASAN-InfoTEK - PSDraw";
 String Title;
 
 // Define zoom factor variables.
@@ -22,6 +22,15 @@ boolean MIRROR_ENABLE = false;
 // The settings() function is new with Processing 3.0. It's not needed in most sketches.
 // It's only useful when it's absolutely necessary to define the parameters to size() with a variable. 
 void settings() {
+  try {
+    if( args.length >= 1) {
+      CONFIG_instance_number = Integer.parseInt(args[0]);
+    }
+  }
+  catch (Exception e) {
+    // Nothing to do.
+  }
+
   config_settings();
   screen_settings();
 }
@@ -60,6 +69,7 @@ void setup() {
   //frameRate(30);
 
   Title = TITLE;
+  Title = Title + " #" + CONFIG_instance_number + " - ";
   data_setup();
   screen_setup();
   button_setup();
