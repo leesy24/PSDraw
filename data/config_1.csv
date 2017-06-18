@@ -18,3 +18,4 @@ UART_stop_bits,1.0
 UDP_remote_ip,10.0.8.86
 UDP_remote_port,1024
 UDP_local_port,1025
+SN_serial_number,886

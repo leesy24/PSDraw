@@ -30,7 +30,7 @@ final static color C_INTERFACE_TF_CURSOR = #0000FF; // Blue
 
 
 boolean INTERFACE_changed = false;
-String[] INTERFACE_str_array = {"File", "UART", "UDP"};
+String[] INTERFACE_str_array = {"File", "UART", "UDP", "SN"};
 
 ControlFont cf1 = null;
 ControlP5 cp5 = null;
@@ -60,6 +60,7 @@ void interface_setup()
     cp5.remove("interface_UDPremoteip");
     cp5.remove("interface_UDPremoteport");
     cp5.remove("interface_UDPlocalport");
+    cp5.remove("interface_SNserialnumber");
 
     cp5.setGraphics(this,0,0);
   }
@@ -295,7 +296,7 @@ void interface_setup()
           .marginLeft = TEXT_MARGIN;
 */
   }
-  else /*if(DATA_interface == DATA_INTERFACE_UDP)*/ {
+  else if(DATA_interface == DATA_INTERFACE_UDP) {
     str = UDP_remote_ip;
     w = int(textWidth(str)) + TEXT_MARGIN*2;
     x = SCREEN_width - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
@@ -399,6 +400,44 @@ void interface_setup()
         .getStyle()
           .marginLeft = TEXT_MARGIN;
 */
+  }
+  else /*if(DATA_interface == DATA_INTERFACE_SN)*/ {
+    str = Integer.toString(SN_serial_number);
+    w = int(textWidth(str)) + TEXT_MARGIN*2;
+    x = SCREEN_width - TEXT_MARGIN - FONT_HEIGHT * 3 - w - 1;
+    h = FONT_HEIGHT + TEXT_MARGIN*2;
+    y += TEXT_MARGIN;
+    tf_param1 = cp5.addTextfield("interface_SNserialnumber");
+    tf_param1.setPosition(x, y)
+      .setSize(w, h)
+      //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
+      .setAutoClear(false)
+      .setColorBackground( C_INTERFACE_TF_FILL )
+      .setColorForeground( C_INTERFACE_TF_NORMAL )
+      .setColorActive( C_INTERFACE_TF_HIGHLIGHT )
+      .setColorValueLabel( C_INTERFACE_TF_TEXT )
+      .setColorCursor( C_INTERFACE_TF_CURSOR )
+      .setCaptionLabel("")
+      .setText(str)
+      ;
+    //Textfield.cursorWidth = 10;
+    //controlP5.Textfield.cursorWidth = 10;
+    y += h;
+    //println("tf.getText() = ", tf.getText());
+    tf_param1.getValueLabel()
+        //.setFont(cf1)
+        .setSize(FONT_HEIGHT)
+        //.toUpperCase(false)
+        ;
+    tf_param1.getValueLabel()
+        .getStyle()
+          .marginTop = -1;
+/*
+    tf_param1.getValueLabel()
+        .getStyle()
+          .marginLeft = TEXT_MARGIN;
+*/
+
   }
 
   tf_ddborder.bringToFront();
@@ -520,7 +559,7 @@ void interface_mouseReleased()
       tf_param.setText(str);
     }
   }
-  else /*if(DATA_interface == DATA_INTERFACE_UDP)*/ {
+  else if(DATA_interface == DATA_INTERFACE_UDP) {
     tf_param = (Textfield)cp5.get("interface_UDPremoteip");
     if( tf_param != null && tf_param.isFocus() == false) {
       str = UDP_remote_ip;
@@ -534,6 +573,13 @@ void interface_mouseReleased()
     tf_param = (Textfield)cp5.get("interface_UDPlocalport");
     if( tf_param != null && tf_param.isFocus() == false) {
       str = Integer.toString(UDP_local_port);
+      tf_param.setText(str);
+    }
+  }
+  else /*if(DATA_interface == DATA_INTERFACE_SN)*/ {
+    tf_param = (Textfield)cp5.get("interface_SNserialnumber");
+    if( tf_param != null && tf_param.isFocus() == false) {
+      str = Integer.toString(SN_serial_number);
       tf_param.setText(str);
     }
   }

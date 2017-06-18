@@ -77,7 +77,7 @@ boolean screen_check_update() {
 Dimension actualSize = f.getContentPane().getSize();
 //Dimension actualSize = frame.getContentPane().getSize();
 
-println("border=" + SCREEN_width, actualSize.width + "," + SCREEN_height, actualSize.height);
+//println("border=" + SCREEN_width, actualSize.width + "," + SCREEN_height, actualSize.height);
 
 /*
   int new_x = 0, new_y = 0;

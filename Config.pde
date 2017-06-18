@@ -60,6 +60,8 @@ void config_settings()
         UDP_remote_port = variable.getInt("Value");
       else if(name.equals("UDP_local_port"))
         UDP_local_port = variable.getInt("Value");
+      else if(name.equals("SN_serial_number"))
+        SN_serial_number = variable.getInt("Value");
     }
   }
   catch (Exception e) {
@@ -146,6 +148,10 @@ void config_settings()
     variable = CONFIG_table.addRow();
     variable.setString("Name", "UDP_local_port");
     variable.setInt("Value", UDP_local_port);
+
+    variable = CONFIG_table.addRow();
+    variable.setString("Name", "SN_serial_number");
+    variable.setInt("Value", SN_serial_number);
 
     saveTable(CONFIG_table, "data/" + CONFIG_file_full_name);
   }
@@ -292,6 +298,13 @@ void config_save()
       value_int = variable.getInt("Value");
       if(value_int != UDP_local_port) {
         variable.setInt("Value", UDP_local_port);
+        changed = true;
+      }
+    }
+    else if(name.equals("SN_serial_number")) {
+      value_int = variable.getInt("Value");
+      if(value_int != SN_serial_number) {
+        variable.setInt("Value", SN_serial_number);
         changed = true;
       }
     }
