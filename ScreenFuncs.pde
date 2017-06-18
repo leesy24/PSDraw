@@ -1,11 +1,15 @@
 import java.awt.Dimension;
 
-//final boolean PRINT_SCREENFUNC_DBG_ALL = true;
-final boolean PRINT_SCREENFUNC_DBG_ALL = false;
+//final static boolean PRINT_SCREENFUNC_DBG_ALL = true;
+final static boolean PRINT_SCREENFUNC_DBG_ALL = false;
 
 // Define minimum screen width and height.
-final int MIN_SCREEN_WIDTH = 640;
-final int MIN_SCREEN_HEIGHT = 480;
+final static int MIN_SCREEN_WIDTH = 640;
+final static int MIN_SCREEN_HEIGHT = 480;
+
+final static int SCREEN_BORDER_WIDTH = 8;
+final static int SCREEN_TITLE_HEIGHT = 31;
+
 
 // Define default screen x, y, width and height.
 static int SCREEN_x = 0;
@@ -33,10 +37,15 @@ PFont SCREEN_PFront;
 void screen_settings() {
   //println("getContentPane()=", getJFrame(surface).getContentPane());
   // Defines the dimension of the display window width and height in units of pixels.
-  SCREEN_x = int(displayWidth * SCREEN_x_ratio);
-  SCREEN_y = int(displayHeight * SCREEN_y_ratio);
-  SCREEN_width = int(displayWidth * SCREEN_width_ratio);
-  SCREEN_height = int(displayHeight * SCREEN_height_ratio);
+  SCREEN_x = int(displayWidth * SCREEN_x_ratio) + 3;
+  //if(SCREEN_x >= SCREEN_BORDER_WIDTH) SCREEN_x += SCREEN_BORDER_WIDTH;
+  SCREEN_y = int(displayHeight * SCREEN_y_ratio) + 5;
+  //if(SCREEN_y >= SCREEN_TITLE_HEIGHT)  SCREEN_y += SCREEN_TITLE_HEIGHT/2;
+  SCREEN_width = int(displayWidth * SCREEN_width_ratio) - SCREEN_BORDER_WIDTH * 2;
+  SCREEN_height = int(displayHeight * SCREEN_height_ratio) - (SCREEN_TITLE_HEIGHT + SCREEN_BORDER_WIDTH);
+  
+  if(PRINT_SCREENFUNC_DBG_ALL) println("displayWidth="+displayWidth+",displayHeight="+displayHeight);
+  if(PRINT_SCREENFUNC_DBG_ALL) println("SCREEN_x="+SCREEN_x+",SCREEN_y="+SCREEN_y+",SCREEN_width="+SCREEN_width+",SCREEN_height="+SCREEN_height);
   size(SCREEN_width, SCREEN_height);
 }
 
