@@ -1,8 +1,8 @@
 //final static boolean PRINT_MOUSEFUNC_DBG_ALL = true;
 final static boolean PRINT_MOUSEFUNC_DBG_ALL = false;
 
-final static boolean PRINT_MOUSEFUNC_DBG_POS = true;
-//final static boolean PRINT_MOUSEFUNC_DBG_POS = false;
+//final static boolean PRINT_MOUSEFUNC_DBG_POS = true;
+final static boolean PRINT_MOUSEFUNC_DBG_POS = false;
 
 //final static boolean PRINT_MOUSEFUNC_Pressed = true; 
 final static boolean PRINT_MOUSEFUNC_Pressed = false;

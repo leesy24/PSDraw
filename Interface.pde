@@ -729,6 +729,19 @@ void interface_UDPlocalport(String theText)
   }
 }
 
+void interface_SNserialnumber(String theText)
+{
+  // automatically receives results from controller input
+  //println("a textfield event for controller 'input' : "+theText);
+
+  int serial_number = Integer.parseInt(theText);
+  if(serial_number != SN_serial_number) {
+    SN_serial_number = serial_number;
+    config_save();
+    INTERFACE_changed = true;
+  }
+}
+
 /*
 void keyPressed() {
   switch(key) {

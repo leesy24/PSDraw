@@ -163,7 +163,7 @@ void SN_prepare_read(int buf_size)
 void SN_receive_event(byte[] data)
 {
   try {
-    //println("SN_receive_event" + data.length);
+    if(PRINT_SN_READ_DBG) println("SN_receive_event data.length=" + data.length);
     if(SN_CMD_state == SN_CMD_STATE_SENT) {
       int inLength = 0;  // Bytes length by readBytes()
   
