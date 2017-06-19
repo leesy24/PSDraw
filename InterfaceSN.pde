@@ -36,6 +36,7 @@ int SN_CMD_inLength = 0;
 int SN_CMD_state = SN_CMD_STATE_NONE;
 int SN_CMD_timeout = 0;
 int SN_CMD_start_time;
+int SN_CMD_take_time;
 static String SN_str_err_last = null;
 
 boolean SN_SCAN_DONE = false;
@@ -87,6 +88,11 @@ String interface_SN_get_error()
   return SN_str_err_last;
 }
 
+int interface_SN_get_take_time()
+{
+  return SN_CMD_take_time;
+}
+
 boolean interface_SN_load()
 {
   int err;
@@ -133,7 +139,7 @@ boolean interface_SN_load()
   }
 }
 
-public void SN_config_timeout(int msec)
+void SN_config_timeout(int msec)
 {
   SN_CMD_timeout = msec;
   if (PRINT_SN_LOAD_DBG) println("SN_CMD_timeout = " + SN_CMD_timeout + " msec(s)");
@@ -148,6 +154,8 @@ void SN_write(byte[] buf)
     return;
   }
   SN_handle.send(buf, SN_remote_ip, SN_remote_port);
+  // Init & Save CMD start end time
+  SN_CMD_take_time = -1;
   SN_CMD_start_time = millis();
 }
 
@@ -200,6 +208,16 @@ void SN_receive_event(byte[] data)
         SN_CMD_inLength = SN_len + 12;
         //println("Read SCAN state changed to SN_CMD_STATE_RECEIVED! " + SN_total + "," + SN_len);
         SN_CMD_state = SN_CMD_STATE_RECEIVED;
+
+        // Save CMD take time
+        SN_CMD_take_time = millis();
+        // Check millis wrap around
+        if(SN_CMD_take_time < SN_CMD_start_time)
+          SN_CMD_take_time = MAX_INT - SN_CMD_start_time + SN_CMD_take_time;
+        else
+          SN_CMD_take_time = SN_CMD_take_time - SN_CMD_start_time;
+        if (PRINT_SN_READ_DBG) println("Read SN_CMD_take_time=" + SN_CMD_take_time);
+
         return;
       }
     }
@@ -214,6 +232,7 @@ byte[] SN_PS_make_cmd(String cmd, int param)
 {
   byte[] buf = new byte[18];
 
+  // Append SN(Serial Number)
   buf[0] = byte(SN_serial_number / 100);
   buf[1] = byte(SN_serial_number % 100);
   // Set function code
@@ -244,8 +263,15 @@ int SN_PS_perform_SCAN(int on)
     return SN_CMD_state;
   }
   else if(SN_CMD_state == SN_CMD_STATE_SENT) {
+    int time_dif;
     // Check time out
-    if(millis() - SN_CMD_start_time > SN_CMD_timeout) {
+    time_dif = millis();
+    // Check millis wrap around
+    if(time_dif < SN_CMD_start_time)
+      time_dif = MAX_INT - SN_CMD_start_time + time_dif;
+    else
+      time_dif = time_dif - SN_CMD_start_time;
+    if(time_dif > SN_CMD_timeout) {
       SN_CMD_state = SN_CMD_STATE_NONE;
       SN_str_err_last = "Error: PS SN SCAN timeout! " + SN_CMD_inLength + "," + SN_total;
       if(PRINT_SN_LOAD_ERR) println(SN_str_err_last);
@@ -305,8 +331,15 @@ int SN_PS_perform_GSCN(int scan_number)
     return SN_CMD_state;
   }
   else if(SN_CMD_state == SN_CMD_STATE_SENT) {
+    int time_dif;
     // Check time out
-    if(millis() - SN_CMD_start_time > SN_CMD_timeout) {
+    time_dif = millis();
+    // Check millis wrap around
+    if(time_dif < SN_CMD_start_time)
+      time_dif = MAX_INT - SN_CMD_start_time + time_dif;
+    else
+      time_dif = time_dif - SN_CMD_start_time;
+    if(time_dif > SN_CMD_timeout) {
       SN_str_err_last = "Error: PS SN GSCN timeout! " + SN_CMD_inLength + "," + SN_total;
       if(PRINT_SN_LOAD_ERR) println(SN_str_err_last);
       SN_CMD_state = SN_CMD_STATE_NONE;

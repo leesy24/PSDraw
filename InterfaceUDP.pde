@@ -1,17 +1,25 @@
 import hypermedia.net.*;
 
-final boolean PRINT_UDP_READ_DBG = false; 
-final boolean PRINT_UDP_READ_ERR = false; 
-final boolean PRINT_UDP_LOAD_DBG = false; 
-final boolean PRINT_UDP_LOAD_ERR = false; 
+//final static boolean PRINT_UDP_WRITE_DBG = true; 
+final static boolean PRINT_UDP_WRITE_DBG = false; 
+//final static boolean PRINT_UDP_WRITE_ERR = true; 
+final static boolean PRINT_UDP_WRITE_ERR = false; 
+//final static boolean PRINT_UDP_READ_DBG = true; 
+final static boolean PRINT_UDP_READ_DBG = false; 
+//final static boolean PRINT_UDP_READ_ERR = true; 
+final static boolean PRINT_UDP_READ_ERR = false; 
+//final static boolean PRINT_UDP_LOAD_DBG = true; 
+final static boolean PRINT_UDP_LOAD_DBG = false; 
+//final static boolean PRINT_UDP_LOAD_ERR = true; 
+final static boolean PRINT_UDP_LOAD_ERR = false; 
 
 final static int UDP_PS_MAX_BUFFER = 8*1024;
 
 UDP UDP_handle = null;  // The handle of UDP
 
+int UDP_local_port = 1025;
 String UDP_remote_ip = "10.0.8.86";
 int UDP_remote_port = 1024;
-int UDP_local_port = 1025;
 
 final int UDP_CMD_STATE_NONE = 0;
 final int UDP_CMD_STATE_SENT = 1;
@@ -27,13 +35,14 @@ int UDP_CMD_inLength = 0;
 int UDP_CMD_state = UDP_CMD_STATE_NONE;
 int UDP_CMD_timeout = 0;
 int UDP_CMD_start_time;
+int UDP_CMD_take_time;
 static String UDP_str_err_last = null;
 
 boolean UDP_SCAN_DONE = false;
 
 void interface_UDP_reset()
 {
-  if(PRINT_UDP_LOAD_DBG) println("UDP reset! " + UDP_remote_ip + "," + UDP_remote_port + "," + UDP_local_port);
+  if(PRINT_UDP_LOAD_DBG) println("UDP reset! " + UDP_local_port + "," + UDP_remote_ip + "," + UDP_remote_port);
   // Check UDP config changed
   if(UDP_handle != null) {
     UDP_handle.close();
@@ -72,6 +81,11 @@ void interface_UDP_setup()
 String interface_UDP_get_error()
 {
   return UDP_str_err_last;
+}
+
+int interface_UDP_get_take_time()
+{
+  return UDP_CMD_take_time;
 }
 
 boolean interface_UDP_load()
@@ -120,7 +134,7 @@ boolean interface_UDP_load()
   }
 }
 
-public void UDP_config_timeout(int msec)
+void UDP_config_timeout(int msec)
 {
   UDP_CMD_timeout = msec;
   if (PRINT_UDP_LOAD_DBG) println("UDP_CMD_timeout = " + UDP_CMD_timeout + " msec(s)");
@@ -128,8 +142,15 @@ public void UDP_config_timeout(int msec)
 
 void UDP_write(byte[] buf)
 {
-  if(UDP_handle == null) return;
+  if(PRINT_UDP_WRITE_DBG) println("UDP_write() buf.length="+buf.length);
+  if(UDP_handle == null)
+  {
+    if(PRINT_UDP_WRITE_DBG) println("UDP_write() UDP_handle=null");
+    return;
+  }
   UDP_handle.send(buf, UDP_remote_ip, UDP_remote_port);
+  // Init & Save CMD start end time
+  UDP_CMD_take_time = -1;
   UDP_CMD_start_time = millis();
 }
 
@@ -145,7 +166,7 @@ void UDP_prepare_read(int buf_size)
 void UDP_receive_event(byte[] data)
 {
   try {
-    //println("UDP_receive_event" + data.length);
+    if(PRINT_UDP_READ_DBG) println("UDP_receive_event data.length=" + data.length);
     if(UDP_CMD_state == UDP_CMD_STATE_SENT) {
       int inLength = 0;  // Bytes length by readBytes()
   
@@ -182,6 +203,16 @@ void UDP_receive_event(byte[] data)
         UDP_CMD_inLength = UDP_len + 12;
         //println("Read SCAN state changed to UDP_CMD_STATE_RECEIVED! " + UDP_total + "," + UDP_len);
         UDP_CMD_state = UDP_CMD_STATE_RECEIVED;
+
+        // Save CMD take time
+        UDP_CMD_take_time = millis();
+        // Check millis wrap around
+        if(UDP_CMD_take_time < UDP_CMD_start_time)
+          UDP_CMD_take_time = MAX_INT - UDP_CMD_start_time + UDP_CMD_take_time;
+        else
+          UDP_CMD_take_time = UDP_CMD_take_time - UDP_CMD_start_time;
+        if (PRINT_UDP_READ_DBG) println("Read UDP_CMD_take_time=" + UDP_CMD_take_time);
+
         return;
       }
     }
@@ -224,8 +255,15 @@ int UDP_PS_perform_SCAN(int on)
     return UDP_CMD_state;
   }
   else if(UDP_CMD_state == UDP_CMD_STATE_SENT) {
+    int time_dif;
     // Check time out
-    if(millis() - UDP_CMD_start_time > UDP_CMD_timeout) {
+    time_dif = millis();
+    // Check millis wrap around
+    if(time_dif < UDP_CMD_start_time)
+      time_dif = MAX_INT - UDP_CMD_start_time + time_dif;
+    else
+      time_dif = time_dif - UDP_CMD_start_time;
+    if(time_dif > UDP_CMD_timeout) {
       UDP_CMD_state = UDP_CMD_STATE_NONE;
       UDP_str_err_last = "Error: UDP SCAN timeout! " + UDP_CMD_inLength + "," + UDP_total;
       if(PRINT_UDP_LOAD_ERR) println(UDP_str_err_last);
@@ -285,8 +323,15 @@ int UDP_PS_perform_GSCN(int scan_number)
     return UDP_CMD_state;
   }
   else if(UDP_CMD_state == UDP_CMD_STATE_SENT) {
+    int time_dif;
     // Check time out
-    if(millis() - UDP_CMD_start_time > UDP_CMD_timeout) {
+    time_dif = millis();
+    // Check millis wrap around
+    if(time_dif < UDP_CMD_start_time)
+      time_dif = MAX_INT - UDP_CMD_start_time + time_dif;
+    else
+      time_dif = time_dif - UDP_CMD_start_time;
+    if(time_dif > UDP_CMD_timeout) {
       UDP_str_err_last = "Error: UDP GSCN timeout! " + UDP_CMD_inLength + "," + UDP_total;
       if(PRINT_UDP_LOAD_ERR) println(UDP_str_err_last);
       UDP_CMD_state = UDP_CMD_STATE_NONE;

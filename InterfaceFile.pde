@@ -1,5 +1,5 @@
-//final boolean PRINT_FILE_LOAD_ERR = true; 
-final boolean PRINT_FILE_LOAD_ERR = false;
+//final static boolean PRINT_FILE_LOAD_ERR = true; 
+final static boolean PRINT_FILE_LOAD_ERR = false;
 
 // Get OS Name
 final String OS = System.getProperty("os.name");

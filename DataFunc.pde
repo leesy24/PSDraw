@@ -91,6 +91,7 @@ class Data {
   int crc;
   String parse_err_str = null;
   int parse_err_cnt = 0;
+  int load_take_time;
 
   // Create the Data
   Data()
@@ -100,18 +101,18 @@ class Data {
   // Load data_buf
   boolean load()
   {
-    String str_interface_err;
+    String interface_err_str;
     if(DATA_interface == DATA_INTERFACE_FILE) {
       if(interface_file_load() != true) {
-        str_interface_err = interface_file_get_error();
-        if(str_interface_err != null) {
+        interface_err_str = interface_file_get_error();
+        if(interface_err_str != null) {
           // Sets the color used to draw lines and borders around shapes.
           fill(C_TEXT);
           stroke(C_TEXT);
           textSize(FONT_HEIGHT*3);
-          text(str_interface_err, SCREEN_width / 2 - int(textWidth(str_interface_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
+          text(interface_err_str, SCREEN_width / 2 - int(textWidth(interface_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
-          if (PRINT_DATAFUNC_LOAD_ERR) println("interface_file_load() error!:" + str_interface_err);
+          if (PRINT_DATAFUNC_LOAD_ERR) println("interface_file_load() error!:" + interface_err_str);
         }
         else if(parse_err_str != null) {
           // Sets the color used to draw lines and borders around shapes.
@@ -124,19 +125,22 @@ class Data {
         }
         return false;
       }
+      // No mean in file interface.
+      load_take_time = -1;
+      if (PRINT_DATAFUNC_LOAD_DBG) println("interface_file_load() ok!");
       return true;
     }
     else if(DATA_interface == DATA_INTERFACE_UART) {
       if(interface_UART_load() != true) {
-        str_interface_err = interface_UART_get_error();
-        if(str_interface_err != null) {
+        interface_err_str = interface_UART_get_error();
+        if(interface_err_str != null) {
           // Sets the color used to draw lines and borders around shapes.
           fill(C_TEXT);
           stroke(C_TEXT);
           textSize(FONT_HEIGHT*3);
-          text(str_interface_err, SCREEN_width / 2 - int(textWidth(str_interface_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
+          text(interface_err_str, SCREEN_width / 2 - int(textWidth(interface_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
-          if (PRINT_DATAFUNC_LOAD_ERR) println("interface_UART_load() error!:" + str_interface_err);
+          if (PRINT_DATAFUNC_LOAD_ERR) println("interface_UART_load() error!:" + interface_err_str);
         }
         else if(parse_err_str != null) {
           // Sets the color used to draw lines and borders around shapes.
@@ -149,20 +153,21 @@ class Data {
         }
         return false;
       }
+      load_take_time = interface_UART_get_take_time();
       if (PRINT_DATAFUNC_LOAD_DBG) println("interface_UART_load() ok!");
       return true;
     }
     else if(DATA_interface == DATA_INTERFACE_UDP) {
       if(interface_UDP_load() != true) {
-        str_interface_err = interface_UDP_get_error();
-        if(str_interface_err != null) {
+        interface_err_str = interface_UDP_get_error();
+        if(interface_err_str != null) {
           // Sets the color used to draw lines and borders around shapes.
           fill(C_TEXT);
           stroke(C_TEXT);
           textSize(FONT_HEIGHT*3);
-          text(str_interface_err, SCREEN_width / 2 - int(textWidth(str_interface_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
+          text(interface_err_str, SCREEN_width / 2 - int(textWidth(interface_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
-          if (PRINT_DATAFUNC_LOAD_ERR) println("interface_UDP_load() error!:" + str_interface_err);
+          if (PRINT_DATAFUNC_LOAD_ERR) println("interface_UDP_load() error!:" + interface_err_str);
         }
         else if(parse_err_str != null) {
           // Sets the color used to draw lines and borders around shapes.
@@ -175,20 +180,21 @@ class Data {
         }
         return false;
       }
+      load_take_time = interface_UDP_get_take_time();
       if (PRINT_DATAFUNC_LOAD_DBG) println("interface_UDP_load() ok!");
       return true;
     }
     else /*if(DATA_interface == DATA_INTERFACE_SN)*/ {
       if(interface_SN_load() != true) {
-        str_interface_err = interface_SN_get_error();
-        if(str_interface_err != null) {
+        interface_err_str = interface_SN_get_error();
+        if(interface_err_str != null) {
           // Sets the color used to draw lines and borders around shapes.
           fill(C_TEXT);
           stroke(C_TEXT);
           textSize(FONT_HEIGHT*3);
-          text(str_interface_err, SCREEN_width / 2 - int(textWidth(str_interface_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
+          text(interface_err_str, SCREEN_width / 2 - int(textWidth(interface_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
-          if (PRINT_DATAFUNC_LOAD_ERR) println("interface_SN_load() error!:" + str_interface_err);
+          if (PRINT_DATAFUNC_LOAD_ERR) println("interface_SN_load() error!:" + interface_err_str);
         }
         else if(parse_err_str != null) {
           // Sets the color used to draw lines and borders around shapes.
@@ -201,6 +207,7 @@ class Data {
         }
         return false;
       }
+      load_take_time = interface_SN_get_take_time();
       if (PRINT_DATAFUNC_LOAD_DBG) println("interface_SN_load() ok!");
       return true;
     }
@@ -462,39 +469,48 @@ class Data {
   // Draw params of parsed data_buf
   void draw_params()
   {
-    String[] strings = new String[10];
+    String[] strings = new String[11];
+    int cnt;
 
-    strings[0] = "Scan number:" + i_scan;
-    strings[1] = "Time stamp:" + time_stamp;
-    strings[2] = "Scan start direction:" + scan_angle_start + "°";
-    strings[3] = "Scan angle size:" + scan_angle_size + "°";
-    strings[4] = "Number of echoes:" + n_echos;
-    strings[5] = "Encoder count:" + i_encoder;
-    strings[6] = "System temperature:" + temperature + "°C";
-    strings[7] = "System status:" + status;
-    strings[8] = "Data content:" + content;
-    strings[9] = "Number of points:" + n_points;
+    strings[10] = "";
+    cnt = 0;
+    if(load_take_time != -1)
+      strings[cnt++] = "Reponse time:" + load_take_time + "ms";
+    strings[cnt++] = "Scan number:" + i_scan;
+    strings[cnt++] = "Time stamp:" + time_stamp;
+    strings[cnt++] = "Scan start direction:" + scan_angle_start + "°";
+    strings[cnt++] = "Scan angle size:" + scan_angle_size + "°";
+    strings[cnt++] = "Number of echoes:" + n_echos;
+    strings[cnt++] = "Encoder count:" + i_encoder;
+    strings[cnt++] = "System temperature:" + temperature + "°C";
+    strings[cnt++] = "System status:" + status;
+    strings[cnt++] = "Data content:" + content;
+    strings[cnt++] = "Number of points:" + n_points;
 
     // Get max string width
     int witdh_max = 0;
     for( String string:strings)
     {
-      witdh_max = max(witdh_max, int(textWidth(string)));    
+      //if(string != null)
+        witdh_max = max(witdh_max, int(textWidth(string)));    
     }
 
     // Draw rect
     fill(C_DATA_RECT_FILL);
     stroke(C_DATA_RECT_STROKE);
-    rect(FONT_HEIGHT * 3, TEXT_MARGIN*2 + FONT_HEIGHT * 1, witdh_max + TEXT_MARGIN*2, FONT_HEIGHT * 10 + TEXT_MARGIN*2, 5, 5, 5, 5);
+    rect(FONT_HEIGHT * 3, TEXT_MARGIN*2 + FONT_HEIGHT * 1, witdh_max + TEXT_MARGIN*2, FONT_HEIGHT * cnt + TEXT_MARGIN*2, 5, 5, 5, 5);
 
     // Sets the color used to draw lines and borders around shapes.
     fill(C_DATA_RECT_TEXT);
     stroke(C_DATA_RECT_TEXT);
-    int i = 0;
+    cnt = 0;
     for( String string:strings)
     {
-      text(string, FONT_HEIGHT * 3 + TEXT_MARGIN, TEXT_MARGIN*2 + FONT_HEIGHT * 1 + TEXT_MARGIN + FONT_HEIGHT * (1 + i));
-      i ++;
+      //if(string != null)
+      {
+        text(string, FONT_HEIGHT * 3 + TEXT_MARGIN, TEXT_MARGIN*2 + FONT_HEIGHT * 1 + TEXT_MARGIN + FONT_HEIGHT * (1 + cnt));
+        cnt ++;
+      }
     }
   } // End of draw_params()
   

@@ -1,13 +1,21 @@
 import processing.serial.*;
 
-final boolean PRINT_UART_READ_DBG = false; 
-final boolean PRINT_UART_READ_ERR = false; 
-final boolean PRINT_UART_LOAD_DBG = false; 
-final boolean PRINT_UART_LOAD_ERR = false; 
+//final static boolean PRINT_UART_WRITE_DBG = true; 
+final static boolean PRINT_UART_WRITE_DBG = false; 
+//final static boolean PRINT_UART_WRITE_ERR = true; 
+final static boolean PRINT_UART_WRITE_ERR = false; 
+//final static boolean PRINT_UART_READ_DBG = true; 
+final static boolean PRINT_UART_READ_DBG = false; 
+//final static boolean PRINT_UART_READ_ERR = true; 
+final static boolean PRINT_UART_READ_ERR = false; 
+//final static boolean PRINT_UART_LOAD_DBG = true; 
+final static boolean PRINT_UART_LOAD_DBG = false; 
+//final static boolean PRINT_UART_LOAD_ERR = true; 
+final static boolean PRINT_UART_LOAD_ERR = false; 
 
 final static int UART_PS_MAX_BUFFER = 8*1024;
 
-Serial UART_handle = null;  // The handle of serial port
+Serial UART_handle = null;  // The handle of UART(serial port)
 
 String UART_port_name = "COM1"; // String: name of the port (COM1 is the default)
 int UART_baud_rate = 115200; // int: 9600 is the default
@@ -29,6 +37,7 @@ int UART_CMD_inLength = 0;
 int UART_CMD_state = UART_CMD_STATE_NONE;
 int UART_CMD_timeout = 0;
 int UART_CMD_start_time;
+int UART_CMD_take_time;
 static String UART_str_err_last = null;
 
 boolean UART_SCAN_DONE = false;
@@ -98,6 +107,11 @@ String interface_UART_get_error()
   return UART_str_err_last;
 }
 
+int interface_UART_get_take_time()
+{
+  return UART_CMD_take_time;
+}
+
 boolean interface_UART_load()
 {
   int err;
@@ -105,14 +119,14 @@ boolean interface_UART_load()
   if(UART_handle == null) {
     interface_UART_setup();
     if(UART_handle == null) {
-      UART_str_err_last = "Error: UART port not exist! " + UART_port_name;
+      UART_str_err_last = "Error: UART port busy or not exist! " + UART_port_name;
       if(PRINT_UART_LOAD_ERR) println(UART_str_err_last);
       return false;
     }
   }
 
   if(UART_SCAN_DONE == false) {
-    err = PS_perform_SCAN(1);
+    err = UART_PS_perform_SCAN(1);
     if(err < 0) {
       if(PRINT_UART_LOAD_ERR) println("PS_perform_SCAN() error! " + err);
     }
@@ -126,7 +140,7 @@ boolean interface_UART_load()
     return false;
   }
   else {
-    err = PS_perform_GSCN(0);
+    err = UART_PS_perform_GSCN(0);
     if(err < 0) {
       if(PRINT_UART_LOAD_ERR) println("PS_perform_GSCN() error! " + err);
       return false;
@@ -158,8 +172,15 @@ void UART_clear()
 
 void UART_write(byte[] buf)
 {
-  if(UART_handle == null) return;
+  if(PRINT_UART_WRITE_DBG) println("UART_write() buf.length="+buf.length);
+  if(UART_handle == null)
+  {
+    if(PRINT_UART_WRITE_DBG) println("UDP_write() UDP_handle=null");
+    return;
+  }
   UART_handle.write(buf);
+  // Init & Save CMD start end time
+  UART_CMD_take_time = -1;
   UART_CMD_start_time = millis();
 }
 
@@ -175,12 +196,13 @@ void UART_prepare_read(int buf_size)
 void serialEvent(Serial p)
 {
   try {
-    //println("serialEvent" + p.available());
+    if(PRINT_UART_READ_DBG) println("UART serialEvent");
     if(UART_CMD_state == UART_CMD_STATE_SENT) {
       byte[] data;
       int inLength = 0;  // Bytes length by readBytes()
   
       inLength = p.available();
+      if(PRINT_UART_READ_DBG) println("UART serialEvent available()=" + inLength);
       if(UART_total + inLength > UART_inBuffer.length) {
         inLength = UART_inBuffer.length - UART_total;
       }
@@ -220,6 +242,16 @@ void serialEvent(Serial p)
         UART_CMD_inLength = UART_len + 12;
         //println("Read SCAN state changed to UART_CMD_STATE_RECEIVED! " + UART_total + "," + UART_len);
         UART_CMD_state = UART_CMD_STATE_RECEIVED;
+
+        // Save CMD take time
+        UART_CMD_take_time = millis();
+        // Check millis wrap around
+        if(UART_CMD_take_time < UART_CMD_start_time)
+          UART_CMD_take_time = MAX_INT - UART_CMD_start_time + UART_CMD_take_time;
+        else
+          UART_CMD_take_time = UART_CMD_take_time - UART_CMD_start_time;
+        if (PRINT_UART_READ_DBG) println("Read UART_CMD_take_time=" + UART_CMD_take_time);
+
         return;
       }
     }
@@ -230,7 +262,7 @@ void serialEvent(Serial p)
   }
 } 
 
-byte[] PS_make_cmd(String cmd, int param)
+byte[] UART_PS_make_cmd(String cmd, int param)
 {
   byte[] buf = new byte[16];
 
@@ -246,13 +278,13 @@ byte[] PS_make_cmd(String cmd, int param)
   return buf;
 }
 
-int PS_perform_SCAN(int on)
+int UART_PS_perform_SCAN(int on)
 {
   byte[] outBuffer;
 
   if(UART_CMD_state == UART_CMD_STATE_NONE) {
     // Make command buffer
-    outBuffer = PS_make_cmd("SCAN", on);
+    outBuffer = UART_PS_make_cmd("SCAN", on);
     // Prepare read
     UART_prepare_read(16);
     // Flush buffer
@@ -264,8 +296,15 @@ int PS_perform_SCAN(int on)
     return UART_CMD_state;
   }
   else if(UART_CMD_state == UART_CMD_STATE_SENT) {
+    int time_dif;
     // Check time out
-    if(millis() - UART_CMD_start_time > UART_CMD_timeout) {
+    time_dif = millis();
+    // Check millis wrap around
+    if(time_dif < UART_CMD_start_time)
+      time_dif = MAX_INT - UART_CMD_start_time + time_dif;
+    else
+      time_dif = time_dif - UART_CMD_start_time;
+    if(time_dif > UART_CMD_timeout) {
       UART_CMD_state = UART_CMD_STATE_NONE;
       UART_str_err_last = "Error: UART SCAN timeout! " + UART_CMD_inLength + "," + UART_total;
       if(PRINT_UART_LOAD_ERR) println(UART_str_err_last);
@@ -308,13 +347,13 @@ int PS_perform_SCAN(int on)
   return UART_CMD_state;
 }
 
-int PS_perform_GSCN(int scan_number)
+int UART_PS_perform_GSCN(int scan_number)
 {
   byte[] outBuffer;
 
   if(UART_CMD_state == UART_CMD_STATE_NONE) {
     // Make command buffer
-    outBuffer = PS_make_cmd("GSCN", scan_number);
+    outBuffer = UART_PS_make_cmd("GSCN", scan_number);
     // Prepare read
     UART_prepare_read(UART_PS_MAX_BUFFER);
     // Flush buffer
@@ -326,8 +365,15 @@ int PS_perform_GSCN(int scan_number)
     return UART_CMD_state;
   }
   else if(UART_CMD_state == UART_CMD_STATE_SENT) {
+    int time_dif;
     // Check time out
-    if(millis() - UART_CMD_start_time > UART_CMD_timeout) {
+    time_dif = millis();
+    // Check millis wrap around
+    if(time_dif < UART_CMD_start_time)
+      time_dif = MAX_INT - UART_CMD_start_time + time_dif;
+    else
+      time_dif = time_dif - UART_CMD_start_time;
+    if(time_dif > UART_CMD_timeout) {
       UART_str_err_last = "Error: UART GSCN timeout! " + UART_CMD_inLength + "," + UART_total;
       if(PRINT_UART_LOAD_ERR) println(UART_str_err_last);
       UART_CMD_state = UART_CMD_STATE_NONE;
