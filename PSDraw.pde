@@ -104,7 +104,9 @@ void draw() {
 
   if (PS_Data.load() == true) {
     if (PS_Data.parse() == false) {
-      data_setup();
+      if (PS_Data.parse_err_cnt > 10) {
+        data_setup();
+      }
     }
   }
   PS_Data.draw_points();

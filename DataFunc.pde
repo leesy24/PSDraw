@@ -89,7 +89,8 @@ class Data {
   int[] distances = new int[DATA_MAX_POINTS];
   int[] pulse_widths = new int[DATA_MAX_POINTS];
   int crc;
-  String str_parse_err = null;
+  String parse_err_str = null;
+  int parse_err_cnt = 0;
 
   // Create the Data
   Data()
@@ -112,14 +113,14 @@ class Data {
           textSize(FONT_HEIGHT);
           if (PRINT_DATAFUNC_LOAD_ERR) println("interface_file_load() error!:" + str_interface_err);
         }
-        else if(str_parse_err != null) {
+        else if(parse_err_str != null) {
           // Sets the color used to draw lines and borders around shapes.
           fill(C_TEXT);
           stroke(C_TEXT);
           textSize(FONT_HEIGHT*3);
-          text(str_parse_err, SCREEN_width / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
+          text(parse_err_str, SCREEN_width / 2 - int(textWidth(parse_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
-          if (PRINT_DATAFUNC_LOAD_ERR) println("parse() error!:" + str_parse_err);
+          if (PRINT_DATAFUNC_LOAD_ERR) println("parse() error!:" + parse_err_str);
         }
         return false;
       }
@@ -137,14 +138,14 @@ class Data {
           textSize(FONT_HEIGHT);
           if (PRINT_DATAFUNC_LOAD_ERR) println("interface_UART_load() error!:" + str_interface_err);
         }
-        else if(str_parse_err != null) {
+        else if(parse_err_str != null) {
           // Sets the color used to draw lines and borders around shapes.
           fill(C_TEXT);
           stroke(C_TEXT);
           textSize(FONT_HEIGHT*3);
-          text(str_parse_err, SCREEN_width / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
+          text(parse_err_str, SCREEN_width / 2 - int(textWidth(parse_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
-          if (PRINT_DATAFUNC_LOAD_ERR) println("parse() error!:" + str_parse_err);
+          if (PRINT_DATAFUNC_LOAD_ERR) println("parse() error!:" + parse_err_str);
         }
         return false;
       }
@@ -163,14 +164,14 @@ class Data {
           textSize(FONT_HEIGHT);
           if (PRINT_DATAFUNC_LOAD_ERR) println("interface_UDP_load() error!:" + str_interface_err);
         }
-        else if(str_parse_err != null) {
+        else if(parse_err_str != null) {
           // Sets the color used to draw lines and borders around shapes.
           fill(C_TEXT);
           stroke(C_TEXT);
           textSize(FONT_HEIGHT*3);
-          text(str_parse_err, SCREEN_width / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
+          text(parse_err_str, SCREEN_width / 2 - int(textWidth(parse_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
-          if (PRINT_DATAFUNC_LOAD_ERR) println("parse() error!:" + str_parse_err);
+          if (PRINT_DATAFUNC_LOAD_ERR) println("parse() error!:" + parse_err_str);
         }
         return false;
       }
@@ -189,14 +190,14 @@ class Data {
           textSize(FONT_HEIGHT);
           if (PRINT_DATAFUNC_LOAD_ERR) println("interface_SN_load() error!:" + str_interface_err);
         }
-        else if(str_parse_err != null) {
+        else if(parse_err_str != null) {
           // Sets the color used to draw lines and borders around shapes.
           fill(C_TEXT);
           stroke(C_TEXT);
           textSize(FONT_HEIGHT*3);
-          text(str_parse_err, SCREEN_width / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
+          text(parse_err_str, SCREEN_width / 2 - int(textWidth(parse_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
-          if (PRINT_DATAFUNC_LOAD_ERR) println("parse() error!:" + str_parse_err);
+          if (PRINT_DATAFUNC_LOAD_ERR) println("parse() error!:" + parse_err_str);
         }
         return false;
       }
@@ -220,11 +221,12 @@ class Data {
       // Sets the color used to draw lines and borders around shapes.
       fill(C_TEXT);
       stroke(C_TEXT);
-      str_parse_err = "Error: Function code is invalid! " + func;
+      parse_err_str = "Error: Function code is invalid! " + func;
       textSize(FONT_HEIGHT*3);
-      text(str_parse_err, SCREEN_width / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
+      text(parse_err_str, SCREEN_width / 2 - int(textWidth(parse_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
-      if (PRINT_DATAFUNC_PARSE_ERR) println(str_parse_err);
+      if (PRINT_DATAFUNC_PARSE_ERR) println(parse_err_str);
+      parse_err_cnt ++;
       return false;
     }
     i = i + 4;
@@ -238,11 +240,12 @@ class Data {
       // Sets the color used to draw lines and borders around shapes.
       fill(C_TEXT);
       stroke(C_TEXT);
-      str_parse_err = "Error: Data buf length is invalid!:" + data_buf.length + "," + len;
+      parse_err_str = "Error: Data buf length is invalid!:" + data_buf.length + "," + len;
       textSize(FONT_HEIGHT*3);
-      text(str_parse_err, SCREEN_width / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
+      text(parse_err_str, SCREEN_width / 2 - int(textWidth(parse_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
-      if (PRINT_DATAFUNC_PARSE_ERR) println(str_parse_err);
+      if (PRINT_DATAFUNC_PARSE_ERR) println(parse_err_str);
+      parse_err_cnt ++;
       return false;
     }
     i = i + 4;
@@ -256,11 +259,12 @@ class Data {
       // Sets the color used to draw lines and borders around shapes.
       fill(C_TEXT);
       stroke(C_TEXT);
-      str_parse_err = "Error: Data buf crc error!:" + crc + "," + crc_c;
+      parse_err_str = "Error: Data buf crc error!:" + crc + "," + crc_c;
       textSize(FONT_HEIGHT*3);
-      text(str_parse_err, SCREEN_width / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
+      text(parse_err_str, SCREEN_width / 2 - int(textWidth(parse_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
-      if (PRINT_DATAFUNC_PARSE_ERR) println(str_parse_err);
+      if (PRINT_DATAFUNC_PARSE_ERR) println(parse_err_str);
+      parse_err_cnt ++;
       return false;
     }
 
@@ -272,11 +276,12 @@ class Data {
       // Sets the color used to draw lines and borders around shapes.
       fill(C_TEXT);
       stroke(C_TEXT);
-      str_parse_err = "Error: No scan data is available! n_params = 0";
+      parse_err_str = "Error: No scan data is available! n_params = 0";
       textSize(FONT_HEIGHT*3);
-      text(str_parse_err, SCREEN_width / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
+      text(parse_err_str, SCREEN_width / 2 - int(textWidth(parse_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
-      if (PRINT_DATAFUNC_PARSE_ERR) println(str_parse_err);
+      if (PRINT_DATAFUNC_PARSE_ERR) println(parse_err_str);
+      parse_err_cnt ++;
       return false;
     }
     i = i + 4;
@@ -290,11 +295,12 @@ class Data {
       // Sets the color used to draw lines and borders around shapes.
       fill(C_TEXT);
       stroke(C_TEXT);
-      str_parse_err = "Error: Number of points invalid! n_points is " + t_n_points;
+      parse_err_str = "Error: Number of points invalid! n_points is " + t_n_points;
       textSize(FONT_HEIGHT*3);
-      text(str_parse_err, SCREEN_width / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
+      text(parse_err_str, SCREEN_width / 2 - int(textWidth(parse_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
-      if (PRINT_DATAFUNC_PARSE_ERR) println(str_parse_err);
+      if (PRINT_DATAFUNC_PARSE_ERR) println(parse_err_str);
+      parse_err_cnt ++;
       return false;
     }
     n_points = t_n_points;
@@ -324,6 +330,7 @@ class Data {
         text(string, SCREEN_width / 2 - int(textWidth(string) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
         textSize(FONT_HEIGHT);
         if (PRINT_DATAFUNC_PARSE_DBG) println("Scan data_buf is not changed!:" + time_stamp);
+        //parse_err_cnt ++;
         //return false;
       }
       old_time_stamp = time_stamp;
@@ -407,11 +414,12 @@ class Data {
       // Sets the color used to draw lines and borders around shapes.
       fill(C_TEXT);
       stroke(C_TEXT);
-      str_parse_err = "Error: Number of points invalid! n_points is " + n_points;
+      parse_err_str = "Error: Number of points invalid! n_points is " + n_points;
       textSize(FONT_HEIGHT*3);
-      text(str_parse_err, SCREEN_width / 2 - int(textWidth(str_parse_err) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
+      text(parse_err_str, SCREEN_width / 2 - int(textWidth(parse_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
       textSize(FONT_HEIGHT);
-      if (PRINT_DATAFUNC_PARSE_ERR) println(str_parse_err);
+      if (PRINT_DATAFUNC_PARSE_ERR) println(parse_err_str);
+      parse_err_cnt ++;
       return false;
     }
 */
@@ -444,8 +452,9 @@ class Data {
     i = i + 4;
 */  
 
-    // Clear parse error string
-    str_parse_err = null;
+    // Clear parse error string and count
+    parse_err_str = null;
+    parse_err_cnt = 0;
 
     return true;
   } // End of parse()
