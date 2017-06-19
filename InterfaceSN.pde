@@ -223,7 +223,7 @@ byte[] SN_PS_make_cmd(String cmd, int param)
   // Set Scan on(1)
   set_int32_bytes(buf, 10, param);
   // Set CRC
-  set_int32_bytes(buf, 14, get_crc32(buf, 0, 12));
+  set_int32_bytes(buf, 14, get_crc32(buf, 2, 12));
 
   return buf;
 }
