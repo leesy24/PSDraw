@@ -69,8 +69,12 @@ void setup() {
   //frameRate(1);
   //frameRate(30);
 
+  // Titile setting. You MUST change below title change code also. 
   Title = TITLE;
-  Title = Title + " #" + CONFIG_instance_number + " - ";
+  if(CONFIG_instance_number != null)
+    Title = Title + " #" + CONFIG_instance_number + " - ";
+  else
+    Title = Title + " #0" + " - ";
   data_setup();
   screen_setup();
   button_setup();
@@ -90,7 +94,12 @@ void draw() {
   background(C_BG);
 
   if (INTERFACE_changed) {
+    // Titile setting. You MUST change below title change code also. 
     Title = TITLE;
+    if(CONFIG_instance_number != null)
+      Title = Title + " #" + CONFIG_instance_number + " - ";
+    else
+      Title = Title + " #0" + " - ";
     data_setup();
     screen_setup();
     button_setup();
