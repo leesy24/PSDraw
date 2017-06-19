@@ -24,7 +24,7 @@ boolean MIRROR_ENABLE = false;
 void settings() {
   try {
     if( args.length >= 1) {
-      CONFIG_instance_number = Integer.parseInt(args[0]);
+      CONFIG_instance_number = args[0];
     }
   }
   catch (Exception e) {

@@ -2,19 +2,21 @@
 final static String CONFIG_FILE_NAME = "config";
 final static String CONFIG_FILE_EXT = ".csv";
 static String CONFIG_file_full_name;
-static int CONFIG_instance_number = 0;
+static String CONFIG_instance_number = null;
 
 // A Table object
 static Table CONFIG_table;
 
 void config_settings()
 {
-  CONFIG_file_full_name = CONFIG_FILE_NAME + CONFIG_FILE_EXT;
-  
+  if(CONFIG_instance_number != null) {
+    CONFIG_file_full_name = CONFIG_FILE_NAME + "_" + CONFIG_instance_number + CONFIG_FILE_EXT;
+  }
+  else {
+    CONFIG_file_full_name = CONFIG_FILE_NAME + CONFIG_FILE_EXT;
+  }
+
   try {
-    if(CONFIG_instance_number != 0) {
-      CONFIG_file_full_name = CONFIG_FILE_NAME + "_" + CONFIG_instance_number + CONFIG_FILE_EXT;
-    }
     // Load config file(CSV type) into a Table object
     // "header" option indicates the file has a header row
     CONFIG_table = loadTable(CONFIG_file_full_name, "header");
