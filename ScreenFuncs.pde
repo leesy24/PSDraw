@@ -49,13 +49,22 @@ void screen_settings() {
   size(SCREEN_width, SCREEN_height);
 }
 
-void screen_setup() {
-  // This is only pertains to the desktop version of Processing (not JavaScript or Android),
-  //  because it's the only one to use windows and frames.
-  // It's possible to make the window resizable.
-  surface.setResizable(true);
-  surface.setLocation(SCREEN_x, SCREEN_y);
-
+/*
+boolean SCREEN_surface_set = false; // Needs to set one time.
+*/
+void screen_setup()
+{
+/*
+  if(!SCREEN_surface_set)
+  {
+    // This is only pertains to the desktop version of Processing (not JavaScript or Android),
+    //  because it's the only one to use windows and frames.
+    // It's possible to make the window resizable.
+    surface.setResizable(true);
+    surface.setLocation(SCREEN_x, SCREEN_y);
+    SCREEN_surface_set = true;
+  }
+*/
   // Set text margin to follow min(Width, Height) of screen.
   TEXT_MARGIN = (SCREEN_width < SCREEN_height) ? (SCREEN_width / 200) : (SCREEN_height / 200);
   if (PRINT_SCREENFUNC_DBG_ALL) println("TEXT_MARGIN=" + TEXT_MARGIN);
@@ -68,26 +77,31 @@ void screen_setup() {
   textSize(FONT_HEIGHT);
 }
 
+/*
 static final javax.swing.JFrame getJFrame(final PSurface surf) {
   return
     (javax.swing.JFrame)
     ((processing.awt.PSurfaceAWT.SmoothCanvas)
     surf.getNative()).getFrame();
 }
+*/
 
-boolean screen_check_update() {
+boolean screen_check_update()
+{
   boolean updated = false;
+
+/*
   javax.swing.JFrame f;
   
   f = getJFrame(surface);
   //f.pack();
-// This is not the actual-sized frame. get the actual size
-//Dimension actualSize = getJFrame(getSurface()).getContentPane().getSize();
-Dimension actualSize = f.getContentPane().getSize();
-//Dimension actualSize = frame.getContentPane().getSize();
-
-//println("border=" + SCREEN_width, actualSize.width + "," + SCREEN_height, actualSize.height);
-
+  // This is not the actual-sized frame. get the actual size
+  //Dimension actualSize = getJFrame(getSurface()).getContentPane().getSize();
+  Dimension actualSize = f.getContentPane().getSize();
+  //Dimension actualSize = frame.getContentPane().getSize();
+  
+  //println("border=" + SCREEN_width, actualSize.width + "," + SCREEN_height, actualSize.height);
+*/
 /*
   int new_x = 0, new_y = 0;
   new_x = getJFrame(surface).getX();
@@ -138,20 +152,25 @@ Dimension actualSize = f.getContentPane().getSize();
       else if (new_height < MIN_SCREEN_HEIGHT) {
         new_height = MIN_SCREEN_HEIGHT;
       }
+      if(PRINT_SCREENFUNC_DBG_ALL) println("surface.setSize(new_width=" + new_width + ", new_height=" + new_height + ")");
       surface.setSize(new_width, new_height);
     }
   
     //println("old GRID_OFFSET_X=" + GRID_OFFSET_X + ", GRID_OFFSET_Y=" + GRID_OFFSET_Y);
-    if (ROTATE_FACTOR == 0) { // OK
+    if (ROTATE_FACTOR == 0)
+    { // OK
       GRID_OFFSET_X = int(GRID_OFFSET_X - (float(SCREEN_width)  / 2.0) + (float(new_width)  / 2.0));
     }
-    else if (ROTATE_FACTOR == 90) { // OK
+    else if (ROTATE_FACTOR == 90)
+    { // OK
       GRID_OFFSET_Y = int(GRID_OFFSET_Y - (float(SCREEN_height) / 2.0) + (float(new_height) / 2.0));
     }
-    else if (ROTATE_FACTOR == 180) { // OK
+    else if (ROTATE_FACTOR == 180)
+    { // OK
       GRID_OFFSET_X = int(GRID_OFFSET_X + (float(SCREEN_width)  / 2.0) - (float(new_width)  / 2.0));
     }
-    else /*if (ROTATE_FACTOR == 270)*/ { // OK
+    else //if (ROTATE_FACTOR == 270)
+    { // OK
       GRID_OFFSET_Y = int(GRID_OFFSET_Y + (float(SCREEN_height) / 2.0) - (float(new_height) / 2.0));
     }
     //println("new GRID_OFFSET_X=" + GRID_OFFSET_X + ", GRID_OFFSET_Y=" + GRID_OFFSET_Y);
@@ -161,9 +180,11 @@ Dimension actualSize = f.getContentPane().getSize();
     updated = true;
   }
 
+/*
   if(updated) {
     config_save();
   }
+*/
 
   return updated;
 }
