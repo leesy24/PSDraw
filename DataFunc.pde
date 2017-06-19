@@ -472,6 +472,7 @@ class Data {
     String[] strings = new String[11];
     int cnt;
 
+    // Set to blank string to avoid adding string null check code.
     strings[10] = "";
     cnt = 0;
     if(load_take_time != -1)
