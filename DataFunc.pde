@@ -536,7 +536,7 @@ class Data {
     int point_color_H_max_const, point_color_H_min_const;
     float point_line_color_H_offset_const;
     int point_line_color_H_modular_const;
-    int point_line_color_S_B_const;
+    int point_line_color_HSB_max_const;
 
     // Adjust mouse over range by ZOOM_FACTOR.
     if( ZOOM_FACTOR < 50 ) {
@@ -568,7 +568,7 @@ class Data {
     point_color_H_min_const = (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - DATA_MIN_PULSE_WIDTH) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1);
     point_line_color_H_offset_const = float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0;
     point_line_color_H_modular_const = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1;
-    point_line_color_S_B_const = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH;
+    point_line_color_HSB_max_const = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH;
 
     for (int j = 0; j < n_points; j++) {
       // Get Distance
@@ -645,34 +645,34 @@ class Data {
         }
         // Check pulse width exist
         if (content != 4) {
-          colorMode(HSB, DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
+          colorMode(HSB, point_line_color_HSB_max_const);
           //print("[" + j + "]=" + pulse_widths[j] + " ");
           if(pulse_width_curr > DATA_MAX_PULSE_WIDTH) {
             point_color_curr =
               color(
                 point_color_H_max_const,
-                point_line_color_S_B_const,
-                point_line_color_S_B_const);
+                point_line_color_HSB_max_const,
+                point_line_color_HSB_max_const);
           }
           else if(pulse_width_curr < DATA_MIN_PULSE_WIDTH) {
             point_color_curr =
               color(
                 point_color_H_min_const,
-                point_line_color_S_B_const,
-                point_line_color_S_B_const);
+                point_line_color_HSB_max_const,
+                point_line_color_HSB_max_const);
           }
           else {
             point_color_curr =
               color(
                 (DATA_MAX_PULSE_WIDTH + int(point_line_color_H_offset_const - pulse_width_curr)) % point_line_color_H_modular_const,
-                point_line_color_S_B_const,
-                point_line_color_S_B_const);
+                point_line_color_HSB_max_const,
+                point_line_color_HSB_max_const);
           }
           line_color =
             color(
               (DATA_MAX_PULSE_WIDTH + int(point_line_color_H_offset_const - (float(pulse_width_curr + pulse_width_prev) / 2.0))) % point_line_color_H_modular_const,
-              point_line_color_S_B_const,
-              point_line_color_S_B_const);
+              point_line_color_HSB_max_const,
+              point_line_color_HSB_max_const);
           colorMode(RGB, 255);
         }
         else {
