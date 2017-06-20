@@ -27,7 +27,7 @@ final static int DATA_INTERFACE_SN = 3;
 int DATA_interface = DATA_INTERFACE_FILE;
 
 final int DATA_MAX_POINTS = 1000;
-final int DATA_POINT_WH = 3;
+final int DATA_POINT_SIZE = 3;
 
 final int DATA_MAX_PULSE_WIDTH = 12000;
 final int DATA_MIN_PULSE_WIDTH = 4096;
@@ -473,7 +473,7 @@ class Data {
     int cnt;
 
     // Set to blank string to avoid adding string null check code.
-    strings[10] = "";
+    strings[strings.length-1] = "";
     cnt = 0;
     if(load_take_time != -1)
       strings[cnt++] = "Reponse time:" + load_take_time + "ms";
@@ -505,11 +505,13 @@ class Data {
     fill(C_DATA_RECT_TEXT);
     stroke(C_DATA_RECT_TEXT);
     cnt = 0;
+    int x = FONT_HEIGHT * 3 + TEXT_MARGIN;
+    int offset_y = TEXT_MARGIN*2 + FONT_HEIGHT * 1 + TEXT_MARGIN;
     for( String string:strings)
     {
       //if(string != null)
       {
-        text(string, FONT_HEIGHT * 3 + TEXT_MARGIN, TEXT_MARGIN*2 + FONT_HEIGHT * 1 + TEXT_MARGIN + FONT_HEIGHT * (1 + cnt));
+        text(string, x, offset_y + FONT_HEIGHT * (1 + cnt));
         cnt ++;
       }
     }
@@ -519,20 +521,54 @@ class Data {
   void draw_points()
   {
     int distance;
-    int pulse_width = -1, p_pulse_width = -1;
+    int pulse_width_curr = -1, pulse_width_prev = -1;
     int x, y;
-    int wh = DATA_POINT_WH; // Set width and height point rect
+    int point_size_curr = DATA_POINT_SIZE; // Set size of point rect
+    int point_size_prev = DATA_POINT_SIZE; // Set size of point rect
     float cx, cy;
     float angle;
-    int p_x = -1, p_y = -1;
-    color c_draw_point, p_c_draw_point = 0;
-    color c_draw_line;
-    int range = DATA_POINT_WH; // Range for mouse over point rect.
+    int x_prev = -1, y_prev = -1;
+    color point_color_curr, point_color_prev = 0;
+    color line_color;
+    int mouse_over_range = DATA_POINT_SIZE; // Range for mouse over point rect.
+    int mouse_over_x_min, mouse_over_x_max, mouse_over_y_min, mouse_over_y_max;
+    int offset_x, offset_y;
+    int point_color_H_max_const, point_color_H_min_const;
+    float point_line_color_H_offset_const;
+    int point_line_color_H_modular_const;
+    int point_line_color_S_B_const;
 
     // Adjust mouse over range by ZOOM_FACTOR.
     if( ZOOM_FACTOR < 50 ) {
-      range += (50 - ZOOM_FACTOR)/10;
+      mouse_over_range += (50 - ZOOM_FACTOR)/10;
     }
+    mouse_over_x_min = mouseX - mouse_over_range;
+    mouse_over_x_max = mouseX + mouse_over_range;
+    mouse_over_y_min = mouseY - mouse_over_range;
+    mouse_over_y_max = mouseY + mouse_over_range;
+
+    // Ready constant values for performance.
+    if (ROTATE_FACTOR == 0) {
+      offset_x = TEXT_MARGIN + FONT_HEIGHT / 2;
+      offset_y = SCREEN_height / 2;
+    }
+    else if (ROTATE_FACTOR == 90) {
+      offset_x = SCREEN_width / 2;
+      offset_y = TEXT_MARGIN + FONT_HEIGHT / 2;
+    }
+    else if (ROTATE_FACTOR == 180) {
+      offset_x = SCREEN_width + TEXT_MARGIN + FONT_HEIGHT / 2;
+      offset_y = SCREEN_height / 2;
+    }
+    else /*if (ROTATE_FACTOR == 270)*/ {
+      offset_x = SCREEN_width / 2;
+      offset_y = SCREEN_height + TEXT_MARGIN + FONT_HEIGHT / 2;
+    }
+    point_color_H_max_const = (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - DATA_MAX_PULSE_WIDTH) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1);
+    point_color_H_min_const = (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - DATA_MIN_PULSE_WIDTH) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1);
+    point_line_color_H_offset_const = float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0;
+    point_line_color_H_modular_const = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1;
+    point_line_color_S_B_const = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH;
 
     for (int j = 0; j < n_points; j++) {
       // Get Distance
@@ -542,118 +578,114 @@ class Data {
       distance = distances[j];
       // Check pulse width exist
       if (content != 4) {
-        pulse_width = pulse_widths[j];
+        pulse_width_curr = pulse_widths[j];
       }
       // Check No echo
       if (distance == 0x80000000) {
-        if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + "No echo");
-        p_x = -1;
-        p_y = -1;
+        //if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + "No echo");
+        x_prev = -1;
+        y_prev = -1;
       }
       // Check Noisy
       else if (distance == 0x7fffffff) {
-        if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + "Noise");
-        p_x = -1;
-        p_y = -1;
+        //if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + "Noise");
+        x_prev = -1;
+        y_prev = -1;
       }
       else {
-        if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance);
+        //if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance);
         angle = scan_angle_start + float(j) * scan_angle_size / float(n_points);
         if (ROTATE_FACTOR == 0) {
           cx = float(distance) * sin(radians(angle));
           cy = float(distance) * cos(radians(angle));
           x = int(cx / ZOOM_FACTOR);
           y = int(cy / ZOOM_FACTOR);
-          if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
-          x += TEXT_MARGIN + FONT_HEIGHT / 2;
+          //if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
+          x += offset_x;
           if (MIRROR_ENABLE)
-            y += SCREEN_height / 2;
+            y += offset_y;
           else
-            y = SCREEN_height / 2 - y;
+            y = offset_y - y;
         }
         else if (ROTATE_FACTOR == 90) {
           cx = float(distance) * cos(radians(angle));
           cy = float(distance) * sin(radians(angle));
           x = int(cx / ZOOM_FACTOR);
           y = int(cy / ZOOM_FACTOR);
-          if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
+          //if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
           if (MIRROR_ENABLE)
-            x = SCREEN_width / 2 - x;
+            x = offset_x - x;
           else
-            x += SCREEN_width / 2;
-          y += TEXT_MARGIN + FONT_HEIGHT / 2;
+            x += offset_x;
+          y += offset_y;
         }
         else if (ROTATE_FACTOR == 180) {
           cx = float(distance) * sin(radians(angle));
           cy = float(distance) * cos(radians(angle));
           x = int(cx / ZOOM_FACTOR);
           y = int(cy / ZOOM_FACTOR);
-          if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
-          x = SCREEN_width - x; 
-          x -= TEXT_MARGIN + FONT_HEIGHT / 2;
+          //if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
+          x = offset_x - x; 
           if (MIRROR_ENABLE)
-            y = SCREEN_height / 2 - y;
+            y = offset_y - y;
           else
-            y += SCREEN_height / 2;
+            y += offset_y;
         }
         else /*if (ROTATE_FACTOR == 270)*/ {
           cx = float(distance) * cos(radians(angle));
           cy = float(distance) * sin(radians(angle));
           x = int(cx / ZOOM_FACTOR);
           y = int(cy / ZOOM_FACTOR);
-          if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
+          //if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
           if (MIRROR_ENABLE)
-            x += SCREEN_width / 2;
+            x += offset_x;
           else
-            x = SCREEN_width / 2 - x;
-          y = SCREEN_height - y;
-          y -= TEXT_MARGIN + FONT_HEIGHT / 2;
+            x = offset_x - x;
+          y = offset_y - y;
         }
         // Check pulse width exist
         if (content != 4) {
           colorMode(HSB, DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
           //print("[" + j + "]=" + pulse_widths[j] + " ");
-          if(pulse_width > DATA_MAX_PULSE_WIDTH) {
-            c_draw_point =
+          if(pulse_width_curr > DATA_MAX_PULSE_WIDTH) {
+            point_color_curr =
               color(
-                (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - DATA_MAX_PULSE_WIDTH) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1),
-                DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH,
-                DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
+                point_color_H_max_const,
+                point_line_color_S_B_const,
+                point_line_color_S_B_const);
           }
-          else if(pulse_width < DATA_MIN_PULSE_WIDTH) {
-            c_draw_point =
+          else if(pulse_width_curr < DATA_MIN_PULSE_WIDTH) {
+            point_color_curr =
               color(
-                (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - DATA_MIN_PULSE_WIDTH) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1),
-                DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH,
-                DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
+                point_color_H_min_const,
+                point_line_color_S_B_const,
+                point_line_color_S_B_const);
           }
           else {
-            c_draw_point =
+            point_color_curr =
               color(
-                (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - pulse_width) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1),
-                DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH,
-                DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
+                (DATA_MAX_PULSE_WIDTH + int(point_line_color_H_offset_const - pulse_width_curr)) % point_line_color_H_modular_const,
+                point_line_color_S_B_const,
+                point_line_color_S_B_const);
           }
-          c_draw_line =
+          line_color =
             color(
-              (DATA_MAX_PULSE_WIDTH + int((float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - (float(pulse_width + p_pulse_width) / 2.0))) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1),
-              DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH,
-              DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
+              (DATA_MAX_PULSE_WIDTH + int(point_line_color_H_offset_const - (float(pulse_width_curr + pulse_width_prev) / 2.0))) % point_line_color_H_modular_const,
+              point_line_color_S_B_const,
+              point_line_color_S_B_const);
           colorMode(RGB, 255);
         }
         else {
-          c_draw_point = C_DATA_POINT;
-          p_c_draw_point = C_DATA_POINT;
-          c_draw_line = C_DATA_LINE;
+          point_color_curr = C_DATA_POINT;
+          point_color_prev = C_DATA_POINT;
+          line_color = C_DATA_LINE;
         }
 
-        // Reset width and height point rect
-        wh = DATA_POINT_WH;
         // Check mouse pointer over point rect.
         if( BUBBLEINFO_AVAILABLE != true &&
-            (x + GRID_OFFSET_X > mouseX - range && x + GRID_OFFSET_X < mouseX + range) &&
-            (y + GRID_OFFSET_Y > mouseY - range && y + GRID_OFFSET_Y < mouseY + range) ) {
-          //println("point=" + j + ",distance=" + (float(distance)/10000.0) + "m(" + (cx/10000.0) + "," + (cy/10000.0) + ")" + ",pulse width=" + pulse_width);
+            (x + GRID_OFFSET_X > mouse_over_x_min && x + GRID_OFFSET_X < mouse_over_x_max) &&
+            (y + GRID_OFFSET_Y > mouse_over_y_min && y + GRID_OFFSET_Y < mouse_over_y_max) ) {
+          //println("point=" + j + ",distance=" + (float(distance)/10000.0) + "m(" + (cx/10000.0) + "," + (cy/10000.0) + ")" + ",pulse width=" + pulse_width_curr);
           BUBBLEINFO_AVAILABLE = true;
           BUBBLEINFO_POINT = j;
           BUBBLEINFO_DISTANCE = float(distance)/10000.0;
@@ -662,38 +694,43 @@ class Data {
           BUBBLEINFO_BOX_X = x + GRID_OFFSET_X;
           BUBBLEINFO_BOX_Y = y + GRID_OFFSET_Y;
           BUBBLEINFO_ANGLE = float(int(angle*100.0))/100.0;
-          BUBBLEINFO_PULSE_WIDTH = pulse_width;
-          wh = BUBBLEINFO_POINT_WH;
+          BUBBLEINFO_PULSE_WIDTH = pulse_width_curr;
+          point_size_curr = BUBBLEINFO_POINT_WH;
         }
-        
-        if (p_x != -1 && p_y != -1) {
-          //print(j + ":" + p_pulse_width + "," + pulse_width + " ");
-          fill(c_draw_line);
-          stroke(c_draw_line);
-          line(p_x + GRID_OFFSET_X, p_y + GRID_OFFSET_Y, x + GRID_OFFSET_X, y + GRID_OFFSET_Y);
-          fill(p_c_draw_point);
-          stroke(p_c_draw_point);
-          //point(p_x + GRID_OFFSET_X, p_y + GRID_OFFSET_Y);
-          rect(p_x + GRID_OFFSET_X - 1, p_y + GRID_OFFSET_Y - 1, DATA_POINT_WH, DATA_POINT_WH );
+        else {
+          // Reset width and height point rect
+          point_size_curr = DATA_POINT_SIZE;
         }
-        fill(c_draw_point);
-        stroke(c_draw_point);
-        //point(x + GRID_OFFSET_X, y + GRID_OFFSET_Y);
-        rect(x + GRID_OFFSET_X - wh / 2, y + GRID_OFFSET_Y - wh / 2, wh, wh );
 
-        // Save data for drawing line with points. 
-        p_x = x;
-        p_y = y;
-        p_c_draw_point = c_draw_point;
-        p_pulse_width = pulse_width;
+        if (x_prev != -1 && y_prev != -1) {
+          //print(j + ":" + pulse_width_prev + "," + pulse_width_curr + " ");
+          fill(line_color);
+          stroke(line_color);
+          line(x_prev + GRID_OFFSET_X, y_prev + GRID_OFFSET_Y, x + GRID_OFFSET_X, y + GRID_OFFSET_Y);
+          fill(point_color_prev);
+          stroke(point_color_prev);
+          //point(x_prev + GRID_OFFSET_X, y_prev + GRID_OFFSET_Y);
+          rect(x_prev + GRID_OFFSET_X - point_size_prev / 2, y_prev + GRID_OFFSET_Y - point_size_prev / 2, point_size_prev, point_size_prev );
+        }
+        fill(point_color_curr);
+        stroke(point_color_curr);
+        //point(x + GRID_OFFSET_X, y + GRID_OFFSET_Y);
+        rect(x + GRID_OFFSET_X - point_size_curr / 2, y + GRID_OFFSET_Y - point_size_curr / 2, point_size_curr, point_size_curr );
+
+        // Save data for drawing line between previous and current points. 
+        x_prev = x;
+        y_prev = y;
+        point_color_prev = point_color_curr;
+        point_size_prev = point_size_curr;
+        pulse_width_prev = pulse_width_curr;
       }
 /*
       // Check pulse width exist
       if (content != 4) {
         // Get Pulse width
         // : indications of the signal's strength and are provided in picoseconds.
-        pulse_width = pulse_widths[j];
-        if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",pulse width=" + pulse_width);
+        pulse_width_curr = pulse_widths[j];
+        if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",pulse width=" + pulse_width_curr);
       }
 */
     } // End of for (int j = 0; j < n_points; j++)
