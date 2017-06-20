@@ -41,6 +41,7 @@ void settings() {
 // There can only be one setup() function for each program
 //  and it shouldn't be called again after its initial execution.
 void setup() {
+  //noStroke();
   // This is only pertains to the desktop version of Processing (not JavaScript or Android),
   //  because it's the only one to use windows and frames.
   // It's possible to make the window resizable.
