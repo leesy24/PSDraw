@@ -171,8 +171,9 @@ void button_draw()
     text(button_mirror_en_str_0_180, button_mirror_en_str_x, button_mirror_en_str_y);
   else
     text(button_mirror_en_str_90_270, button_mirror_en_str_x, button_mirror_en_str_y);
-  
+
   text(button_mirror_en_caption_str, button_mirror_en_caption_str_x, button_mirror_en_caption_str_y);
+
 
   if (button_reset_en_over) {
     fill( C_BTN_HIGHLIGHT);
@@ -182,6 +183,7 @@ void button_draw()
   rect(button_reset_en_x, button_reset_en_y, button_reset_en_width, button_reset_en_height);
   fill(C_BTN_TEXT);
   text(button_reset_en_str, button_reset_en_str_x, button_reset_en_str_y);
+
   text(button_reset_en_caption_str, button_reset_en_caption_str_x, button_reset_en_caption_str_y);
 }
 
