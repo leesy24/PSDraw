@@ -7,20 +7,25 @@ void colorbar_draw_0()
   color c;
   int i;
   int pw;
+  final float pw_const = float(DATA_MIN_PULSE_WIDTH - DATA_MAX_PULSE_WIDTH) / float(SCREEN_height);
+  final int color_HSB_max_const = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH;
+  final int color_H_offset = DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0);
+  final int color_H_modular = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1;
+  final int x_const = SCREEN_width - FONT_HEIGHT / 2;
 
   for(i = 0; i < SCREEN_height; i ++) {
-    pw = int(float(DATA_MIN_PULSE_WIDTH - DATA_MAX_PULSE_WIDTH) / float(SCREEN_height) * float(i)) + DATA_MAX_PULSE_WIDTH;
-    colorMode(HSB, DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
+    pw = int(pw_const * float(i)) + DATA_MAX_PULSE_WIDTH;
+    colorMode(HSB, color_HSB_max_const);
     c =
       color(
-        (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - pw) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1),
-        DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH,
-        DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
+        (color_H_offset - pw) % color_H_modular,
+        color_HSB_max_const,
+        color_HSB_max_const);
     colorMode(RGB, 255);
     
     fill(c);
     stroke(c);
-    line(SCREEN_width - FONT_HEIGHT / 2, i, SCREEN_width, i);
+    line(x_const, i, SCREEN_width, i);
   }
 }
 
@@ -29,26 +34,24 @@ void colorbar_draw_90()
   color c;
   int i;
   int pw;
+  final float pw_const = float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) / float(SCREEN_width);
+  final int color_HSB_max_const = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH;
+  final int color_H_offset = DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0);
+  final int color_H_modular = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1;
+  final int y_const = SCREEN_height - FONT_HEIGHT / 2;
 
   for(i = 0; i < SCREEN_width; i ++) {
-    pw = int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) / float(SCREEN_width) * float(i)) + DATA_MIN_PULSE_WIDTH;
-    colorMode(HSB, DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
+    pw = int(pw_const * float(i)) + DATA_MIN_PULSE_WIDTH;
+    colorMode(HSB, color_HSB_max_const);
     c =
       color(
-        (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - pw) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1),
-        DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH,
-        DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
-    //print("[" + i + "]=" + p + "," + (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 3.0 / 4.0) - p)%(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) + " ");
-    //print("[" + i + "]=" + p + "," + hue(c) + " ");
+        (color_H_offset - pw) % color_H_modular,
+        color_HSB_max_const,
+        color_HSB_max_const);
     colorMode(RGB, 255);
-//    print(i + "=" +
-//      p + "," + 
-//      int(hue(c)) + ":" +
-//      (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - p) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1) + "," +
-//      int(red(c)) + ":" + int(green(c)) + ":" + int(blue(c)) + " ");
     fill(c);
     stroke(c);
-    line(i, SCREEN_height - FONT_HEIGHT / 2, i, SCREEN_height);
+    line(i, y_const, i, SCREEN_height);
   }
 }
 
@@ -57,21 +60,27 @@ void colorbar_draw_180()
   color c;
   int i;
   int pw;
+  final float pw_const = float(DATA_MIN_PULSE_WIDTH - DATA_MAX_PULSE_WIDTH) / float(SCREEN_height);
+  final int color_HSB_max_const = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH;
+  final int color_H_offset = DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0);
+  final int color_H_modular = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1;
+  final int x_const = FONT_HEIGHT / 2;
+
 
   for(i = 0; i < SCREEN_height; i ++) {
-    pw = int(float(DATA_MIN_PULSE_WIDTH - DATA_MAX_PULSE_WIDTH) / float(SCREEN_height) * float(i)) + DATA_MAX_PULSE_WIDTH;
+    pw = int(pw_const * float(i)) + DATA_MAX_PULSE_WIDTH;
     //print("[" + i + "]=" + p + " ");
-    colorMode(HSB, DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
+    colorMode(HSB, color_HSB_max_const);
     c =
       color(
-        (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - pw) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1),
-        DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH,
-        DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
+        (color_H_offset - pw) % color_H_modular,
+        color_HSB_max_const,
+        color_HSB_max_const);
     colorMode(RGB, 255);
     
     fill(c);
     stroke(c);
-    line(0, i, FONT_HEIGHT / 2, i);
+    line(0, i, x_const, i);
   }
 }
 
@@ -80,21 +89,26 @@ void colorbar_draw_270()
   color c;
   int i;
   int pw;
+  final float pw_const = float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) / float(SCREEN_width);
+  final int color_HSB_max_const = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH;
+  final int color_H_offset = DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0);
+  final int color_H_modular = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1;
+  final int y_const = FONT_HEIGHT / 2;
 
   for(i = 0; i < SCREEN_width; i ++) {
-    pw = int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) / float(SCREEN_width) * float(i)) + DATA_MIN_PULSE_WIDTH;
+    pw = int(pw_const * float(i)) + DATA_MIN_PULSE_WIDTH;
     //print("[" + i + "]=" + p + " ");
-    colorMode(HSB, DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
+    colorMode(HSB, color_HSB_max_const);
     c =
       color(
-        (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - pw) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1),
-        DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH,
-        DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH);
+        (color_H_offset - pw) % color_H_modular,
+        color_HSB_max_const,
+        color_HSB_max_const);
     colorMode(RGB, 255);
     
     fill(c);
     stroke(c);
-    line(i, 0, i, FONT_HEIGHT / 2);
+    line(i, 0, i, y_const);
   }
 }
 

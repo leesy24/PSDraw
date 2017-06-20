@@ -472,7 +472,7 @@ class Data {
     String[] strings = new String[11];
     int cnt;
 
-    // Set to blank string to avoid adding string null check code.
+    // Set to blank string at the end of array to avoid adding string null check code below.
     strings[strings.length-1] = "";
     cnt = 0;
     if(load_take_time != -1)
@@ -505,13 +505,13 @@ class Data {
     fill(C_DATA_RECT_TEXT);
     stroke(C_DATA_RECT_TEXT);
     cnt = 0;
-    int x = FONT_HEIGHT * 3 + TEXT_MARGIN;
-    int offset_y = TEXT_MARGIN*2 + FONT_HEIGHT * 1 + TEXT_MARGIN;
+    final int str_x = FONT_HEIGHT * 3 + TEXT_MARGIN;
+    final int offset_y = TEXT_MARGIN*2 + FONT_HEIGHT * 1 + TEXT_MARGIN;
     for( String string:strings)
     {
       //if(string != null)
       {
-        text(string, x, offset_y + FONT_HEIGHT * (1 + cnt));
+        text(string, str_x, offset_y + FONT_HEIGHT * (1 + cnt));
         cnt ++;
       }
     }
@@ -531,21 +531,22 @@ class Data {
     color point_color_curr, point_color_prev = 0;
     color line_color;
     int mouse_over_range = DATA_POINT_SIZE; // Range for mouse over point rect.
-    int mouse_over_x_min, mouse_over_x_max, mouse_over_y_min, mouse_over_y_max;
     int offset_x, offset_y;
-    int point_color_H_max_const, point_color_H_min_const;
-    float point_line_color_H_offset_const;
-    int point_line_color_H_modular_const;
-    int point_line_color_HSB_max_const;
+    final int point_color_H_max_const = (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - DATA_MAX_PULSE_WIDTH) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1);
+    final int point_color_H_min_const = (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - DATA_MIN_PULSE_WIDTH) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1);
+    final float point_line_color_H_offset_const = float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0;
+    final int point_line_color_H_modular_const = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1;
+    final int point_line_color_HSB_max_const = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH;
 
     // Adjust mouse over range by ZOOM_FACTOR.
     if( ZOOM_FACTOR < 50 ) {
       mouse_over_range += (50 - ZOOM_FACTOR)/10;
     }
-    mouse_over_x_min = mouseX - mouse_over_range;
-    mouse_over_x_max = mouseX + mouse_over_range;
-    mouse_over_y_min = mouseY - mouse_over_range;
-    mouse_over_y_max = mouseY + mouse_over_range;
+
+    final int mouse_over_x_min = mouseX - mouse_over_range;
+    final int mouse_over_x_max = mouseX + mouse_over_range;
+    final int mouse_over_y_min = mouseY - mouse_over_range;
+    final int mouse_over_y_max = mouseY + mouse_over_range;
 
     // Ready constant values for performance.
     if (ROTATE_FACTOR == 0) {
@@ -564,11 +565,6 @@ class Data {
       offset_x = SCREEN_width / 2;
       offset_y = SCREEN_height + TEXT_MARGIN + FONT_HEIGHT / 2;
     }
-    point_color_H_max_const = (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - DATA_MAX_PULSE_WIDTH) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1);
-    point_color_H_min_const = (DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0) - DATA_MIN_PULSE_WIDTH) % (DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1);
-    point_line_color_H_offset_const = float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0;
-    point_line_color_H_modular_const = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1;
-    point_line_color_HSB_max_const = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH;
 
     for (int j = 0; j < n_points; j++) {
       // Get Distance

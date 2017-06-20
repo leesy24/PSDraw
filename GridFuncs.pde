@@ -13,8 +13,11 @@ void grid_draw_rotate_0()
   int x, y;
   int ix, iy;
   int image_x = -1, image_y = -1;
-  boolean even_flag = ((SCREEN_height / 100) % 2 == 0)?true:false;
-  int offset_even_odd, offset;
+  final boolean even_flag = ((SCREEN_height / 100) % 2 == 0)?true:false;
+  int offset_even_odd;
+  final int offset = TEXT_MARGIN + FONT_HEIGHT / 2 + (GRID_OFFSET_X % 100);
+  final int offset_x = int(ZOOM_FACTOR / 100.0 * float(GRID_OFFSET_X / 100 * 100));
+  final int offset_y = int(ZOOM_FACTOR / 100.0 * float(GRID_OFFSET_Y / 100 * 100));
 
   // Images must be in the "data" directory to load correctly
   if (MIRROR_ENABLE) {
@@ -35,7 +38,6 @@ void grid_draw_rotate_0()
     line(0,            iy * 100 + offset_even_odd,
          SCREEN_width, iy * 100 + offset_even_odd);
   }
-  offset = TEXT_MARGIN + FONT_HEIGHT / 2 + (GRID_OFFSET_X % 100);
   for (ix = 0; ix <= SCREEN_width / 100 + 1; ix ++) {
     line(ix * 100 + offset, 0,
          ix * 100 + offset, SCREEN_height);
@@ -44,7 +46,6 @@ void grid_draw_rotate_0()
   // Sets the color used to draw text and borders around shapes.
   fill(C_GRID_TEXT);
   stroke(C_GRID_TEXT);
-  offset = int(ZOOM_FACTOR / 100.0 * float(GRID_OFFSET_Y / 100 * 100));
   if(even_flag)
     offset_even_odd = (SCREEN_height % 100) / 2 + FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100);
   else
@@ -58,7 +59,7 @@ void grid_draw_rotate_0()
               ZOOM_FACTOR / 100.0 * float((iy - SCREEN_height / 100 / 2) * 100)
             )
             -
-            offset
+            offset_y
           )
           /
           100.0
@@ -74,7 +75,7 @@ void grid_draw_rotate_0()
               ZOOM_FACTOR / 100.0 * float((SCREEN_height / 100 / 2 - iy) * 100)
             )
             +
-            offset
+            offset_y
           )
           /
           100.0
@@ -93,12 +94,11 @@ void grid_draw_rotate_0()
     //println("iy=" + iy + ", string=" + string + ", x=" + x + ", y=" + y);
   }
 
-  offset = int(ZOOM_FACTOR / 100.0 * float(GRID_OFFSET_X / 100 * 100));
   y = SCREEN_height / 2 + FONT_HEIGHT / 2 + GRID_OFFSET_Y;
   if (y < TEXT_MARGIN + FONT_HEIGHT) y = TEXT_MARGIN + FONT_HEIGHT;
   if (y > SCREEN_height - TEXT_MARGIN) y = SCREEN_height - TEXT_MARGIN;
   for (ix = 0; ix <= SCREEN_width / 100 + 1; ix ++) {
-    if ((int(ZOOM_FACTOR / 100.0 * float(ix * 100)) - offset) >= 0) {
+    if ((int(ZOOM_FACTOR / 100.0 * float(ix * 100)) - offset_x) >= 0) {
       string =
         (
           float(
@@ -106,7 +106,7 @@ void grid_draw_rotate_0()
               ZOOM_FACTOR / 100.0 * float(ix * 100)
             )
             -
-            offset
+            offset_x
           )
           / 100.0
         )
@@ -132,8 +132,11 @@ void grid_draw_rotate_90()
   int x, y;
   int ix, iy;
   int image_x = -1, image_y = -1;
-  boolean even_flag = ((SCREEN_width / 100) % 2 == 0)?true:false;
-  int offset_even_odd, offset;
+  final boolean even_flag = ((SCREEN_width / 100) % 2 == 0)?true:false;
+  int offset_even_odd;
+  final int offset = TEXT_MARGIN + FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100);
+  final int offset_x = int(ZOOM_FACTOR / 100.0 * float(GRID_OFFSET_X / 100 * 100));
+  final int offset_y = int(ZOOM_FACTOR / 100.0 * float(GRID_OFFSET_Y / 100 * 100));
 
   // Images must be in the "data" directory to load correctly
   if (MIRROR_ENABLE) {
@@ -154,7 +157,6 @@ void grid_draw_rotate_90()
     line(ix * 100 + offset_even_odd, 0,
          ix * 100 + offset_even_odd, SCREEN_height);
   }
-  offset = TEXT_MARGIN + FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100);
   for (iy = 0; iy <= SCREEN_height / 100 + 1; iy ++) {
     line(0,            iy * 100 + offset,
          SCREEN_width, iy * 100 + offset);
@@ -163,7 +165,6 @@ void grid_draw_rotate_90()
   // Sets the color used to draw text and borders around shapes.
   fill(C_GRID_TEXT);
   stroke(C_GRID_TEXT);
-  offset = int(ZOOM_FACTOR / 100.0 * float(GRID_OFFSET_X / 100 * 100));
   y = TEXT_MARGIN + FONT_HEIGHT + GRID_OFFSET_Y;
   if (y < TEXT_MARGIN + FONT_HEIGHT) y = TEXT_MARGIN + FONT_HEIGHT;
   if (y > SCREEN_height - TEXT_MARGIN) y = SCREEN_height - TEXT_MARGIN;
@@ -176,7 +177,7 @@ void grid_draw_rotate_90()
               ZOOM_FACTOR / 100.0 * float((SCREEN_width / 100 / 2 - ix) * 100)
             )
             +
-            offset
+            offset_x
           )
           /
           100.0
@@ -192,7 +193,7 @@ void grid_draw_rotate_90()
               ZOOM_FACTOR / 100.0 * float((ix - SCREEN_width / 100 / 2) * 100)
             )
             -
-            offset
+            offset_x
           )
           /
           100.0
@@ -211,9 +212,8 @@ void grid_draw_rotate_90()
     //println("ix=" + ix + ", string=" + string + ", x=" + x + ", y=" + y);
   }
 
-  offset = int(ZOOM_FACTOR / 100.0 * float(GRID_OFFSET_Y / 100 * 100));
   for (iy = 0; iy <= SCREEN_height / 100 + 1; iy ++) {
-    if ((int(ZOOM_FACTOR / 100.0 * float(iy * 100)) - offset) >= 0) {
+    if ((int(ZOOM_FACTOR / 100.0 * float(iy * 100)) - offset_y) >= 0) {
       string =
         (
           float(
@@ -221,7 +221,7 @@ void grid_draw_rotate_90()
               ZOOM_FACTOR / 100.0 * float(iy * 100)
             )
             -
-            offset
+            offset_y
           )
           / 100.0
         )
@@ -250,8 +250,11 @@ void grid_draw_rotate_180()
   int x, y;
   int ix, iy;
   int image_x = -1, image_y = -1;
-  boolean even_flag = ((SCREEN_height / 100) % 2 == 0)?true:false;
-  int offset_even_odd, offset;
+  final boolean even_flag = ((SCREEN_height / 100) % 2 == 0)?true:false;
+  int offset_even_odd;
+  final int offset = TEXT_MARGIN + FONT_HEIGHT / 2 - (GRID_OFFSET_X % 100);
+  final int offset_x = int(ZOOM_FACTOR / 100.0 * float(GRID_OFFSET_X / 100 * 100));
+  final int offset_y = int(ZOOM_FACTOR / 100.0 * float(GRID_OFFSET_Y / 100 * 100));
 
   // Images must be in the "data" directory to load correctly
   if (MIRROR_ENABLE) {
@@ -272,7 +275,6 @@ void grid_draw_rotate_180()
     line(0,            iy * 100 + offset_even_odd,
          SCREEN_width, iy * 100 + offset_even_odd);
   }
-  offset = TEXT_MARGIN + FONT_HEIGHT / 2 - (GRID_OFFSET_X % 100);
   for (ix = 0; ix <= SCREEN_width / 100 + 1; ix ++) {
     line(SCREEN_width - ix * 100 - offset, 0,
          SCREEN_width - ix * 100 - offset, SCREEN_height);
@@ -281,7 +283,6 @@ void grid_draw_rotate_180()
   // Sets the color used to draw text and borders around shapes.
   fill(C_GRID_TEXT);
   stroke(C_GRID_TEXT);
-  offset = int(ZOOM_FACTOR / 100.0 * float(GRID_OFFSET_Y / 100 * 100));
   if(even_flag)
     offset_even_odd = (SCREEN_height % 100) / 2 + FONT_HEIGHT / 2 + (GRID_OFFSET_Y % 100);
   else
@@ -295,7 +296,7 @@ void grid_draw_rotate_180()
               ZOOM_FACTOR / 100.0 * float((SCREEN_height / 100 / 2 - iy) * 100)
             )
             +
-            offset
+            offset_y
           )
           /
           100.0
@@ -311,7 +312,7 @@ void grid_draw_rotate_180()
               ZOOM_FACTOR / 100.0 * float((iy - SCREEN_height / 100 / 2) * 100)
             )
             -
-            offset
+            offset_y
           )
           /
           100.0
@@ -330,12 +331,11 @@ void grid_draw_rotate_180()
     //println("iy=" + iy + ", string=" + string + ", x=" + x + ", y=" + y);
   }
 
-  offset = int(ZOOM_FACTOR / 100.0 * float(GRID_OFFSET_X / 100 * 100));
   y = SCREEN_height / 2 + FONT_HEIGHT / 2 + GRID_OFFSET_Y;
   if (y < TEXT_MARGIN + FONT_HEIGHT) y = TEXT_MARGIN + FONT_HEIGHT;
   if (y > SCREEN_height - TEXT_MARGIN) y = SCREEN_height - TEXT_MARGIN;
   for (ix = 0; ix <= SCREEN_width / 100 + 1; ix ++) {
-    if ((int(ZOOM_FACTOR / 100.0 * float(ix * 100)) + offset) >= 0) {
+    if ((int(ZOOM_FACTOR / 100.0 * float(ix * 100)) + offset_x) >= 0) {
       string =
         (
           float(
@@ -343,7 +343,7 @@ void grid_draw_rotate_180()
               ZOOM_FACTOR / 100.0 * float(ix * 100)
             )
             +
-            offset
+            offset_x
           )
           / 100.0
         )
@@ -369,8 +369,11 @@ void grid_draw_rotate_270()
   int x, y;
   int ix, iy;
   int image_x = -1, image_y = -1;
-  boolean even_flag = ((SCREEN_width / 100) % 2 == 0)?true:false;
-  int offset_even_odd, offset;
+  final boolean even_flag = ((SCREEN_width / 100) % 2 == 0)?true:false;
+  int offset_even_odd;
+  final int offset = TEXT_MARGIN + FONT_HEIGHT / 2 - (GRID_OFFSET_Y % 100);
+  final int offset_x = int(ZOOM_FACTOR / 100.0 * float(GRID_OFFSET_X / 100 * 100));
+  final int offset_y = int(ZOOM_FACTOR / 100.0 * float(GRID_OFFSET_Y / 100 * 100));
 
   // Images must be in the "data" directory to load correctly
   if (MIRROR_ENABLE) {
@@ -391,7 +394,6 @@ void grid_draw_rotate_270()
     line(ix * 100 + offset_even_odd, 0,
          ix * 100 + offset_even_odd, SCREEN_height);
   }
-  offset = TEXT_MARGIN + FONT_HEIGHT / 2 - (GRID_OFFSET_Y % 100);
   for (iy = 0; iy <= SCREEN_height / 100 + 1; iy ++) {
     line(0,            SCREEN_height - iy * 100 - offset,
          SCREEN_width, SCREEN_height - iy * 100 - offset);
@@ -400,7 +402,6 @@ void grid_draw_rotate_270()
   // Sets the color used to draw text and borders around shapes.
   fill(C_GRID_TEXT);
   stroke(C_GRID_TEXT);
-  offset = int(ZOOM_FACTOR / 100.0 * float(GRID_OFFSET_X / 100 * 100));
   y = SCREEN_height - TEXT_MARGIN + GRID_OFFSET_Y;
   if (y < TEXT_MARGIN + FONT_HEIGHT) y = TEXT_MARGIN + FONT_HEIGHT;
   if (y > SCREEN_height - TEXT_MARGIN) y = SCREEN_height - TEXT_MARGIN;
@@ -413,7 +414,7 @@ void grid_draw_rotate_270()
               ZOOM_FACTOR / 100.0 * float((ix - SCREEN_width / 100 / 2) * 100)
             )
             -
-            offset
+            offset_x
           )
           /
           100.0
@@ -429,7 +430,7 @@ void grid_draw_rotate_270()
               ZOOM_FACTOR / 100.0 * float((SCREEN_width / 100 / 2 - ix) * 100)
             )
             +
-            offset
+            offset_x
           )
           /
           100.0
@@ -448,9 +449,8 @@ void grid_draw_rotate_270()
     //println("ix=" + ix + ", string=" + string + ", x=" + x + ", y=" + y);
   }
 
-  offset = int(ZOOM_FACTOR / 100.0 * float(GRID_OFFSET_Y / 100 * 100));
   for (iy = 0; iy <= SCREEN_height / 100 + 1; iy ++) {
-    if ((int(ZOOM_FACTOR / 100.0 * float(iy * 100)) + offset) >= 0) {
+    if ((int(ZOOM_FACTOR / 100.0 * float(iy * 100)) + offset_y) >= 0) {
       string =
         (
           float(
@@ -458,7 +458,7 @@ void grid_draw_rotate_270()
               ZOOM_FACTOR / 100.0 * float(iy * 100)
             )
             +
-            offset
+            offset_y
           )
           / 100.0
         )
