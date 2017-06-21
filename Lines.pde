@@ -7,33 +7,51 @@ static color C_LINES_LINE = #000000;
 static int W_LINES_LINE = 3;
 
 // A Table object
-static Table LINES_table;
+static Table LINES_table = null;
 int[][] LINES_points;
 
 void lines_settings()
 {
-  LINES_file_full_name = LINES_FILE_NAME + LINES_FILE_EXT;
+  if(CONFIG_instance_number != null) {
+    LINES_file_full_name = LINES_FILE_NAME + "_" + CONFIG_instance_number + LINES_FILE_EXT;
+  }
+  else {
+    LINES_file_full_name = LINES_FILE_NAME + LINES_FILE_EXT;
+  }
 
-  try {
-    // Load config file(CSV type) into a Table object
-    // "header" option indicates the file has a header row
+  // Load lines file(CSV type) into a Table object
+  // "header" option indicates the file has a header row
+  LINES_table = loadTable(LINES_file_full_name, "header");
+  // Check loadTable failed.
+  if(LINES_table == null)
+  {
+    if(CONFIG_instance_number == null)
+    {
+      return;
+    }
+
+    // Load default lines file.
+    LINES_file_full_name = LINES_FILE_NAME + LINES_FILE_EXT;
     LINES_table = loadTable(LINES_file_full_name, "header");
-
-    //println("LINES_table.getRowCount()=" + LINES_table.getRowCount());
-    LINES_points = new int[LINES_table.getRowCount()][2];
-    //println("LINES_points.length=" + LINES_points.length);
-
-    int i = 0;
-    for (TableRow variable : LINES_table.rows()) {
-      // You can access the fields via their column name (or index)
-      LINES_points[i][0] = variable.getInt("X") * 100;
-      LINES_points[i][1] = variable.getInt("Y") * 100;
-      //println("LINES_points[" + i + "].x=" + LINES_points[i][0] + ",LINES_points[" + i + "].y=" + LINES_points[i][1]); 
-      i ++;
+    // Check loadTable failed.
+    if(LINES_table == null)
+    {
+      return;
     }
   }
-  catch (Exception e) {
-    // Nothing to do.
+
+  //println("LINES_table.getRowCount()=" + LINES_table.getRowCount());
+  LINES_points = new int[LINES_table.getRowCount()][2];
+  //println("LINES_points.length=" + LINES_points.length);
+
+  int i = 0;
+  for (TableRow variable : LINES_table.rows())
+  {
+    // You can access the fields via their column name (or index)
+    LINES_points[i][0] = variable.getInt("X") * 100;
+    LINES_points[i][1] = variable.getInt("Y") * 100;
+    //println("LINES_points[" + i + "].x=" + LINES_points[i][0] + ",LINES_points[" + i + "].y=" + LINES_points[i][1]); 
+    i ++;
   }
 }
 

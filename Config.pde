@@ -16,147 +16,152 @@ void config_settings()
     CONFIG_file_full_name = CONFIG_FILE_NAME + CONFIG_FILE_EXT;
   }
 
-  try {
-    // Load config file(CSV type) into a Table object
-    // "header" option indicates the file has a header row
-    CONFIG_table = loadTable(CONFIG_file_full_name, "header");
+  // Load config file(CSV type) into a Table object
+  // "header" option indicates the file has a header row
+  CONFIG_table = loadTable(CONFIG_file_full_name, "header");
+  // Check loadTable failed.
+  if(CONFIG_table == null)
+  {
+    config_create();
+    return;
+  }
+
+  for (TableRow variable : CONFIG_table.rows())
+  {
+    // You can access the fields via their column name (or index)
+    String name = variable.getString("Name");
+    if(name.equals("DATA_interface"))
+      DATA_interface = variable.getInt("Value");
+    else if(name.equals("SCREEN_x_ratio"))
+      SCREEN_x_ratio = variable.getFloat("Value");
+    else if(name.equals("SCREEN_y_ratio"))
+      SCREEN_y_ratio = variable.getFloat("Value");
+    else if(name.equals("SCREEN_width_ratio"))
+      SCREEN_width_ratio = variable.getFloat("Value");
+    else if(name.equals("SCREEN_height_ratio"))
+      SCREEN_height_ratio = variable.getFloat("Value");
+    else if(name.equals("ROTATE_FACTOR"))
+      ROTATE_FACTOR = variable.getFloat("Value"); 
+    else if(name.equals("MIRROR_ENABLE"))
+      MIRROR_ENABLE = (variable.getString("Value").equals("true"))?true:false; 
+    else if(name.equals("ZOOM_FACTOR"))
+      ZOOM_FACTOR = variable.getFloat("Value"); 
+    else if(name.equals("GRID_OFFSET_X"))
+      GRID_OFFSET_X = variable.getInt("Value");
+    else if(name.equals("GRID_OFFSET_Y"))
+      GRID_OFFSET_Y = variable.getInt("Value");
+    else if(name.equals("FILE_name"))
+      FILE_name = variable.getString("Value");
+    else if(name.equals("UART_port_name"))
+      UART_port_name = variable.getString("Value");
+    else if(name.equals("UART_baud_rate"))
+      UART_baud_rate = variable.getInt("Value");
+    else if(name.equals("UART_parity"))
+      UART_parity = variable.getString("Value").charAt(0);
+    else if(name.equals("UART_data_bits"))
+      UART_data_bits = variable.getInt("Value");
+    else if(name.equals("UART_stop_bits"))
+      UART_stop_bits = variable.getFloat("Value"); 
+    else if(name.equals("UDP_remote_ip"))
+      UDP_remote_ip = variable.getString("Value");
+    else if(name.equals("UDP_remote_port"))
+      UDP_remote_port = variable.getInt("Value");
+    else if(name.equals("UDP_local_port"))
+      UDP_local_port = variable.getInt("Value");
+    else if(name.equals("SN_serial_number"))
+      SN_serial_number = variable.getInt("Value");
+  }
+}
+
+void config_create()
+{
+  TableRow variable;
   
-    for (TableRow variable : CONFIG_table.rows()) {
-      // You can access the fields via their column name (or index)
-      String name = variable.getString("Name");
-      if(name.equals("DATA_interface"))
-        DATA_interface = variable.getInt("Value");
-      else if(name.equals("SCREEN_x_ratio"))
-        SCREEN_x_ratio = variable.getFloat("Value");
-      else if(name.equals("SCREEN_y_ratio"))
-        SCREEN_y_ratio = variable.getFloat("Value");
-      else if(name.equals("SCREEN_width_ratio"))
-        SCREEN_width_ratio = variable.getFloat("Value");
-      else if(name.equals("SCREEN_height_ratio"))
-        SCREEN_height_ratio = variable.getFloat("Value");
-      else if(name.equals("ROTATE_FACTOR"))
-        ROTATE_FACTOR = variable.getFloat("Value"); 
-      else if(name.equals("MIRROR_ENABLE"))
-        MIRROR_ENABLE = (variable.getString("Value").equals("true"))?true:false; 
-      else if(name.equals("ZOOM_FACTOR"))
-        ZOOM_FACTOR = variable.getFloat("Value"); 
-      else if(name.equals("GRID_OFFSET_X"))
-        GRID_OFFSET_X = variable.getInt("Value");
-      else if(name.equals("GRID_OFFSET_Y"))
-        GRID_OFFSET_Y = variable.getInt("Value");
-      else if(name.equals("FILE_name"))
-        FILE_name = variable.getString("Value");
-      else if(name.equals("UART_port_name"))
-        UART_port_name = variable.getString("Value");
-      else if(name.equals("UART_baud_rate"))
-        UART_baud_rate = variable.getInt("Value");
-      else if(name.equals("UART_parity"))
-        UART_parity = variable.getString("Value").charAt(0);
-      else if(name.equals("UART_data_bits"))
-        UART_data_bits = variable.getInt("Value");
-      else if(name.equals("UART_stop_bits"))
-        UART_stop_bits = variable.getFloat("Value"); 
-      else if(name.equals("UDP_remote_ip"))
-        UDP_remote_ip = variable.getString("Value");
-      else if(name.equals("UDP_remote_port"))
-        UDP_remote_port = variable.getInt("Value");
-      else if(name.equals("UDP_local_port"))
-        UDP_local_port = variable.getInt("Value");
-      else if(name.equals("SN_serial_number"))
-        SN_serial_number = variable.getInt("Value");
-    }
-  }
-  catch (Exception e) {
-    TableRow variable;
-
-    //println("loadTable exception! " + e);
-
-    CONFIG_table = new Table();
-    CONFIG_table.addColumn("Name");
-    CONFIG_table.addColumn("Value");
-
-    variable = CONFIG_table.addRow();
-    variable.setString("Name", "DATA_interface");
-    variable.setInt("Value", DATA_interface);
-
-    variable = CONFIG_table.addRow();
-    variable.setString("Name", "SCREEN_x_ratio");
-    variable.setFloat("Value", SCREEN_x_ratio);
-
-    variable = CONFIG_table.addRow();
-    variable.setString("Name", "SCREEN_y_ratio");
-    variable.setFloat("Value", SCREEN_y_ratio);
-
-    variable = CONFIG_table.addRow();
-    variable.setString("Name", "SCREEN_width_ratio");
-    variable.setFloat("Value", SCREEN_width_ratio);
-
-    variable = CONFIG_table.addRow();
-    variable.setString("Name", "SCREEN_height_ratio");
-    variable.setFloat("Value", SCREEN_height_ratio);
-
-    variable = CONFIG_table.addRow();
-    variable.setString("Name", "ROTATE_FACTOR");
-    variable.setFloat("Value", ROTATE_FACTOR);
-
-    variable = CONFIG_table.addRow();
-    variable.setString("Name", "MIRROR_ENABLE");
-    variable.setString("Value", ((MIRROR_ENABLE)?"true":"flase"));
-
-    variable = CONFIG_table.addRow();
-    variable.setString("Name", "ZOOM_FACTOR");
-    variable.setFloat("Value", ZOOM_FACTOR);
-
-    variable = CONFIG_table.addRow();
-    variable.setString("Name", "GRID_OFFSET_X");
-    variable.setInt("Value", GRID_OFFSET_X);
-
-    variable = CONFIG_table.addRow();
-    variable.setString("Name", "GRID_OFFSET_Y");
-    variable.setInt("Value", GRID_OFFSET_Y);
-
-    variable = CONFIG_table.addRow();
-    variable.setString("Name", "FILE_name");
-    variable.setString("Value", FILE_name);
-
-    variable = CONFIG_table.addRow();
-    variable.setString("Name", "UART_port_name");
-    variable.setString("Value", UART_port_name);
-
-    variable = CONFIG_table.addRow();
-    variable.setString("Name", "UART_baud_rate");
-    variable.setInt("Value", UART_baud_rate);
-
-    variable = CONFIG_table.addRow();
-    variable.setString("Name", "UART_parity");
-    variable.setString("Value", Character.toString(UART_parity));
-
-    variable = CONFIG_table.addRow();
-    variable.setString("Name", "UART_data_bits");
-    variable.setInt("Value", UART_data_bits);
-
-    variable = CONFIG_table.addRow();
-    variable.setString("Name", "UART_stop_bits");
-    variable.setFloat("Value", UART_stop_bits);
-
-    variable = CONFIG_table.addRow();
-    variable.setString("Name", "UDP_remote_ip");
-    variable.setString("Value", UDP_remote_ip);
-
-    variable = CONFIG_table.addRow();
-    variable.setString("Name", "UDP_remote_port");
-    variable.setInt("Value", UDP_remote_port);
-
-    variable = CONFIG_table.addRow();
-    variable.setString("Name", "UDP_local_port");
-    variable.setInt("Value", UDP_local_port);
-
-    variable = CONFIG_table.addRow();
-    variable.setString("Name", "SN_serial_number");
-    variable.setInt("Value", SN_serial_number);
-
-    saveTable(CONFIG_table, "data/" + CONFIG_file_full_name);
-  }
+  CONFIG_table = new Table();
+  CONFIG_table.addColumn("Name");
+  CONFIG_table.addColumn("Value");
+  
+  variable = CONFIG_table.addRow();
+  variable.setString("Name", "DATA_interface");
+  variable.setInt("Value", DATA_interface);
+  
+  variable = CONFIG_table.addRow();
+  variable.setString("Name", "SCREEN_x_ratio");
+  variable.setFloat("Value", SCREEN_x_ratio);
+  
+  variable = CONFIG_table.addRow();
+  variable.setString("Name", "SCREEN_y_ratio");
+  variable.setFloat("Value", SCREEN_y_ratio);
+  
+  variable = CONFIG_table.addRow();
+  variable.setString("Name", "SCREEN_width_ratio");
+  variable.setFloat("Value", SCREEN_width_ratio);
+  
+  variable = CONFIG_table.addRow();
+  variable.setString("Name", "SCREEN_height_ratio");
+  variable.setFloat("Value", SCREEN_height_ratio);
+  
+  variable = CONFIG_table.addRow();
+  variable.setString("Name", "ROTATE_FACTOR");
+  variable.setFloat("Value", ROTATE_FACTOR);
+  
+  variable = CONFIG_table.addRow();
+  variable.setString("Name", "MIRROR_ENABLE");
+  variable.setString("Value", ((MIRROR_ENABLE)?"true":"flase"));
+  
+  variable = CONFIG_table.addRow();
+  variable.setString("Name", "ZOOM_FACTOR");
+  variable.setFloat("Value", ZOOM_FACTOR);
+  
+  variable = CONFIG_table.addRow();
+  variable.setString("Name", "GRID_OFFSET_X");
+  variable.setInt("Value", GRID_OFFSET_X);
+  
+  variable = CONFIG_table.addRow();
+  variable.setString("Name", "GRID_OFFSET_Y");
+  variable.setInt("Value", GRID_OFFSET_Y);
+  
+  variable = CONFIG_table.addRow();
+  variable.setString("Name", "FILE_name");
+  variable.setString("Value", FILE_name);
+  
+  variable = CONFIG_table.addRow();
+  variable.setString("Name", "UART_port_name");
+  variable.setString("Value", UART_port_name);
+  
+  variable = CONFIG_table.addRow();
+  variable.setString("Name", "UART_baud_rate");
+  variable.setInt("Value", UART_baud_rate);
+  
+  variable = CONFIG_table.addRow();
+  variable.setString("Name", "UART_parity");
+  variable.setString("Value", Character.toString(UART_parity));
+  
+  variable = CONFIG_table.addRow();
+  variable.setString("Name", "UART_data_bits");
+  variable.setInt("Value", UART_data_bits);
+  
+  variable = CONFIG_table.addRow();
+  variable.setString("Name", "UART_stop_bits");
+  variable.setFloat("Value", UART_stop_bits);
+  
+  variable = CONFIG_table.addRow();
+  variable.setString("Name", "UDP_remote_ip");
+  variable.setString("Value", UDP_remote_ip);
+  
+  variable = CONFIG_table.addRow();
+  variable.setString("Name", "UDP_remote_port");
+  variable.setInt("Value", UDP_remote_port);
+  
+  variable = CONFIG_table.addRow();
+  variable.setString("Name", "UDP_local_port");
+  variable.setInt("Value", UDP_local_port);
+  
+  variable = CONFIG_table.addRow();
+  variable.setString("Name", "SN_serial_number");
+  variable.setInt("Value", SN_serial_number);
+  
+  saveTable(CONFIG_table, "data/" + CONFIG_file_full_name);
 }
 
 void config_save()
