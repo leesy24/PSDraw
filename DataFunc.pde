@@ -521,7 +521,7 @@ class Data {
   {
     int distance;
     int pulse_width_curr = -1, pulse_width_prev = -1;
-    int x, y;
+    int x_curr, y_curr;
     int point_size_curr = DATA_POINT_SIZE; // Set size of point rect
     int point_size_prev = DATA_POINT_SIZE; // Set size of point rect
     float cx, cy;
@@ -593,50 +593,50 @@ class Data {
         if (ROTATE_FACTOR == 0) {
           cx = float(distance) * sin(radians(angle));
           cy = float(distance) * cos(radians(angle));
-          x = int(cx / ZOOM_FACTOR);
-          y = int(cy / ZOOM_FACTOR);
-          //if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
-          x += offset_x;
+          x_curr = int(cx / ZOOM_FACTOR);
+          y_curr = int(cy / ZOOM_FACTOR);
+          //if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x_curr=" + x_curr + ",y_curr=", y_curr);
+          x_curr += offset_x;
           if (MIRROR_ENABLE)
-            y += offset_y;
+            y_curr += offset_y;
           else
-            y = offset_y - y;
+            y_curr = offset_y - y_curr;
         }
         else if (ROTATE_FACTOR == 90) {
           cx = float(distance) * cos(radians(angle));
           cy = float(distance) * sin(radians(angle));
-          x = int(cx / ZOOM_FACTOR);
-          y = int(cy / ZOOM_FACTOR);
-          //if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
+          x_curr = int(cx / ZOOM_FACTOR);
+          y_curr = int(cy / ZOOM_FACTOR);
+          //if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x_curr=" + x_curr + ",y_curr=", y_curr);
           if (MIRROR_ENABLE)
-            x = offset_x - x;
+            x_curr = offset_x - x_curr;
           else
-            x += offset_x;
-          y += offset_y;
+            x_curr += offset_x;
+          y_curr += offset_y;
         }
         else if (ROTATE_FACTOR == 180) {
           cx = float(distance) * sin(radians(angle));
           cy = float(distance) * cos(radians(angle));
-          x = int(cx / ZOOM_FACTOR);
-          y = int(cy / ZOOM_FACTOR);
-          //if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
-          x = offset_x - x;
+          x_curr = int(cx / ZOOM_FACTOR);
+          y_curr = int(cy / ZOOM_FACTOR);
+          //if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x_curr=" + x_curr + ",y_curr=", y_curr);
+          x_curr = offset_x - x_curr;
           if (MIRROR_ENABLE)
-            y = offset_y - y;
+            y_curr = offset_y - y_curr;
           else
-            y += offset_y;
+            y_curr += offset_y;
         }
         else /*if (ROTATE_FACTOR == 270)*/ {
           cx = float(distance) * cos(radians(angle));
           cy = float(distance) * sin(radians(angle));
-          x = int(cx / ZOOM_FACTOR);
-          y = int(cy / ZOOM_FACTOR);
-          //if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
+          x_curr = int(cx / ZOOM_FACTOR);
+          y_curr = int(cy / ZOOM_FACTOR);
+          //if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x_curr=" + x_curr + ",y_curr=", y_curr);
           if (MIRROR_ENABLE)
-            x += offset_x;
+            x_curr += offset_x;
           else
-            x = offset_x - x;
-          y = offset_y - y;
+            x_curr = offset_x - x_curr;
+          y_curr = offset_y - y_curr;
         }
         // Check pulse width exist
         if (content != 4) {
@@ -678,16 +678,16 @@ class Data {
 
         // Check mouse pointer over point rect.
         if( BUBBLEINFO_AVAILABLE != true &&
-            (x + GRID_OFFSET_X > mouse_over_x_min && x + GRID_OFFSET_X < mouse_over_x_max) &&
-            (y + GRID_OFFSET_Y > mouse_over_y_min && y + GRID_OFFSET_Y < mouse_over_y_max) ) {
+            (x_curr + GRID_OFFSET_X > mouse_over_x_min && x_curr + GRID_OFFSET_X < mouse_over_x_max) &&
+            (y_curr + GRID_OFFSET_Y > mouse_over_y_min && y_curr + GRID_OFFSET_Y < mouse_over_y_max) ) {
           //println("point=" + j + ",distance=" + (float(distance)/10000.0) + "m(" + (cx/10000.0) + "," + (cy/10000.0) + ")" + ",pulse width=" + pulse_width_curr);
           BUBBLEINFO_AVAILABLE = true;
           BUBBLEINFO_POINT = j;
           BUBBLEINFO_DISTANCE = float(distance)/10000.0;
           BUBBLEINFO_COR_X = (int(cx)/10000.0);
           BUBBLEINFO_COR_Y = (int(cy)/10000.0);
-          BUBBLEINFO_BOX_X = x + GRID_OFFSET_X;
-          BUBBLEINFO_BOX_Y = y + GRID_OFFSET_Y;
+          BUBBLEINFO_BOX_X = x_curr + GRID_OFFSET_X;
+          BUBBLEINFO_BOX_Y = y_curr + GRID_OFFSET_Y;
           BUBBLEINFO_ANGLE = float(int(angle*100.0))/100.0;
           BUBBLEINFO_PULSE_WIDTH = pulse_width_curr;
           point_size_curr = BUBBLEINFO_POINT_WH;
@@ -701,7 +701,7 @@ class Data {
           //print(j + ":" + pulse_width_prev + "," + pulse_width_curr + " ");
           fill(line_color);
           stroke(line_color);
-          line(x_prev + GRID_OFFSET_X, y_prev + GRID_OFFSET_Y, x + GRID_OFFSET_X, y + GRID_OFFSET_Y);
+          line(x_prev + GRID_OFFSET_X, y_prev + GRID_OFFSET_Y, x_curr + GRID_OFFSET_X, y_curr + GRID_OFFSET_Y);
           fill(point_color_prev);
           stroke(point_color_prev);
           //point(x_prev + GRID_OFFSET_X, y_prev + GRID_OFFSET_Y);
@@ -709,12 +709,12 @@ class Data {
         }
         fill(point_color_curr);
         stroke(point_color_curr);
-        //point(x + GRID_OFFSET_X, y + GRID_OFFSET_Y);
-        rect(x + GRID_OFFSET_X - point_size_curr / 2, y + GRID_OFFSET_Y - point_size_curr / 2, point_size_curr, point_size_curr );
+        //point(x_curr + GRID_OFFSET_X, y_curr + GRID_OFFSET_Y);
+        rect(x_curr + GRID_OFFSET_X - point_size_curr / 2, y_curr + GRID_OFFSET_Y - point_size_curr / 2, point_size_curr, point_size_curr );
 
         // Save data for drawing line between previous and current points. 
-        x_prev = x;
-        y_prev = y;
+        x_prev = x_curr;
+        y_prev = y_curr;
         point_color_prev = point_color_curr;
         point_size_prev = point_size_curr;
         pulse_width_prev = pulse_width_curr;
