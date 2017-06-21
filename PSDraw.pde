@@ -4,7 +4,6 @@ final boolean PRINT = false;
 
 //static color C_BG = #FFFFFF; // White
 static color C_BG = #F8F8F8; // White - 0x8
-static color C_TEXT = #000000; // Black
 
 // Define window title string.
 final String TITLE = "DASAN-InfoTEK - PSDraw";
@@ -19,7 +18,7 @@ float ROTATE_FACTOR = 0;/*90;*//*180;*//*270;*/
 // Define mirror variables.
 boolean MIRROR_ENABLE = false;
 
-int FRAME_RATE = 30;
+int FRAME_RATE = 20; // Frame rate per second of screen update in Hz. 20Hz = 50msec
 
 // The settings() function is new with Processing 3.0. It's not needed in most sketches.
 // It's only useful when it's absolutely necessary to define the parameters to size() with a variable. 
@@ -36,6 +35,7 @@ void settings() {
   const_settings();
   config_settings();
   screen_settings();
+  lines_settings();
 }
 
 // The setup() function is run once, when the program starts.
@@ -121,6 +121,7 @@ void draw() {
   button_update();
 
   grid_draw();
+  lines_draw();
 
   if (PS_Data.load() == true) {
     if (PS_Data.parse() == false) {

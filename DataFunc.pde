@@ -11,6 +11,7 @@ final boolean PRINT_DATAFUNC_PARSE_ERR = false;
 //final boolean PRINT_DATAFUNC_DRAW_DBG = true; 
 final boolean PRINT_DATAFUNC_DRAW_DBG = false;
 
+static color C_DATA_ERR_TEXT = #000000; // Black
 static color C_DATA_LINE = #0000FF; // Blue
 static color C_DATA_POINT = #FF0000; // Red
 static color C_DATA_RECT_FILL = 0xC0F8F8F8; // White - 0x8 w/ Opaque 75%
@@ -105,8 +106,8 @@ class Data {
         interface_err_str = interface_file_get_error();
         if(interface_err_str != null) {
           // Sets the color used to draw lines and borders around shapes.
-          fill(C_TEXT);
-          stroke(C_TEXT);
+          fill(C_DATA_ERR_TEXT);
+          stroke(C_DATA_ERR_TEXT);
           textSize(FONT_HEIGHT*3);
           text(interface_err_str, SCREEN_width / 2 - int(textWidth(interface_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
@@ -114,8 +115,8 @@ class Data {
         }
         else if(parse_err_str != null) {
           // Sets the color used to draw lines and borders around shapes.
-          fill(C_TEXT);
-          stroke(C_TEXT);
+          fill(C_DATA_ERR_TEXT);
+          stroke(C_DATA_ERR_TEXT);
           textSize(FONT_HEIGHT*3);
           text(parse_err_str, SCREEN_width / 2 - int(textWidth(parse_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
@@ -133,8 +134,8 @@ class Data {
         interface_err_str = interface_UART_get_error();
         if(interface_err_str != null) {
           // Sets the color used to draw lines and borders around shapes.
-          fill(C_TEXT);
-          stroke(C_TEXT);
+          fill(C_DATA_ERR_TEXT);
+          stroke(C_DATA_ERR_TEXT);
           textSize(FONT_HEIGHT*3);
           text(interface_err_str, SCREEN_width / 2 - int(textWidth(interface_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
@@ -142,8 +143,8 @@ class Data {
         }
         else if(parse_err_str != null) {
           // Sets the color used to draw lines and borders around shapes.
-          fill(C_TEXT);
-          stroke(C_TEXT);
+          fill(C_DATA_ERR_TEXT);
+          stroke(C_DATA_ERR_TEXT);
           textSize(FONT_HEIGHT*3);
           text(parse_err_str, SCREEN_width / 2 - int(textWidth(parse_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
@@ -160,8 +161,8 @@ class Data {
         interface_err_str = interface_UDP_get_error();
         if(interface_err_str != null) {
           // Sets the color used to draw lines and borders around shapes.
-          fill(C_TEXT);
-          stroke(C_TEXT);
+          fill(C_DATA_ERR_TEXT);
+          stroke(C_DATA_ERR_TEXT);
           textSize(FONT_HEIGHT*3);
           text(interface_err_str, SCREEN_width / 2 - int(textWidth(interface_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
@@ -169,8 +170,8 @@ class Data {
         }
         else if(parse_err_str != null) {
           // Sets the color used to draw lines and borders around shapes.
-          fill(C_TEXT);
-          stroke(C_TEXT);
+          fill(C_DATA_ERR_TEXT);
+          stroke(C_DATA_ERR_TEXT);
           textSize(FONT_HEIGHT*3);
           text(parse_err_str, SCREEN_width / 2 - int(textWidth(parse_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
@@ -187,8 +188,8 @@ class Data {
         interface_err_str = interface_SN_get_error();
         if(interface_err_str != null) {
           // Sets the color used to draw lines and borders around shapes.
-          fill(C_TEXT);
-          stroke(C_TEXT);
+          fill(C_DATA_ERR_TEXT);
+          stroke(C_DATA_ERR_TEXT);
           textSize(FONT_HEIGHT*3);
           text(interface_err_str, SCREEN_width / 2 - int(textWidth(interface_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
@@ -196,8 +197,8 @@ class Data {
         }
         else if(parse_err_str != null) {
           // Sets the color used to draw lines and borders around shapes.
-          fill(C_TEXT);
-          stroke(C_TEXT);
+          fill(C_DATA_ERR_TEXT);
+          stroke(C_DATA_ERR_TEXT);
           textSize(FONT_HEIGHT*3);
           text(parse_err_str, SCREEN_width / 2 - int(textWidth(parse_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
           textSize(FONT_HEIGHT);
@@ -224,8 +225,8 @@ class Data {
     // Check function code is "GSCN".
     if (func.equals("GSCN") != true) {
       // Sets the color used to draw lines and borders around shapes.
-      fill(C_TEXT);
-      stroke(C_TEXT);
+      fill(C_DATA_ERR_TEXT);
+      stroke(C_DATA_ERR_TEXT);
       parse_err_str = "Error: Function code is invalid! " + func;
       textSize(FONT_HEIGHT*3);
       text(parse_err_str, SCREEN_width / 2 - int(textWidth(parse_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
@@ -243,8 +244,8 @@ class Data {
     // Check data_buf record length with binary data_buf length
     if (data_buf.length < (len + 12)) {
       // Sets the color used to draw lines and borders around shapes.
-      fill(C_TEXT);
-      stroke(C_TEXT);
+      fill(C_DATA_ERR_TEXT);
+      stroke(C_DATA_ERR_TEXT);
       parse_err_str = "Error: Data buf length is invalid!:" + data_buf.length + "," + len;
       textSize(FONT_HEIGHT*3);
       text(parse_err_str, SCREEN_width / 2 - int(textWidth(parse_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
@@ -262,8 +263,8 @@ class Data {
     // Check CRC ok?
     if(crc != crc_c) {
       // Sets the color used to draw lines and borders around shapes.
-      fill(C_TEXT);
-      stroke(C_TEXT);
+      fill(C_DATA_ERR_TEXT);
+      stroke(C_DATA_ERR_TEXT);
       parse_err_str = "Error: Data buf crc error!:" + crc + "," + crc_c;
       textSize(FONT_HEIGHT*3);
       text(parse_err_str, SCREEN_width / 2 - int(textWidth(parse_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
@@ -279,8 +280,8 @@ class Data {
     if (PRINT_DATAFUNC_PARSE_DBG) println("index=" + i + ",number of parameters=" + n_params);
     if (n_params == 0) {
       // Sets the color used to draw lines and borders around shapes.
-      fill(C_TEXT);
-      stroke(C_TEXT);
+      fill(C_DATA_ERR_TEXT);
+      stroke(C_DATA_ERR_TEXT);
       parse_err_str = "Error: No scan data is available! n_params = 0";
       textSize(FONT_HEIGHT*3);
       text(parse_err_str, SCREEN_width / 2 - int(textWidth(parse_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
@@ -298,8 +299,8 @@ class Data {
     // Check Number of points
     if (t_n_points > DATA_MAX_POINTS || t_n_points <= 0) {
       // Sets the color used to draw lines and borders around shapes.
-      fill(C_TEXT);
-      stroke(C_TEXT);
+      fill(C_DATA_ERR_TEXT);
+      stroke(C_DATA_ERR_TEXT);
       parse_err_str = "Error: Number of points invalid! n_points is " + t_n_points;
       textSize(FONT_HEIGHT*3);
       text(parse_err_str, SCREEN_width / 2 - int(textWidth(parse_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
@@ -328,8 +329,8 @@ class Data {
       // Check time_stamp is changed
       if (old_time_stamp == time_stamp) {
         // Sets the color used to draw lines and borders around shapes.
-        fill(C_TEXT);
-        stroke(C_TEXT);
+        fill(C_DATA_ERR_TEXT);
+        stroke(C_DATA_ERR_TEXT);
         string = "Scan data_buf is not changed!:" + time_stamp;
         textSize(FONT_HEIGHT*3);
         text(string, SCREEN_width / 2 - int(textWidth(string) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
@@ -417,8 +418,8 @@ class Data {
     if (PRINT_DATAFUNC_PARSE_DBG) println("index=" + i + ",number of points=" + n_points);
     if (n_points > DATA_MAX_POINTS || n_points <= 0) {
       // Sets the color used to draw lines and borders around shapes.
-      fill(C_TEXT);
-      stroke(C_TEXT);
+      fill(C_DATA_ERR_TEXT);
+      stroke(C_DATA_ERR_TEXT);
       parse_err_str = "Error: Number of points invalid! n_points is " + n_points;
       textSize(FONT_HEIGHT*3);
       text(parse_err_str, SCREEN_width / 2 - int(textWidth(parse_err_str) / 2.0), SCREEN_height / 2 - FONT_HEIGHT);
@@ -556,12 +557,12 @@ class Data {
       offset_y = TEXT_MARGIN + FONT_HEIGHT / 2;
     }
     else if (ROTATE_FACTOR == 180) {
-      offset_x = SCREEN_width + TEXT_MARGIN + FONT_HEIGHT / 2;
+      offset_x = SCREEN_width - (TEXT_MARGIN + FONT_HEIGHT / 2);
       offset_y = SCREEN_height / 2;
     }
     else /*if (ROTATE_FACTOR == 270)*/ {
       offset_x = SCREEN_width / 2;
-      offset_y = SCREEN_height + TEXT_MARGIN + FONT_HEIGHT / 2;
+      offset_y = SCREEN_height - (TEXT_MARGIN + FONT_HEIGHT / 2);
     }
 
     for (int j = 0; j < n_points; j++) {
@@ -619,7 +620,7 @@ class Data {
           x = int(cx / ZOOM_FACTOR);
           y = int(cy / ZOOM_FACTOR);
           //if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x=" + x + ",y=", y);
-          x = offset_x - x; 
+          x = offset_x - x;
           if (MIRROR_ENABLE)
             y = offset_y - y;
           else

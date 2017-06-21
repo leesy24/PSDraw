@@ -11,23 +11,12 @@
 import controlP5.*;
 import java.util.*;
 
-static color C_INTERFACE_NORMAL = #FFFFFF; // White
-static color C_INTERFACE_HIGHLIGHT = #C0C0C0; // White - 0x40
 static color C_INTERFACE_TEXT = #000000; // Black
-static color C_INTERFACE_TL_TEXT = C_INTERFACE_TEXT; // Black
-static color C_INTERFACE_DD_TEXT = C_INTERFACE_TEXT; // Black
-static color C_INTERFACE_DD_BORDER_FILL = #FFFFFF; // White
-static color C_INTERFACE_DD_BORDER_NORMAL = #000000; // Black
-static color C_INTERFACE_DD_BORDER_HIGHLIGHT = #FF0000; // Red
-static color C_INTERFACE_DD_NORMAL = #FFFFFF; // White
-static color C_INTERFACE_DD_FOREGROUND = #C0C0C0; // White - 0x40
-static color C_INTERFACE_DD_ACTIVE = #FF0000; // Red
-static color C_INTERFACE_TF_TEXT = C_INTERFACE_TEXT; // Black
-static color C_INTERFACE_TF_FILL = #FFFFFF; // White
-static color C_INTERFACE_TF_NORMAL = #000000; // Black
-static color C_INTERFACE_TF_HIGHLIGHT = #FF0000; // Red
-static color C_INTERFACE_TF_CURSOR = #0000FF; // Blue
-
+static color C_INTERFACE_FILL_NORMAL = #FFFFFF; // White
+static color C_INTERFACE_FILL_HIGHLIGHT = #C0C0C0; // White - 0x40
+static color C_INTERFACE_BORDER_ACTIVE = #FF0000; // Red
+static color C_INTERFACE_BORDER_NORMAL = #000000; // Black
+static color C_INTERFACE_CURSOR = #0000FF; // Blue
 
 boolean INTERFACE_changed = false;
 String[] INTERFACE_str_array = {"File", "UART", "UDP", "SN"};
@@ -47,7 +36,7 @@ void interface_setup()
   }
   if(cp5 == null) {
     cp5 = new ControlP5(this, cf1);
-    cp5.setBackground(C_INTERFACE_NORMAL);
+    cp5.setBackground(C_INTERFACE_FILL_NORMAL);
   }
   else {
     cp5.remove("interface_ddmenu");
@@ -78,8 +67,8 @@ void interface_setup()
   tf_ddborder = cp5.addTextfield("interface_ddborder");
   tf_ddborder.setPosition(x+1, y)
     .setSize(w - 2, h)
-    .setColorBackground(C_INTERFACE_DD_BORDER_FILL)
-    .setColorForeground( C_INTERFACE_DD_BORDER_NORMAL )
+    .setColorBackground(C_INTERFACE_FILL_NORMAL)
+    .setColorForeground( C_INTERFACE_BORDER_NORMAL )
     .setText("")
     .setCaptionLabel("")
     .setLock(true)
@@ -88,12 +77,12 @@ void interface_setup()
   /* add a ScrollableList, by default it behaves like a DropdownList */
   ScrollableList sl_ddmenu;
   sl_ddmenu = cp5.addScrollableList("interface_ddmenu"/*l.get(0).toString()*/);
-  sl_ddmenu.setBackgroundColor( C_INTERFACE_DD_BORDER_HIGHLIGHT /*color(255,0,255)*/ /*color( 255 , 128 )*/ )
-     .setColorBackground( C_INTERFACE_DD_NORMAL /*color(255,255,0)*/ /*color(200)*/ )
-     .setColorForeground( C_INTERFACE_DD_FOREGROUND /*color(0,255,255)*/ /*color(235)*/ )
-     .setColorActive( C_INTERFACE_DD_ACTIVE /*color(255,0,0)*/ /*(color(255)*/ )
-     .setColorValueLabel( C_INTERFACE_DD_TEXT /*color(0,255,0)*/ /*color(100)*/ )
-     .setColorCaptionLabel( C_INTERFACE_DD_TEXT /*color(0,0,255)*/ /*color(50)*/ )
+  sl_ddmenu.setBackgroundColor( C_INTERFACE_BORDER_ACTIVE /*color(255,0,255)*/ /*color( 255 , 128 )*/ )
+     .setColorBackground( C_INTERFACE_FILL_NORMAL /*color(255,255,0)*/ /*color(200)*/ )
+     .setColorForeground( C_INTERFACE_FILL_HIGHLIGHT /*color(0,255,255)*/ /*color(235)*/ )
+     .setColorActive( C_INTERFACE_BORDER_ACTIVE /*color(255,0,0)*/ /*(color(255)*/ )
+     .setColorValueLabel( C_INTERFACE_TEXT /*color(0,255,0)*/ /*color(100)*/ )
+     .setColorCaptionLabel( C_INTERFACE_TEXT /*color(0,0,255)*/ /*color(50)*/ )
      .setPosition(x + 1, y + 1)
      .setSize(w - 2, h + (h + 1) * (INTERFACE_str_array.length - 1) - 2)
      .setBarHeight(h - 2)
@@ -133,8 +122,8 @@ void interface_setup()
   //sl_ddmenu.getValueLabel().getStyle().padding(4,4,3,3);
 /*
   CColor c = new CColor();
-  c.setBackground(C_INTERFACE_DD_ACTIVE);
-  //c.setForeground(C_INTERFACE_DD_ACTIVE);
+  c.setBackground(C_INTERFACE_BORDER_ACTIVE);
+  //c.setForeground(C_INTERFACE_BORDER_ACTIVE);
   sl_ddmenu.getItem(DATA_interface).put("color", c);
 */
 
@@ -146,7 +135,7 @@ void interface_setup()
   tl_ddlabel = cp5.addTextlabel("interface_ddlabel");
   tl_ddlabel.setText(str)
     .setPosition(x, y)
-    .setColorValue(C_INTERFACE_TL_TEXT)
+    .setColorValue(C_INTERFACE_TEXT)
     .setHeight(h)
     ;
   tl_ddlabel.get()
@@ -167,11 +156,11 @@ void interface_setup()
       .setSize(w, h)
       //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
       .setAutoClear(false)
-      .setColorBackground( C_INTERFACE_TF_FILL )
-      .setColorForeground( C_INTERFACE_TF_NORMAL )
-      .setColorActive( C_INTERFACE_TF_HIGHLIGHT )
-      .setColorValueLabel( C_INTERFACE_TF_TEXT )
-      .setColorCursor( C_INTERFACE_TF_CURSOR )
+      .setColorBackground( C_INTERFACE_FILL_NORMAL )
+      .setColorForeground( C_INTERFACE_BORDER_NORMAL )
+      .setColorActive( C_INTERFACE_BORDER_ACTIVE )
+      .setColorValueLabel( C_INTERFACE_TEXT )
+      .setColorCursor( C_INTERFACE_CURSOR )
       .setCaptionLabel("")
       .setText(str)
       ;
@@ -202,11 +191,11 @@ void interface_setup()
       .setSize(w, h)
       //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
       .setAutoClear(false)
-      .setColorBackground( C_INTERFACE_TF_FILL )
-      .setColorForeground( C_INTERFACE_TF_NORMAL )
-      .setColorActive( C_INTERFACE_TF_HIGHLIGHT )
-      .setColorValueLabel( C_INTERFACE_TF_TEXT )
-      .setColorCursor( C_INTERFACE_TF_CURSOR )
+      .setColorBackground( C_INTERFACE_FILL_NORMAL )
+      .setColorForeground( C_INTERFACE_BORDER_NORMAL )
+      .setColorActive( C_INTERFACE_BORDER_ACTIVE )
+      .setColorValueLabel( C_INTERFACE_TEXT )
+      .setColorCursor( C_INTERFACE_CURSOR )
       .setCaptionLabel("")
       .setText(str)
       ;
@@ -234,11 +223,11 @@ void interface_setup()
       .setSize(w, h)
       //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
       .setAutoClear(false)
-      .setColorBackground( C_INTERFACE_TF_FILL )
-      .setColorForeground( C_INTERFACE_TF_NORMAL )
-      .setColorActive( C_INTERFACE_TF_HIGHLIGHT )
-      .setColorValueLabel( C_INTERFACE_TF_TEXT )
-      .setColorCursor( C_INTERFACE_TF_CURSOR )
+      .setColorBackground( C_INTERFACE_FILL_NORMAL )
+      .setColorForeground( C_INTERFACE_BORDER_NORMAL )
+      .setColorActive( C_INTERFACE_BORDER_ACTIVE )
+      .setColorValueLabel( C_INTERFACE_TEXT )
+      .setColorCursor( C_INTERFACE_CURSOR )
       .setCaptionLabel("")
       .setText(str)
       ;
@@ -272,11 +261,11 @@ void interface_setup()
       .setSize(w, h)
       //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
       .setAutoClear(false)
-      .setColorBackground( C_INTERFACE_TF_FILL )
-      .setColorForeground( C_INTERFACE_TF_NORMAL )
-      .setColorActive( C_INTERFACE_TF_HIGHLIGHT )
-      .setColorValueLabel( C_INTERFACE_TF_TEXT )
-      .setColorCursor( C_INTERFACE_TF_CURSOR )
+      .setColorBackground( C_INTERFACE_FILL_NORMAL )
+      .setColorForeground( C_INTERFACE_BORDER_NORMAL )
+      .setColorActive( C_INTERFACE_BORDER_ACTIVE )
+      .setColorValueLabel( C_INTERFACE_TEXT )
+      .setColorCursor( C_INTERFACE_CURSOR )
       .setCaptionLabel("")
       .setText(str)
       ;
@@ -307,11 +296,11 @@ void interface_setup()
       .setSize(w, h)
       //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
       .setAutoClear(false)
-      .setColorBackground( C_INTERFACE_TF_FILL )
-      .setColorForeground( C_INTERFACE_TF_NORMAL )
-      .setColorActive( C_INTERFACE_TF_HIGHLIGHT )
-      .setColorValueLabel( C_INTERFACE_TF_TEXT )
-      .setColorCursor( C_INTERFACE_TF_CURSOR )
+      .setColorBackground( C_INTERFACE_FILL_NORMAL )
+      .setColorForeground( C_INTERFACE_BORDER_NORMAL )
+      .setColorActive( C_INTERFACE_BORDER_ACTIVE )
+      .setColorValueLabel( C_INTERFACE_TEXT )
+      .setColorCursor( C_INTERFACE_CURSOR )
       .setCaptionLabel("")
       .setText(str)
       ;
@@ -343,11 +332,11 @@ void interface_setup()
       .setSize(w, h)
       //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
       .setAutoClear(false)
-      .setColorBackground( C_INTERFACE_TF_FILL )
-      .setColorForeground( C_INTERFACE_TF_NORMAL )
-      .setColorActive( C_INTERFACE_TF_HIGHLIGHT )
-      .setColorValueLabel( C_INTERFACE_TF_TEXT )
-      .setColorCursor( C_INTERFACE_TF_CURSOR )
+      .setColorBackground( C_INTERFACE_FILL_NORMAL )
+      .setColorForeground( C_INTERFACE_BORDER_NORMAL )
+      .setColorActive( C_INTERFACE_BORDER_ACTIVE )
+      .setColorValueLabel( C_INTERFACE_TEXT )
+      .setColorCursor( C_INTERFACE_CURSOR )
       .setCaptionLabel("")
       .setText(str)
       ;
@@ -377,11 +366,11 @@ void interface_setup()
       .setSize(w, h)
       //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
       .setAutoClear(false)
-      .setColorBackground( C_INTERFACE_TF_FILL )
-      .setColorForeground( C_INTERFACE_TF_NORMAL )
-      .setColorActive( C_INTERFACE_TF_HIGHLIGHT )
-      .setColorValueLabel( C_INTERFACE_TF_TEXT )
-      .setColorCursor( C_INTERFACE_TF_CURSOR )
+      .setColorBackground( C_INTERFACE_FILL_NORMAL )
+      .setColorForeground( C_INTERFACE_BORDER_NORMAL )
+      .setColorActive( C_INTERFACE_BORDER_ACTIVE )
+      .setColorValueLabel( C_INTERFACE_TEXT )
+      .setColorCursor( C_INTERFACE_CURSOR )
       .setCaptionLabel("")
       .setText(str)
       ;
@@ -412,11 +401,11 @@ void interface_setup()
       .setSize(w, h)
       //.setHeight(FONT_HEIGHT + TEXT_MARGIN*2)
       .setAutoClear(false)
-      .setColorBackground( C_INTERFACE_TF_FILL )
-      .setColorForeground( C_INTERFACE_TF_NORMAL )
-      .setColorActive( C_INTERFACE_TF_HIGHLIGHT )
-      .setColorValueLabel( C_INTERFACE_TF_TEXT )
-      .setColorCursor( C_INTERFACE_TF_CURSOR )
+      .setColorBackground( C_INTERFACE_FILL_NORMAL )
+      .setColorForeground( C_INTERFACE_BORDER_NORMAL )
+      .setColorActive( C_INTERFACE_BORDER_ACTIVE )
+      .setColorValueLabel( C_INTERFACE_TEXT )
+      .setColorCursor( C_INTERFACE_CURSOR )
       .setCaptionLabel("")
       .setText(str)
       ;
@@ -452,8 +441,8 @@ void interface_draw()
   String string;
 
   // Sets the color used to draw lines and borders around shapes.
-  stroke(C_INTERFACE_TL_TEXT);
-  fill(C_INTERFACE_TL_TEXT);
+  stroke(C_INTERFACE_TEXT);
+  fill(C_INTERFACE_TEXT);
   //stroke(#FF0000);
   //fill(#ff0000);
   
@@ -481,11 +470,11 @@ void interface_mouseReleased()
       y = TEXT_MARGIN + FONT_HEIGHT * 1 + TEXT_MARGIN;
       if(sl_ddmenu.isOpen()) {
         h = FONT_HEIGHT + TEXT_MARGIN*2 + (FONT_HEIGHT + TEXT_MARGIN*2 + 1 - 2) * (INTERFACE_str_array.length - 1);
-        c = C_INTERFACE_DD_BORDER_HIGHLIGHT;
+        c = C_INTERFACE_BORDER_ACTIVE;
       }
       else {
         h = FONT_HEIGHT + TEXT_MARGIN*2;
-        c = C_INTERFACE_DD_BORDER_NORMAL;
+        c = C_INTERFACE_BORDER_NORMAL;
       }
       tf_ddborder = (Textfield)cp5.getController("interface_ddborder");
       tf_ddborder
@@ -522,7 +511,7 @@ void interface_mouseReleased()
     x = SCREEN_width - TEXT_MARGIN - FONT_HEIGHT * 3 - w;
     y = TEXT_MARGIN + FONT_HEIGHT * 1 + TEXT_MARGIN;
     h = FONT_HEIGHT + TEXT_MARGIN*2;
-    c = C_INTERFACE_DD_BORDER_NORMAL;
+    c = C_INTERFACE_BORDER_NORMAL;
     tf_ddborder = (Textfield)cp5.getController("interface_ddborder");
     tf_ddborder
       .setPosition(x+1, y)
