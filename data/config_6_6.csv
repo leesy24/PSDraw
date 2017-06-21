@@ -6,9 +6,9 @@ SCREEN_width_ratio,0.33333
 SCREEN_height_ratio,0.5
 ROTATE_FACTOR,90.0
 MIRROR_ENABLE,flase
-ZOOM_FACTOR,10.0
-GRID_OFFSET_X,384
-GRID_OFFSET_Y,-1376
+ZOOM_FACTOR,100.0
+GRID_OFFSET_X,0
+GRID_OFFSET_Y,0
 FILE_name,C:\Temp\data.bin
 UART_port_name,COM1
 UART_baud_rate,115200
@@ -18,4 +18,4 @@ UART_stop_bits,1.0
 UDP_remote_ip,10.0.8.86
 UDP_remote_port,1024
 UDP_local_port,1025
-SN_serial_number,1000
+SN_serial_number,885
