@@ -93,6 +93,7 @@ boolean screen_check_update()
 {
   boolean updated = false;
 
+  //println("frameRate = " + frameRate);
 /*
   javax.swing.JFrame f;
   

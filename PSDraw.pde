@@ -44,7 +44,7 @@ void settings() {
 // There can only be one setup() function for each program
 //  and it shouldn't be called again after its initial execution.
 void setup() {
-  frameRate(15);
+  frameRate(FRAME_RATE);
   //noStroke();
   // This is only pertains to the desktop version of Processing (not JavaScript or Android),
   //  because it's the only one to use windows and frames.
