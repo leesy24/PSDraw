@@ -2,9 +2,9 @@
 //final boolean PRINT = true; 
 final boolean PRINT = false; 
 
-//final color C_BG = #FFFFFF; // White
-final color C_BG = #F8F8F8; // White - 0x8
-final color C_TEXT = #000000; // Black
+//static color C_BG = #FFFFFF; // White
+static color C_BG = #F8F8F8; // White - 0x8
+static color C_TEXT = #000000; // Black
 
 // Define window title string.
 final String TITLE = "DASAN-InfoTEK - PSDraw";
@@ -19,6 +19,8 @@ float ROTATE_FACTOR = 0;/*90;*//*180;*//*270;*/
 // Define mirror variables.
 boolean MIRROR_ENABLE = false;
 
+int FRAME_RATE = 30;
+
 // The settings() function is new with Processing 3.0. It's not needed in most sketches.
 // It's only useful when it's absolutely necessary to define the parameters to size() with a variable. 
 void settings() {
@@ -31,6 +33,7 @@ void settings() {
     // Nothing to do.
   }
 
+  const_settings();
   config_settings();
   screen_settings();
 }
@@ -41,6 +44,7 @@ void settings() {
 // There can only be one setup() function for each program
 //  and it shouldn't be called again after its initial execution.
 void setup() {
+  frameRate(15);
   //noStroke();
   // This is only pertains to the desktop version of Processing (not JavaScript or Android),
   //  because it's the only one to use windows and frames.

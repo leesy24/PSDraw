@@ -11,13 +11,11 @@ final boolean PRINT_DATAFUNC_PARSE_ERR = false;
 //final boolean PRINT_DATAFUNC_DRAW_DBG = true; 
 final boolean PRINT_DATAFUNC_DRAW_DBG = false;
 
-//final static color C_DATA_LINE = #808080; //
-//final static color C_DATA_POINT = #000000; //
-final static color C_DATA_LINE = #0000FF; // Blue
-final static color C_DATA_POINT = #FF0000; // Red
-final static color C_DATA_RECT_FILL = 0xC0F8F8F8; // White - 0x8 w/ Opaque 75%
-final static color C_DATA_RECT_STROKE = #000000; // Black
-final static color C_DATA_RECT_TEXT = #404040; // Black + 0x40
+static color C_DATA_LINE = #0000FF; // Blue
+static color C_DATA_POINT = #FF0000; // Red
+static color C_DATA_RECT_FILL = 0xC0F8F8F8; // White - 0x8 w/ Opaque 75%
+static color C_DATA_RECT_STROKE = #000000; // Black
+static color C_DATA_RECT_TEXT = #404040; // Black + 0x40
 
 final static int DATA_INTERFACE_FILE = 0;
 final static int DATA_INTERFACE_UART = 1;

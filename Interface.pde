@@ -11,22 +11,22 @@
 import controlP5.*;
 import java.util.*;
 
-final static color C_INTERFACE_NORMAL = #FFFFFF; // White
-final static color C_INTERFACE_HIGHLIGHT = #C0C0C0; // White - 0x40
-final static color C_INTERFACE_TEXT = #000000; // Black
-final static color C_INTERFACE_TL_TEXT = C_INTERFACE_TEXT; // Black
-final static color C_INTERFACE_DD_TEXT = C_INTERFACE_TEXT; // Black
-final static color C_INTERFACE_DD_BORDER_FILL = #FFFFFF; // White
-final static color C_INTERFACE_DD_BORDER_NORMAL = #000000; // Black
-final static color C_INTERFACE_DD_BORDER_HIGHLIGHT = #FF0000; // Red
-final static color C_INTERFACE_DD_NORMAL = #FFFFFF; // White
-final static color C_INTERFACE_DD_FOREGROUND = #C0C0C0; // White - 0x40
-final static color C_INTERFACE_DD_ACTIVE = #FF0000; // Red
-final static color C_INTERFACE_TF_TEXT = C_INTERFACE_TEXT; // Black
-final static color C_INTERFACE_TF_FILL = #FFFFFF; // White
-final static color C_INTERFACE_TF_NORMAL = #000000; // Black
-final static color C_INTERFACE_TF_HIGHLIGHT = #FF0000; // Red
-final static color C_INTERFACE_TF_CURSOR = #0000FF; // Blue
+static color C_INTERFACE_NORMAL = #FFFFFF; // White
+static color C_INTERFACE_HIGHLIGHT = #C0C0C0; // White - 0x40
+static color C_INTERFACE_TEXT = #000000; // Black
+static color C_INTERFACE_TL_TEXT = C_INTERFACE_TEXT; // Black
+static color C_INTERFACE_DD_TEXT = C_INTERFACE_TEXT; // Black
+static color C_INTERFACE_DD_BORDER_FILL = #FFFFFF; // White
+static color C_INTERFACE_DD_BORDER_NORMAL = #000000; // Black
+static color C_INTERFACE_DD_BORDER_HIGHLIGHT = #FF0000; // Red
+static color C_INTERFACE_DD_NORMAL = #FFFFFF; // White
+static color C_INTERFACE_DD_FOREGROUND = #C0C0C0; // White - 0x40
+static color C_INTERFACE_DD_ACTIVE = #FF0000; // Red
+static color C_INTERFACE_TF_TEXT = C_INTERFACE_TEXT; // Black
+static color C_INTERFACE_TF_FILL = #FFFFFF; // White
+static color C_INTERFACE_TF_NORMAL = #000000; // Black
+static color C_INTERFACE_TF_HIGHLIGHT = #FF0000; // Red
+static color C_INTERFACE_TF_CURSOR = #0000FF; // Blue
 
 
 boolean INTERFACE_changed = false;

@@ -1,7 +1,7 @@
-//final static color C_GRID_LINE = #808080; // Black + 0x80
-final static color C_GRID_LINE = #C0C0C0; // Black + 0xC0
-final static color C_GRID_TEXT = #404040; // Black + 0x40
-//final static color C_GRID_TEXT = #808080; //Black + 0x80
+//static color C_GRID_LINE = #808080; // Black + 0x80
+static color C_GRID_LINE = #C0C0C0; // Black + 0xC0
+static color C_GRID_TEXT = #404040; // Black + 0x40
+//static color C_GRID_TEXT = #808080; //Black + 0x80
 
 int GRID_OFFSET_X = 0;
 int GRID_OFFSET_Y = 0;
@@ -23,8 +23,10 @@ void grid_draw_rotate_0()
   final int grid_offset_y_mod_100 = GRID_OFFSET_Y % 100;
   final int grid_offset_x_mod_100 = GRID_OFFSET_X % 100;
   final int screen_height_mod_100_2 = (SCREEN_height % 100) / 2;
-  final int even_odd_offset = screen_height_mod_100_2 + FONT_HEIGHT / 2;
-  final int offset_x = TEXT_MARGIN + FONT_HEIGHT / 2;
+  final int screen_offset = SCREEN_width - TEXT_MARGIN;
+  final int font_height_2 = FONT_HEIGHT / 2;
+  final int even_odd_offset = screen_height_mod_100_2 + font_height_2;
+  final int offset_x = TEXT_MARGIN + font_height_2;
   final int offset = offset_x + grid_offset_x_mod_100;
   final int offset_ix = int(zoom_factor_100 * float(GRID_OFFSET_X / 100 * 100));
   final int offset_iy = int(zoom_factor_100 * float(GRID_OFFSET_Y / 100 * 100));
@@ -96,15 +98,15 @@ void grid_draw_rotate_0()
     y = iy * 100 + offset_even_odd;
     x = offset_x - int(textWidth(string) / 2.0) + GRID_OFFSET_X;
     if (x < TEXT_MARGIN) x = TEXT_MARGIN;
-    if (x > SCREEN_width - int(textWidth(string)) - TEXT_MARGIN) x = SCREEN_width - int(textWidth(string)) - TEXT_MARGIN;
+    if (x > screen_offset - int(textWidth(string))) x = screen_offset - int(textWidth(string));
     text(string, x, y);
     if(string.equals("0.0m")) {
-      image_y = y - FONT_HEIGHT / 2;
+      image_y = y - font_height_2;
     }
     //println("iy=" + iy + ", string=" + string + ", x=" + x + ", y=" + y);
   }
 
-  y = SCREEN_height / 2 + FONT_HEIGHT / 2 + GRID_OFFSET_Y;
+  y = SCREEN_height / 2 + font_height_2 + GRID_OFFSET_Y;
   if (y < TEXT_MARGIN + FONT_HEIGHT) y = TEXT_MARGIN + FONT_HEIGHT;
   if (y > SCREEN_height - TEXT_MARGIN) y = SCREEN_height - TEXT_MARGIN;
   for (ix = 0; ix <= screen_width_100 + 1; ix ++) {
@@ -153,7 +155,9 @@ void grid_draw_rotate_90()
   final int grid_offset_y_mod_100 = GRID_OFFSET_Y % 100;
   final int grid_offset_x_mod_100 = GRID_OFFSET_X % 100;
   final int screen_width_mod_100_2 = (SCREEN_width % 100) / 2;
-  final int offset_x = TEXT_MARGIN + FONT_HEIGHT / 2;
+  final int screen_offset = SCREEN_width - TEXT_MARGIN;
+  final int font_height_2 = FONT_HEIGHT / 2;
+  final int offset_x = TEXT_MARGIN + font_height_2;
   final int offset = offset_x + grid_offset_y_mod_100;
   final int offset_ix = int(zoom_factor_100 * float(GRID_OFFSET_X / 100 * 100));
   final int offset_iy = int(zoom_factor_100 * float(GRID_OFFSET_Y / 100 * 100));
@@ -249,8 +253,8 @@ void grid_draw_rotate_90()
         "m";
       x = SCREEN_width / 2 - int(textWidth(string)/2) + GRID_OFFSET_X;
       if (x < TEXT_MARGIN) x = TEXT_MARGIN;
-      if (x > SCREEN_width - int(textWidth(string)) - TEXT_MARGIN) x = SCREEN_width - int(textWidth(string)) - TEXT_MARGIN;
-      y = iy * 100 + offset_x + FONT_HEIGHT / 2 + grid_offset_y_mod_100;
+      if (x > screen_offset - int(textWidth(string))) x = screen_offset - int(textWidth(string));
+      y = iy * 100 + offset_x + font_height_2 + grid_offset_y_mod_100;
       text(string, x, y);
       if(string.equals("0.0m")) {
         image_y = iy * 100 + offset_x + grid_offset_y_mod_100;
@@ -280,8 +284,10 @@ void grid_draw_rotate_180()
   final int grid_offset_y_mod_100 = GRID_OFFSET_Y % 100;
   final int grid_offset_x_mod_100 = GRID_OFFSET_X % 100;
   final int screen_height_mod_100_2 = (SCREEN_height % 100) / 2;
-  final int even_odd_offset = screen_height_mod_100_2 + FONT_HEIGHT / 2;
-  final int offset_x = TEXT_MARGIN + FONT_HEIGHT / 2;
+  final int screen_offset = SCREEN_width - TEXT_MARGIN;
+  final int font_height_2 = FONT_HEIGHT / 2;
+  final int even_odd_offset = screen_height_mod_100_2 + font_height_2;
+  final int offset_x = TEXT_MARGIN + font_height_2;
   final int offset = offset_x - grid_offset_x_mod_100;
   final int offset_ix = int(zoom_factor_100 * float(GRID_OFFSET_X / 100 * 100));
   final int offset_iy = int(zoom_factor_100 * float(GRID_OFFSET_Y / 100 * 100));
@@ -353,15 +359,15 @@ void grid_draw_rotate_180()
     y = iy * 100 + offset_even_odd;
     x = SCREEN_width - offset_x - int(textWidth(string) / 2.0) + GRID_OFFSET_X;
     if (x < TEXT_MARGIN) x = TEXT_MARGIN;
-    if (x > SCREEN_width - int(textWidth(string)) - TEXT_MARGIN) x = SCREEN_width - int(textWidth(string)) - TEXT_MARGIN;
+    if (x > screen_offset - int(textWidth(string))) x = screen_offset - int(textWidth(string));
     text(string, x, y);
     if(string.equals("0.0m")) {
-      image_y = y - FONT_HEIGHT / 2;
+      image_y = y - font_height_2;
     }
     //println("iy=" + iy + ", string=" + string + ", x=" + x + ", y=" + y);
   }
 
-  y = SCREEN_height / 2 + FONT_HEIGHT / 2 + GRID_OFFSET_Y;
+  y = SCREEN_height / 2 + font_height_2 + GRID_OFFSET_Y;
   if (y < TEXT_MARGIN + FONT_HEIGHT) y = TEXT_MARGIN + FONT_HEIGHT;
   if (y > SCREEN_height - TEXT_MARGIN) y = SCREEN_height - TEXT_MARGIN;
   for (ix = 0; ix <= screen_width_100 + 1; ix ++) {
@@ -410,7 +416,9 @@ void grid_draw_rotate_270()
   final int grid_offset_y_mod_100 = GRID_OFFSET_Y % 100;
   final int grid_offset_x_mod_100 = GRID_OFFSET_X % 100;
   final int screen_width_mod_100_2 = (SCREEN_width % 100) / 2;
-  final int offset_x = TEXT_MARGIN + FONT_HEIGHT / 2;
+  final int screen_offset = SCREEN_width - TEXT_MARGIN;
+  final int font_height_2 = FONT_HEIGHT / 2;
+  final int offset_x = TEXT_MARGIN + font_height_2;
   final int offset = offset_x - grid_offset_y_mod_100;
   final int offset_ix = int(zoom_factor_100 * float(GRID_OFFSET_X / 100 * 100));
   final int offset_iy = int(zoom_factor_100 * float(GRID_OFFSET_Y / 100 * 100));
@@ -506,11 +514,11 @@ void grid_draw_rotate_270()
         "m";
       x = SCREEN_width / 2 - int(textWidth(string)/2) + GRID_OFFSET_X;
       if (x < TEXT_MARGIN) x = TEXT_MARGIN;
-      if (x > SCREEN_width - int(textWidth(string)) - TEXT_MARGIN) x = SCREEN_width - int(textWidth(string)) - TEXT_MARGIN;
+      if (x > screen_offset - int(textWidth(string))) x = screen_offset - int(textWidth(string));
       y = SCREEN_height - iy * 100 - TEXT_MARGIN + grid_offset_y_mod_100;
       text(string, x, y);
       if(string.equals("0.0m")) {
-        image_y = SCREEN_height - iy * 100 - TEXT_MARGIN - FONT_HEIGHT / 2 + grid_offset_y_mod_100;
+        image_y = SCREEN_height - iy * 100 - TEXT_MARGIN - font_height_2 + grid_offset_y_mod_100;
       }
     }
   }
