@@ -21,6 +21,14 @@ void const_settings()
       String name = variable.getString("Name");
       if(name.equals("FRAME_RATE"))
         FRAME_RATE = variable.getInt("Value");
+      else if(name.equals("SCREEN_BORDER_WIDTH"))
+        SCREEN_BORDER_WIDTH = variable.getInt("Value");
+      else if(name.equals("SCREEN_TITLE_HEIGHT"))
+        SCREEN_TITLE_HEIGHT = variable.getInt("Value");
+      else if(name.equals("SCREEN_X_OFFSET"))
+        SCREEN_X_OFFSET = variable.getInt("Value");
+      else if(name.equals("SCREEN_Y_OFFSET"))
+        SCREEN_Y_OFFSET = variable.getInt("Value");
       else if(name.equals("C_BG"))
         C_BG = (int)Long.parseLong(variable.getString("Value"), 16);
       else if(name.equals("C_TEXT"))
@@ -103,6 +111,22 @@ void const_settings()
     variable = CONST_table.addRow();
     variable.setString("Name", "FRAME_RATE");
     variable.setInt("Value", FRAME_RATE);
+
+    variable = CONST_table.addRow();
+    variable.setString("Name", "SCREEN_BORDER_WIDTH");
+    variable.setInt("Value", SCREEN_BORDER_WIDTH);
+
+    variable = CONST_table.addRow();
+    variable.setString("Name", "SCREEN_TITLE_HEIGHT");
+    variable.setInt("Value", SCREEN_TITLE_HEIGHT);
+
+    variable = CONST_table.addRow();
+    variable.setString("Name", "SCREEN_X_OFFSET");
+    variable.setInt("Value", SCREEN_X_OFFSET);
+
+    variable = CONST_table.addRow();
+    variable.setString("Name", "SCREEN_Y_OFFSET");
+    variable.setInt("Value", SCREEN_Y_OFFSET);
 
     variable = CONST_table.addRow();
     variable.setString("Name", "C_BG");
