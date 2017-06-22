@@ -61,6 +61,7 @@ void mousePressed() {
       GRID_OFFSET_X =  int(save_oy);
     }
     if (PRINT_MOUSEFUNC_Pressed) println("ROTATE_FACTOR=" + ROTATE_FACTOR);
+    grid_ready();
     config_save();
   }
   if (button_rotate_cw_over) {
@@ -86,6 +87,7 @@ void mousePressed() {
       GRID_OFFSET_X = -int(save_oy);
     }
     if (PRINT_MOUSEFUNC_Pressed) println("ROTATE_FACTOR=" + ROTATE_FACTOR);
+    grid_ready();
     config_save();
   }
   //println("new GRID_OFFSET_X=" + GRID_OFFSET_X + ", GRID_OFFSET_Y=" + GRID_OFFSET_Y);
@@ -93,6 +95,7 @@ void mousePressed() {
   if (button_mirror_en_over) {
     MIRROR_ENABLE = !MIRROR_ENABLE;
     if (PRINT_MOUSEFUNC_Pressed) println("MIRROR_ENABLE=" + MIRROR_ENABLE);
+    grid_ready();
     config_save();
   }
 
@@ -103,6 +106,7 @@ void mousePressed() {
     GRID_OFFSET_X = GRID_OFFSET_Y = 0;
     MIRROR_ENABLE = false;
     ZOOM_FACTOR = 100;
+    grid_ready();
     config_save();
   }
 }

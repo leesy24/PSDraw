@@ -97,24 +97,13 @@ void grid_draw_rotate_270()
     }
   }
 
-  if((image_x != MIN_INT && image_y != MIN_INT))
+  if( (image_x >= 0 - PS_image.width / 2 && image_x < SCREEN_width + PS_image.width / 2)
+      &&
+      (image_y >= 0 - PS_image.height / 2 && image_y < SCREEN_height + PS_image.height / 2)
+    )
   {
     //println("image xy=" + image_x + "," + image_y);
-    // Images must be in the "data" directory to load correctly
-    if (MIRROR_ENABLE) {
-      PS_image = loadImage("PS_270_.png");
-    }
-    else {
-      PS_image = loadImage("PS_270.png");
-    }
-
-    if( (image_x >= 0 - PS_image.width / 2 && image_x < SCREEN_width + PS_image.width / 2)
-        &&
-        (image_y >= 0 - PS_image.height / 2 && image_y < SCREEN_height + PS_image.height / 2)
-      )
-    {
-      //image(PS_image, image_x, image_y);
-      image(PS_image, image_x - PS_image.width / 2, image_y - PS_image.height / 2);
-    }
+    //image(PS_image, image_x, image_y);
+    image(PS_image, image_x - PS_image.width / 2, image_y - PS_image.height / 2);
   }
 }

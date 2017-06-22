@@ -35,6 +35,7 @@ void settings() {
   const_settings();
   config_settings();
   screen_settings();
+  grid_settings();
   lines_settings();
 }
 
