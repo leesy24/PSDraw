@@ -183,10 +183,10 @@ boolean screen_check_update()
 
     updated = true;
   }
-
 /*
   if(updated) {
-    config_save();
+    grid_ready();
+    //config_save();
   }
 */
 

@@ -70,6 +70,12 @@ void grid_ready()
 /*
   if(PS_image == null) return;
 
+final int const_screen_width_d_100 = SCREEN_width / 100;
+final int const_screen_width_d_100_d_2 = const_screen_width_d_100 / 2;
+final int const_screen_height_d_100 = SCREEN_height / 100;
+final int const_screen_height_d_100_d_2 = const_screen_height_d_100 / 2;
+*/
+/*
   PS_image_x_start = 0 - PS_image.width / 2;
   PS_image_x_end = SCREEN_width + PS_image.width / 2;
   PS_image_y_start = 0 - PS_image.height / 2;
