@@ -5,54 +5,54 @@ static color C_BTN_NORMAL = #FFFFFF; // White
 static color C_BTN_HIGHLIGHT = #C0C0C0; //
 static color C_BTN_TEXT = #000000; // Black
 
-int button_zoom_minus_x, button_zoom_minus_y;           // Position of square button zoom minus
-int button_zoom_minus_width, button_zoom_minus_height;  // Diameter of rect
-int button_zoom_minus_str_x, button_zoom_minus_str_y;   // Position of button string zoom minus
-String button_zoom_minus_str = "-";                     // button string zoom minus
-boolean button_zoom_minus_over = false;
+static int button_zoom_minus_x, button_zoom_minus_y;           // Position of square button zoom minus
+static int button_zoom_minus_width, button_zoom_minus_height;  // Diameter of rect
+static int button_zoom_minus_str_x, button_zoom_minus_str_y;   // Position of button string zoom minus
+static String button_zoom_minus_str = "-";                     // button string zoom minus
+static boolean button_zoom_minus_over = false;
 
-int button_zoom_pluse_x, button_zoom_pluse_y;           // Position of square button zoom pluse
-int button_zoom_pluse_width, button_zoom_pluse_height;  // Diameter of rect
-int button_zoom_pluse_str_x, button_zoom_pluse_str_y;   // Position of button string zoom pluse
-String button_zoom_pluse_str = "+";                     // button string zoom pluse
-boolean button_zoom_pluse_over = false;
+static int button_zoom_pluse_x, button_zoom_pluse_y;           // Position of square button zoom pluse
+static int button_zoom_pluse_width, button_zoom_pluse_height;  // Diameter of rect
+static int button_zoom_pluse_str_x, button_zoom_pluse_str_y;   // Position of button string zoom pluse
+static String button_zoom_pluse_str = "+";                     // button string zoom pluse
+static boolean button_zoom_pluse_over = false;
 
-int button_zoom_caption_str_x, button_zoom_caption_str_y;  // Position of button string zoom pluse
-String button_zoom_caption_str = "Zoom";                   // button string zoom pluse
+static int button_zoom_caption_str_x, button_zoom_caption_str_y;  // Position of button string zoom pluse
+static String button_zoom_caption_str = "Zoom";                   // button string zoom pluse
 
-int button_rotate_ccw_x, button_rotate_ccw_y;           // Position of square button rotate counter clock-wise
-int button_rotate_ccw_width, button_rotate_ccw_height;  // Diameter of rect
-int button_rotate_ccw_str_x, button_rotate_ccw_str_y;   // Position of button string rotate counter clock-wise
-String button_rotate_ccw_str = "↺";                     // button string rotate counter clock-wise
-boolean button_rotate_ccw_over = false;
+static int button_rotate_ccw_x, button_rotate_ccw_y;           // Position of square button rotate counter clock-wise
+static int button_rotate_ccw_width, button_rotate_ccw_height;  // Diameter of rect
+static int button_rotate_ccw_str_x, button_rotate_ccw_str_y;   // Position of button string rotate counter clock-wise
+static String button_rotate_ccw_str = "↺";                     // button string rotate counter clock-wise
+static boolean button_rotate_ccw_over = false;
 
-int button_rotate_cw_x, button_rotate_cw_y;           // Position of square button rotate clock-wise
-int button_rotate_cw_width, button_rotate_cw_height;  // Diameter of rect
-int button_rotate_cw_str_x, button_rotate_cw_str_y;   // Position of button string rotate clock-wise
-String button_rotate_cw_str = "↻";                    // button string rotate clock-wise
-boolean button_rotate_cw_over = false;
+static int button_rotate_cw_x, button_rotate_cw_y;           // Position of square button rotate clock-wise
+static int button_rotate_cw_width, button_rotate_cw_height;  // Diameter of rect
+static int button_rotate_cw_str_x, button_rotate_cw_str_y;   // Position of button string rotate clock-wise
+static String button_rotate_cw_str = "↻";                    // button string rotate clock-wise
+static boolean button_rotate_cw_over = false;
 
-int button_rotate_caption_str_x, button_rotate_caption_str_y;  // Position of button string rotate clock-wise
-String button_rotate_caption_str = "Rotate";                   // button string rotate clock-wise
+static int button_rotate_caption_str_x, button_rotate_caption_str_y;  // Position of button string rotate clock-wise
+static String button_rotate_caption_str = "Rotate";                   // button string rotate clock-wise
 
-int button_mirror_en_x, button_mirror_en_y;      // Position of square button mirror enable
-int button_mirror_en_width, button_mirror_en_height;     // Diameter of rect
-int button_mirror_en_str_x, button_mirror_en_str_y;      // Position of button string mirror enable
-String button_mirror_en_str_0_180 = "⇅"; // button string mirror enable
-String button_mirror_en_str_90_270 = "⇄"; // button string mirror enable
-boolean button_mirror_en_over = false;
+static int button_mirror_en_x, button_mirror_en_y;      // Position of square button mirror enable
+static int button_mirror_en_width, button_mirror_en_height;     // Diameter of rect
+static int button_mirror_en_str_x, button_mirror_en_str_y;      // Position of button string mirror enable
+static String button_mirror_en_str_0_180 = "⇅"; // button string mirror enable
+static String button_mirror_en_str_90_270 = "⇄"; // button string mirror enable
+static boolean button_mirror_en_over = false;
 
-int button_mirror_en_caption_str_x, button_mirror_en_caption_str_y;  // Position of button string mirror enable
-String button_mirror_en_caption_str = "Mirror";                      // button string mirror enable
+static int button_mirror_en_caption_str_x, button_mirror_en_caption_str_y;  // Position of button string mirror enable
+static String button_mirror_en_caption_str = "Mirror";                      // button string mirror enable
 
-int button_reset_en_x, button_reset_en_y;           // Position of square button reset enable
-int button_reset_en_width, button_reset_en_height;  // Diameter of rect
-int button_reset_en_str_x, button_reset_en_str_y;   // Position of button string reset enable
-String button_reset_en_str = "0";                   // button string reset enable
-boolean button_reset_en_over = false;
+static int button_reset_en_x, button_reset_en_y;           // Position of square button reset enable
+static int button_reset_en_width, button_reset_en_height;  // Diameter of rect
+static int button_reset_en_str_x, button_reset_en_str_y;   // Position of button string reset enable
+static String button_reset_en_str = "0";                   // button string reset enable
+static boolean button_reset_en_over = false;
 
-int button_reset_en_caption_str_x, button_reset_en_caption_str_y;  // Position of button string reset enable
-String button_reset_en_caption_str = "Reset";                      // button string reset enable
+static int button_reset_en_caption_str_x, button_reset_en_caption_str_y;  // Position of button string reset enable
+static String button_reset_en_caption_str = "Reset";                      // button string reset enable
 
 void button_setup()
 {
