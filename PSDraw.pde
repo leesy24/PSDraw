@@ -37,6 +37,7 @@ void settings() {
   screen_settings();
   grid_settings();
   lines_settings();
+  colorbar_settings();
 }
 
 // The setup() function is run once, when the program starts.

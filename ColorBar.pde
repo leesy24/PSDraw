@@ -2,31 +2,42 @@ static color C_COLORBAR_RECT_FILL = 0xC0F8F8F8; // White - 0x8 w/ Opaque 75%
 static color C_COLORBAR_RECT_STROKE = #000000; // Black
 static color C_COLORBAR_TEXT = #000000; // Black
 
+static int COLORBAR_COLOR_PW_1_CONST;
+static int COLORBAR_COLOR_PW_2_CONST;
+static int COLORBAR_COLOR_HSB_MAX_CONST;
+static int COLORBAR_COLOR_H_OFFSET_CONST;
+static int COLORBAR_COLOR_H_MOD_CONST;
+
+void colorbar_settings()
+{
+  COLORBAR_COLOR_PW_1_CONST = DATA_MIN_PULSE_WIDTH - DATA_MAX_PULSE_WIDTH;
+  COLORBAR_COLOR_PW_2_CONST = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH;
+  COLORBAR_COLOR_HSB_MAX_CONST = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH;
+  COLORBAR_COLOR_H_OFFSET_CONST = DATA_MAX_PULSE_WIDTH + int(float(COLORBAR_COLOR_HSB_MAX_CONST) * 5.0 / 6.0);
+  COLORBAR_COLOR_H_MOD_CONST = COLORBAR_COLOR_HSB_MAX_CONST + 1;
+}
+
 void colorbar_draw_0()
 {
   color c;
   int i;
   int pw;
-  final float pw_const = float(DATA_MIN_PULSE_WIDTH - DATA_MAX_PULSE_WIDTH) / float(SCREEN_height);
-  final int color_HSB_max_const = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH;
-  final int color_H_offset = DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0);
-  final int color_H_modular = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1;
+  final float pw_const = float(COLORBAR_COLOR_PW_1_CONST) / float(SCREEN_height);
   final int x_const = SCREEN_width - FONT_HEIGHT / 2;
 
+  colorMode(HSB, COLORBAR_COLOR_HSB_MAX_CONST);
   for(i = 0; i < SCREEN_height; i ++) {
     pw = int(pw_const * float(i)) + DATA_MAX_PULSE_WIDTH;
-    colorMode(HSB, color_HSB_max_const);
     c =
       color(
-        (color_H_offset - pw) % color_H_modular,
-        color_HSB_max_const,
-        color_HSB_max_const);
-    colorMode(RGB, 255);
-    
+        (COLORBAR_COLOR_H_OFFSET_CONST - pw) % COLORBAR_COLOR_H_MOD_CONST,
+        COLORBAR_COLOR_HSB_MAX_CONST,
+        COLORBAR_COLOR_HSB_MAX_CONST);
     fill(c);
     stroke(c);
     line(x_const, i, SCREEN_width, i);
   }
+  colorMode(RGB, 255);
 }
 
 void colorbar_draw_90()
@@ -34,25 +45,22 @@ void colorbar_draw_90()
   color c;
   int i;
   int pw;
-  final float pw_const = float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) / float(SCREEN_width);
-  final int color_HSB_max_const = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH;
-  final int color_H_offset = DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0);
-  final int color_H_modular = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1;
+  final float pw_const = float(COLORBAR_COLOR_PW_2_CONST) / float(SCREEN_width);
   final int y_const = SCREEN_height - FONT_HEIGHT / 2;
 
+  colorMode(HSB, COLORBAR_COLOR_HSB_MAX_CONST);
   for(i = 0; i < SCREEN_width; i ++) {
     pw = int(pw_const * float(i)) + DATA_MIN_PULSE_WIDTH;
-    colorMode(HSB, color_HSB_max_const);
     c =
       color(
-        (color_H_offset - pw) % color_H_modular,
-        color_HSB_max_const,
-        color_HSB_max_const);
-    colorMode(RGB, 255);
+        (COLORBAR_COLOR_H_OFFSET_CONST - pw) % COLORBAR_COLOR_H_MOD_CONST,
+        COLORBAR_COLOR_HSB_MAX_CONST,
+        COLORBAR_COLOR_HSB_MAX_CONST);
     fill(c);
     stroke(c);
     line(i, y_const, i, SCREEN_height);
   }
+  colorMode(RGB, 255);
 }
 
 void colorbar_draw_180()
@@ -60,28 +68,24 @@ void colorbar_draw_180()
   color c;
   int i;
   int pw;
-  final float pw_const = float(DATA_MIN_PULSE_WIDTH - DATA_MAX_PULSE_WIDTH) / float(SCREEN_height);
-  final int color_HSB_max_const = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH;
-  final int color_H_offset = DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0);
-  final int color_H_modular = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1;
+  final float pw_const = float(COLORBAR_COLOR_PW_1_CONST) / float(SCREEN_height);
   final int x_const = FONT_HEIGHT / 2;
 
 
+  colorMode(HSB, COLORBAR_COLOR_HSB_MAX_CONST);
   for(i = 0; i < SCREEN_height; i ++) {
     pw = int(pw_const * float(i)) + DATA_MAX_PULSE_WIDTH;
     //print("[" + i + "]=" + p + " ");
-    colorMode(HSB, color_HSB_max_const);
     c =
       color(
-        (color_H_offset - pw) % color_H_modular,
-        color_HSB_max_const,
-        color_HSB_max_const);
-    colorMode(RGB, 255);
-    
+        (COLORBAR_COLOR_H_OFFSET_CONST - pw) % COLORBAR_COLOR_H_MOD_CONST,
+        COLORBAR_COLOR_HSB_MAX_CONST,
+        COLORBAR_COLOR_HSB_MAX_CONST);
     fill(c);
     stroke(c);
     line(0, i, x_const, i);
   }
+  colorMode(RGB, 255);
 }
 
 void colorbar_draw_270()
@@ -89,27 +93,23 @@ void colorbar_draw_270()
   color c;
   int i;
   int pw;
-  final float pw_const = float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) / float(SCREEN_width);
-  final int color_HSB_max_const = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH;
-  final int color_H_offset = DATA_MAX_PULSE_WIDTH + int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) * 5.0 / 6.0);
-  final int color_H_modular = DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH + 1;
+  final float pw_const = float(COLORBAR_COLOR_PW_2_CONST) / float(SCREEN_width);
   final int y_const = FONT_HEIGHT / 2;
 
+  colorMode(HSB, COLORBAR_COLOR_HSB_MAX_CONST);
   for(i = 0; i < SCREEN_width; i ++) {
     pw = int(pw_const * float(i)) + DATA_MIN_PULSE_WIDTH;
     //print("[" + i + "]=" + p + " ");
-    colorMode(HSB, color_HSB_max_const);
     c =
       color(
-        (color_H_offset - pw) % color_H_modular,
-        color_HSB_max_const,
-        color_HSB_max_const);
-    colorMode(RGB, 255);
-    
+        (COLORBAR_COLOR_H_OFFSET_CONST - pw) % COLORBAR_COLOR_H_MOD_CONST,
+        COLORBAR_COLOR_HSB_MAX_CONST,
+        COLORBAR_COLOR_HSB_MAX_CONST);
     fill(c);
     stroke(c);
     line(i, 0, i, y_const);
   }
+  colorMode(RGB, 255);
 }
 
 void colorbar_info_draw_0()
@@ -122,7 +122,7 @@ void colorbar_info_draw_0()
   if( mouseX >= SCREEN_width - FONT_HEIGHT / 2 &&
       BUBBLEINFO_DISPLAY == false ) {
     // Display pulse width
-    pw = int(float(DATA_MIN_PULSE_WIDTH - DATA_MAX_PULSE_WIDTH) / float(SCREEN_height) * mouseY) + DATA_MAX_PULSE_WIDTH;
+    pw = int(float(COLORBAR_COLOR_PW_1_CONST) / float(SCREEN_height) * mouseY) + DATA_MAX_PULSE_WIDTH;
     string = "Pulse width:" + pw;
     w = int(textWidth(string));
     w += TEXT_MARGIN + TEXT_MARGIN;
@@ -155,7 +155,7 @@ void colorbar_info_draw_90()
   if( mouseY >= SCREEN_height - FONT_HEIGHT / 2 &&
       BUBBLEINFO_DISPLAY == false ) {
     // Display pulse width
-    pw = int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) / float(SCREEN_width) * mouseX) + DATA_MIN_PULSE_WIDTH;
+    pw = int(float(COLORBAR_COLOR_PW_2_CONST) / float(SCREEN_width) * mouseX) + DATA_MIN_PULSE_WIDTH;
     string = "Pulse width:" + pw;
     w = int(textWidth(string));
     w += TEXT_MARGIN + TEXT_MARGIN;
@@ -188,7 +188,7 @@ void colorbar_info_draw_180()
   if( mouseX <= FONT_HEIGHT / 2 &&
       BUBBLEINFO_DISPLAY == false ) {
     // Display pulse width
-    pw = int(float(DATA_MIN_PULSE_WIDTH - DATA_MAX_PULSE_WIDTH) / float(SCREEN_height) * mouseY) + DATA_MAX_PULSE_WIDTH;
+    pw = int(float(COLORBAR_COLOR_PW_1_CONST) / float(SCREEN_height) * mouseY) + DATA_MAX_PULSE_WIDTH;
     string = "Pulse width:" + pw;
     w = int(textWidth(string));
     w += TEXT_MARGIN + TEXT_MARGIN;
@@ -221,7 +221,7 @@ void colorbar_info_draw_270()
   if( mouseY <= FONT_HEIGHT / 2 &&
       BUBBLEINFO_DISPLAY == false ) {
     // Display pulse width
-    pw = int(float(DATA_MAX_PULSE_WIDTH - DATA_MIN_PULSE_WIDTH) / float(SCREEN_width) * mouseX) + DATA_MIN_PULSE_WIDTH;
+    pw = int(float(COLORBAR_COLOR_PW_2_CONST) / float(SCREEN_width) * mouseX) + DATA_MIN_PULSE_WIDTH;
     string = "Pulse width:" + pw;
     w = int(textWidth(string));
     w += TEXT_MARGIN + TEXT_MARGIN;
