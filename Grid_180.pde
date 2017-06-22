@@ -15,29 +15,25 @@ void grid_draw_rotate_180()
   final int const_grid_offset_y = ((SCREEN_height % 100) / 2) + (GRID_OFFSET_Y % 100) + (((const_screen_height_d_100 % 2) == 0)?0:50);
   final int const_str_base_ix_y = (SCREEN_height / 2) + const_font_height_d_2 + GRID_OFFSET_Y;
   final int const_str_base_iy_x = const_screen_x_end - const_font_height_d_2 + GRID_OFFSET_X;
-  String string;
   int x, y;
   int ix, iy;
-  int image_x = -1, image_y = -1;
-
-  // Images must be in the "data" directory to load correctly
-  if (MIRROR_ENABLE) {
-    PS_image = loadImage("PS_180_.png");
-  }
-  else {
-    PS_image = loadImage("PS_180.png");
-  }
+  String string;
+  float distance;
+  int image_x = MIN_INT, image_y = MIN_INT;
 
   // Sets the color used to draw lines and borders around shapes.
   fill(C_GRID_LINE);
   stroke(C_GRID_LINE);
+  //println("SCREEN_height="+SCREEN_height);
   for (iy = -100; iy <= SCREEN_height + 100; iy += 100) {
     line(0,            iy + const_grid_offset_y,
          SCREEN_width, iy + const_grid_offset_y);
+    //println("iy="+iy+":offset_y="+const_grid_offset_y);
   }
   for (ix = 0; ix <= SCREEN_width + 100; ix += 100) {
     line(const_grid_offset_x - ix, 0,
          const_grid_offset_x - ix, SCREEN_height);
+    //println("ix="+ix+":offset_x="+const_grid_offset_x);
   }
 
   // Sets the color used to draw text and borders around shapes.
@@ -45,47 +41,38 @@ void grid_draw_rotate_180()
   stroke(C_GRID_TEXT);
   for (iy = -1; iy <= const_screen_height_d_100 + 1; iy ++) {
     if (MIRROR_ENABLE) {
-      string =
-        (
-          float(
-            int(
-              const_zoom_factor_d_100 * float((const_screen_height_d_100_d_2 - iy) * 100)
-            )
-            +
-            const_offset_iy
+      distance =
+        float(
+          int(
+            const_zoom_factor_d_100 * float((const_screen_height_d_100_d_2 - iy) * 100)
           )
-          /
-          100.0
+          +
+          const_offset_iy
         )
-        +
-        "m";
+        /
+        100.0;
     }
     else {
-      string =
-        (
-          float(
-            int(
-              const_zoom_factor_d_100 * float((iy - const_screen_height_d_100_d_2) * 100)
-            )
-            -
-            const_offset_iy
+      distance =
+        float(
+          int(
+            const_zoom_factor_d_100 * float((iy - const_screen_height_d_100_d_2) * 100)
           )
-          /
-          100.0
+          -
+          const_offset_iy
         )
-        +
-        "m";
+        /
+        100.0;
     }
+    string = distance + "m";
     x = const_str_base_iy_x - int(textWidth(string) / 2.0);
     if (x < const_screen_x_start) x = const_screen_x_start;
     if (x > const_screen_x_end - int(textWidth(string))) x = const_screen_x_end - int(textWidth(string));
     y = iy * 100 + const_grid_offset_y;
-    if(string.equals("0.0m")) {
-      image_y = y;
-    }
+    if(distance == 0.0) image_y = y;
     y += const_font_height_d_2;
     text(string, x, y);
-    //println("iy=" + iy + ", string=" + string + ", x=" + x + ", y=" + y);
+    //println("iy=" + iy + ":x=" + x + ",y=" + y + "," + string);
   }
 
   y = const_str_base_ix_y;
@@ -93,30 +80,42 @@ void grid_draw_rotate_180()
   if (y > const_screen_y_end) y = const_screen_y_end;
   for (ix = 0; ix <= const_screen_width_d_100 + 1; ix ++) {
     if ((int(const_zoom_factor_d_100 * float(ix * 100)) + const_offset_ix) >= 0) {
-      string =
-        (
-          float(
-            int(
-              const_zoom_factor_d_100 * float(ix * 100)
-            )
-            +
-            const_offset_ix
+      distance =
+        float(
+          int(
+            const_zoom_factor_d_100 * float(ix * 100)
           )
-          / 100.0
+          +
+          const_offset_ix
         )
-        +
-        "m";
+        / 100.0;
+      string = distance + "m";
       x = const_grid_offset_x - ix * 100;
-      if(string.equals("0.0m")) {
-        image_x = x;
-      }
+      if(distance == 0.0) image_x = x;
       x -= int(textWidth(string) / 2.0);
       text(string, x, y);
+      //println("ix=" + ix + ":x=" + x + ",y=" + y + "," + string);
     }
   }
 
-  if( (image_x >= 0 && image_x < SCREEN_width) && (image_y >= 0 && image_y < SCREEN_height) ) {
-    //image(PS_image, image_x, image_y);
-    image(PS_image, image_x - PS_image.width / 2, image_y - PS_image.height / 2);
+  if((image_x != MIN_INT && image_y != MIN_INT))
+  {
+    //println("image xy=" + image_x + "," + image_y);
+    // Images must be in the "data" directory to load correctly
+    if (MIRROR_ENABLE) {
+      PS_image = loadImage("PS_180_.png");
+    }
+    else {
+      PS_image = loadImage("PS_180.png");
+    }
+    
+    if( (image_x >= 0 - PS_image.width / 2 && image_x < SCREEN_width + PS_image.width / 2)
+        &&
+        (image_y >= 0 - PS_image.height / 2 && image_y < SCREEN_height + PS_image.height / 2)
+      )
+    {
+      //image(PS_image, image_x, image_y);
+      image(PS_image, image_x - PS_image.width / 2, image_y - PS_image.height / 2);
+    }
   }
 }
