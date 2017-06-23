@@ -13,6 +13,9 @@ final static boolean PRINT_UDP_LOAD_DBG = false;
 //final static boolean PRINT_UDP_LOAD_ERR = true; 
 final static boolean PRINT_UDP_LOAD_ERR = false; 
 
+static boolean UDP_get_take_time_enable = true; 
+static boolean UDP_get_src_ip_port_enable = false; 
+
 final static int UDP_PS_MAX_BUFFER = 8*1024;
 
 UDP UDP_handle = null;  // The handle of UDP
@@ -35,7 +38,9 @@ int UDP_CMD_inLength = 0;
 int UDP_CMD_state = UDP_CMD_STATE_NONE;
 int UDP_CMD_timeout = 0;
 int UDP_CMD_start_time;
-int UDP_CMD_take_time;
+int UDP_CMD_take_time = -1;
+String UDP_CMD_src_ip = null;
+int UDP_CMD_src_port = -1;
 static String UDP_str_err_last = null;
 
 boolean UDP_SCAN_DONE = false;
@@ -71,7 +76,8 @@ void interface_UDP_setup()
 
   // Create a new datagram connection on local port
   // and wait for incomming message
-  UDP_handle = new UDP(this, UDP_local_port);
+  //UDP_handle = new UDP(this, UDP_local_port, "10.0.255.255");
+  UDP_handle = new UDP(this, UDP_local_port, true);
   //UDP_handle.log( true );
   UDP_handle.log( false );
   UDP_handle.setReceiveHandler("UDP_receive_event");
@@ -86,6 +92,16 @@ String interface_UDP_get_error()
 int interface_UDP_get_take_time()
 {
   return UDP_CMD_take_time;
+}
+
+String interface_UDP_get_src_ip()
+{
+  return UDP_CMD_src_ip;
+}
+
+int interface_UDP_get_src_port()
+{
+  return UDP_CMD_src_port;
 }
 
 boolean interface_UDP_load()
@@ -148,10 +164,14 @@ void UDP_write(byte[] buf)
     if(PRINT_UDP_WRITE_DBG) println("UDP_write() UDP_handle=null");
     return;
   }
-  UDP_handle.send(buf, UDP_remote_ip, UDP_remote_port);
+
+  // Init CMD source ip and port
+  UDP_CMD_src_ip = null;
+  UDP_CMD_src_port = -1;
   // Init & Save CMD start end time
   UDP_CMD_take_time = -1;
   UDP_CMD_start_time = millis();
+  UDP_handle.send(buf, UDP_remote_ip, UDP_remote_port);
 }
 
 void UDP_prepare_read(int buf_size)
@@ -163,7 +183,7 @@ void UDP_prepare_read(int buf_size)
   UDP_len = 0x7fffffff - 12; // 12 = 4bytes Function code + 4bytes length + 4bytes CRC on UDP data format.
 }
 
-void UDP_receive_event(byte[] data)
+void UDP_receive_event(byte[] data, String ip, int port)
 {
   try {
     if(PRINT_UDP_READ_DBG) println("UDP_receive_event data.length=" + data.length);
@@ -204,14 +224,23 @@ void UDP_receive_event(byte[] data)
         //println("Read SCAN state changed to UDP_CMD_STATE_RECEIVED! " + UDP_total + "," + UDP_len);
         UDP_CMD_state = UDP_CMD_STATE_RECEIVED;
 
-        // Save CMD take time
-        UDP_CMD_take_time = millis();
-        // Check millis wrap around
-        if(UDP_CMD_take_time < UDP_CMD_start_time)
-          UDP_CMD_take_time = MAX_INT - UDP_CMD_start_time + UDP_CMD_take_time;
-        else
-          UDP_CMD_take_time = UDP_CMD_take_time - UDP_CMD_start_time;
-        if (PRINT_UDP_READ_DBG) println("Read UDP_CMD_take_time=" + UDP_CMD_take_time);
+        if(UDP_get_src_ip_port_enable)
+        {
+          UDP_CMD_src_ip = ip;
+          UDP_CMD_src_port = port;
+        }
+
+        if(UDP_get_take_time_enable)
+        {
+          // Save CMD take time
+          UDP_CMD_take_time = millis();
+          // Check millis wrap around
+          if(UDP_CMD_take_time < UDP_CMD_start_time)
+            UDP_CMD_take_time = MAX_INT - UDP_CMD_start_time + UDP_CMD_take_time;
+          else
+            UDP_CMD_take_time = UDP_CMD_take_time - UDP_CMD_start_time;
+          if (PRINT_UDP_READ_DBG) println("Read UDP_CMD_take_time=" + UDP_CMD_take_time);
+        }
 
         return;
       }

@@ -141,7 +141,7 @@ void colorbar_info_draw_0()
     // Sets the color used to draw text and borders around shapes.
     fill(C_COLORBAR_TEXT);
     stroke(C_COLORBAR_TEXT);
-    text(string, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 1);
+    text(string, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 1 - 1);
   }
 }
 
@@ -174,7 +174,7 @@ void colorbar_info_draw_90()
     // Sets the color used to draw text and borders around shapes.
     fill(C_COLORBAR_TEXT);
     stroke(C_COLORBAR_TEXT);
-    text(string, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 1);
+    text(string, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 1 - 1);
   }
 }
 
@@ -207,7 +207,7 @@ void colorbar_info_draw_180()
     // Sets the color used to draw text and borders around shapes.
     fill(C_COLORBAR_TEXT);
     stroke(C_COLORBAR_TEXT);
-    text(string, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 1);
+    text(string, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 1 - 1);
   }
 }
 
@@ -240,7 +240,7 @@ void colorbar_info_draw_270()
     // Sets the color used to draw text and borders around shapes.
     fill(C_COLORBAR_TEXT);
     stroke(C_COLORBAR_TEXT);
-    text(string, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 1);
+    text(string, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * 1 - 1);
   }
 }
 

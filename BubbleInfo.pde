@@ -75,9 +75,11 @@ void bubbleinfo_draw()
     fill(C_BUBBLEINFO_TEXT);
     stroke(C_BUBBLEINFO_TEXT);
     int i = 0;
+    x += TEXT_MARGIN;
+    y +=  TEXT_MARGIN + FONT_HEIGHT - 1;
     for( String string:strings)
     {
-      text(string, x + TEXT_MARGIN, y + TEXT_MARGIN + FONT_HEIGHT * (1 + i));
+      text(string, x, y + FONT_HEIGHT * i);
       i ++;
     }
   }

@@ -13,6 +13,8 @@ final static boolean PRINT_UART_LOAD_DBG = false;
 //final static boolean PRINT_UART_LOAD_ERR = true; 
 final static boolean PRINT_UART_LOAD_ERR = false; 
 
+static boolean UART_get_take_time_enable = true; 
+
 final static int UART_PS_MAX_BUFFER = 8*1024;
 
 Serial UART_handle = null;  // The handle of UART(serial port)
@@ -37,7 +39,7 @@ int UART_CMD_inLength = 0;
 int UART_CMD_state = UART_CMD_STATE_NONE;
 int UART_CMD_timeout = 0;
 int UART_CMD_start_time;
-int UART_CMD_take_time;
+int UART_CMD_take_time = -1;
 static String UART_str_err_last = null;
 
 boolean UART_SCAN_DONE = false;
@@ -178,10 +180,10 @@ void UART_write(byte[] buf)
     if(PRINT_UART_WRITE_DBG) println("UDP_write() UDP_handle=null");
     return;
   }
-  UART_handle.write(buf);
   // Init & Save CMD start end time
   UART_CMD_take_time = -1;
   UART_CMD_start_time = millis();
+  UART_handle.write(buf);
 }
 
 void UART_prepare_read(int buf_size)
@@ -243,14 +245,17 @@ void serialEvent(Serial p)
         //println("Read SCAN state changed to UART_CMD_STATE_RECEIVED! " + UART_total + "," + UART_len);
         UART_CMD_state = UART_CMD_STATE_RECEIVED;
 
-        // Save CMD take time
-        UART_CMD_take_time = millis();
-        // Check millis wrap around
-        if(UART_CMD_take_time < UART_CMD_start_time)
-          UART_CMD_take_time = MAX_INT - UART_CMD_start_time + UART_CMD_take_time;
-        else
-          UART_CMD_take_time = UART_CMD_take_time - UART_CMD_start_time;
-        if (PRINT_UART_READ_DBG) println("Read UART_CMD_take_time=" + UART_CMD_take_time);
+        if(UART_get_take_time_enable)
+        {
+          // Save CMD take time
+          UART_CMD_take_time = millis();
+          // Check millis wrap around
+          if(UART_CMD_take_time < UART_CMD_start_time)
+            UART_CMD_take_time = MAX_INT - UART_CMD_start_time + UART_CMD_take_time;
+          else
+            UART_CMD_take_time = UART_CMD_take_time - UART_CMD_start_time;
+          if (PRINT_UART_READ_DBG) println("Read UART_CMD_take_time=" + UART_CMD_take_time);
+        }
 
         return;
       }

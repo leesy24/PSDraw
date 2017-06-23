@@ -1,15 +1,17 @@
-//final boolean PRINT_DATAFUNC_LOAD_DBG = true; 
-final boolean PRINT_DATAFUNC_LOAD_DBG = false;
-//final boolean PRINT_DATAFUNC_LOAD_ERR = true; 
-final boolean PRINT_DATAFUNC_LOAD_ERR = false;
+//final static boolean PRINT_DATAFUNC_LOAD_DBG = true; 
+final static boolean PRINT_DATAFUNC_LOAD_DBG = false;
+//final static boolean PRINT_DATAFUNC_LOAD_ERR = true; 
+final static boolean PRINT_DATAFUNC_LOAD_ERR = false;
 
-//final boolean PRINT_DATAFUNC_PARSE_DBG = true; 
-final boolean PRINT_DATAFUNC_PARSE_DBG = false;
-//final boolean PRINT_DATAFUNC_PARSE_ERR = true; 
-final boolean PRINT_DATAFUNC_PARSE_ERR = false;
+//final static boolean PRINT_DATAFUNC_PARSE_DBG = true; 
+final static boolean PRINT_DATAFUNC_PARSE_DBG = false;
+//final static boolean PRINT_DATAFUNC_PARSE_ERR = true; 
+final static boolean PRINT_DATAFUNC_PARSE_ERR = false;
 
-//final boolean PRINT_DATAFUNC_DRAW_DBG = true; 
-final boolean PRINT_DATAFUNC_DRAW_DBG = false;
+//final static boolean PRINT_DATAFUNC_DRAW_DBG = true; 
+final static boolean PRINT_DATAFUNC_DRAW_DBG = false;
+
+static boolean DATA_draw_params_enable = true;
 
 static color C_DATA_ERR_TEXT = #000000; // Black
 static color C_DATA_LINE = #0000FF; // Blue
@@ -91,6 +93,8 @@ class Data {
   String parse_err_str = null;
   int parse_err_cnt = 0;
   int load_take_time;
+  String load_src_ip = null;
+  int load_src_port = -1;
 
   // Create the Data
   Data()
@@ -126,6 +130,8 @@ class Data {
       }
       // No mean in file interface.
       load_take_time = -1;
+      load_src_ip = null;
+      load_src_port = -1;
       if (PRINT_DATAFUNC_LOAD_DBG) println("interface_file_load() ok!");
       return true;
     }
@@ -153,6 +159,8 @@ class Data {
         return false;
       }
       load_take_time = interface_UART_get_take_time();
+      load_src_ip = null;
+      load_src_port = -1;
       if (PRINT_DATAFUNC_LOAD_DBG) println("interface_UART_load() ok!");
       return true;
     }
@@ -180,6 +188,8 @@ class Data {
         return false;
       }
       load_take_time = interface_UDP_get_take_time();
+      load_src_ip = interface_UDP_get_src_ip();
+      load_src_port = interface_UDP_get_src_port();
       if (PRINT_DATAFUNC_LOAD_DBG) println("interface_UDP_load() ok!");
       return true;
     }
@@ -207,6 +217,8 @@ class Data {
         return false;
       }
       load_take_time = interface_SN_get_take_time();
+      load_src_ip = interface_SN_get_src_ip();
+      load_src_port = interface_SN_get_src_port();
       if (PRINT_DATAFUNC_LOAD_DBG) println("interface_SN_load() ok!");
       return true;
     }
@@ -468,12 +480,20 @@ class Data {
   // Draw params of parsed data_buf
   void draw_params()
   {
-    String[] strings = new String[11];
+    if(!DATA_draw_params_enable) return;
+
+    String[] strings = new String[13];
     int cnt;
 
     // Set to blank string at the end of array to avoid adding string null check code below.
     strings[strings.length-1] = "";
+    strings[strings.length-2] = "";
+    strings[strings.length-3] = "";
     cnt = 0;
+    if(load_src_ip != null)
+      strings[cnt++] = "Source IP:" + load_src_ip;
+    if(load_src_port != -1)
+      strings[cnt++] = "Source port:" + load_src_port;
     if(load_take_time != -1)
       strings[cnt++] = "Reponse time:" + load_take_time + "ms";
     strings[cnt++] = "Scan number:" + i_scan;
@@ -505,7 +525,7 @@ class Data {
     stroke(C_DATA_RECT_TEXT);
     cnt = 0;
     final int str_x = FONT_HEIGHT * 3 + TEXT_MARGIN;
-    final int offset_y = TEXT_MARGIN*2 + FONT_HEIGHT * 1 + TEXT_MARGIN;
+    final int offset_y = TEXT_MARGIN*2 + FONT_HEIGHT * 1 + TEXT_MARGIN - 1;
     for( String string:strings)
     {
       //if(string != null)

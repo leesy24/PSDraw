@@ -1,3 +1,5 @@
+import java.awt.event.KeyEvent;
+
 //final static boolean PRINT_MOUSEFUNC_DBG_ALL = true;
 final static boolean PRINT_MOUSEFUNC_DBG_ALL = false;
 
@@ -19,6 +21,41 @@ final static boolean PRINT_MOUSEFUNC_Wheel = false;
 boolean mousePressed = false;
 int mousePressedX;
 int mousePressedY;
+
+/**/
+void keyPressed()
+{
+  //println("keyPressed " + int(key) + " " + keyCode);
+  if(key == CODED)
+  {
+    if(keyCode == KeyEvent.VK_F10)
+    {
+      UDP_get_src_ip_port_enable = !UDP_get_src_ip_port_enable;
+      SN_get_src_ip_port_enable = !SN_get_src_ip_port_enable;
+    }
+    else if(keyCode == KeyEvent.VK_F9)
+    {
+      UART_get_take_time_enable = !UART_get_take_time_enable;
+      UDP_get_take_time_enable = !UDP_get_take_time_enable;
+      SN_get_take_time_enable = !SN_get_take_time_enable;
+    } 
+    else if(keyCode == KeyEvent.VK_F8)
+    {
+      DATA_draw_params_enable = !DATA_draw_params_enable;
+    } 
+  }
+}
+/**/
+/*
+void keyTyped() {
+  println("keyTyped " + int(key) + " " + keyCode);
+}
+*/
+/*
+void keyReleased() {
+  println("released " + int(key) + " " + keyCode);
+}
+*/
 
 void mousePressed() {
   if (PRINT_MOUSEFUNC_Pressed || PRINT_MOUSEFUNC_DBG_ALL) println("Mouse pressed! ");

@@ -13,6 +13,9 @@ final static boolean PRINT_SN_LOAD_DBG = false;
 //final static boolean PRINT_SN_LOAD_ERR = true; 
 final static boolean PRINT_SN_LOAD_ERR = false; 
 
+static boolean SN_get_take_time_enable = true; 
+static boolean SN_get_src_ip_port_enable = false;
+
 final static int SN_PS_MAX_BUFFER = 8*1024;
 
 UDP SN_handle = null;  // The handle of UDP
@@ -36,7 +39,9 @@ int SN_CMD_inLength = 0;
 int SN_CMD_state = SN_CMD_STATE_NONE;
 int SN_CMD_timeout = 0;
 int SN_CMD_start_time;
-int SN_CMD_take_time;
+int SN_CMD_take_time = -1;
+String SN_CMD_src_ip = null;
+int SN_CMD_src_port = -1;
 static String SN_str_err_last = null;
 
 boolean SN_SCAN_DONE = false;
@@ -91,6 +96,16 @@ String interface_SN_get_error()
 int interface_SN_get_take_time()
 {
   return SN_CMD_take_time;
+}
+
+String interface_SN_get_src_ip()
+{
+  return SN_CMD_src_ip;
+}
+
+int interface_SN_get_src_port()
+{
+  return SN_CMD_src_port;
 }
 
 boolean interface_SN_load()
@@ -153,10 +168,13 @@ void SN_write(byte[] buf)
     if(PRINT_SN_WRITE_DBG) println("SN_write() SN_handle=null");
     return;
   }
-  SN_handle.send(buf, SN_remote_ip, SN_remote_port);
+  // Init CMD source ip and port
+  SN_CMD_src_ip = null;
+  SN_CMD_src_port = -1;
   // Init & Save CMD start end time
   SN_CMD_take_time = -1;
   SN_CMD_start_time = millis();
+  SN_handle.send(buf, SN_remote_ip, SN_remote_port);
 }
 
 void SN_prepare_read(int buf_size)
@@ -168,7 +186,7 @@ void SN_prepare_read(int buf_size)
   SN_len = 0x7fffffff - 12; // 12 = 4bytes Function code + 4bytes length + 4bytes CRC on UDP data format.
 }
 
-void SN_receive_event(byte[] data)
+void SN_receive_event(byte[] data, String ip, int port)
 {
   try {
     if(PRINT_SN_READ_DBG) println("SN_receive_event data.length=" + data.length);
@@ -209,14 +227,23 @@ void SN_receive_event(byte[] data)
         //println("Read SCAN state changed to SN_CMD_STATE_RECEIVED! " + SN_total + "," + SN_len);
         SN_CMD_state = SN_CMD_STATE_RECEIVED;
 
-        // Save CMD take time
-        SN_CMD_take_time = millis();
-        // Check millis wrap around
-        if(SN_CMD_take_time < SN_CMD_start_time)
-          SN_CMD_take_time = MAX_INT - SN_CMD_start_time + SN_CMD_take_time;
-        else
-          SN_CMD_take_time = SN_CMD_take_time - SN_CMD_start_time;
-        if (PRINT_SN_READ_DBG) println("Read SN_CMD_take_time=" + SN_CMD_take_time);
+        if(SN_get_src_ip_port_enable)
+        {
+          SN_CMD_src_ip = ip;
+          SN_CMD_src_port = port;
+        }
+
+        if(SN_get_take_time_enable)
+        {
+          // Save CMD take time
+          SN_CMD_take_time = millis();
+          // Check millis wrap around
+          if(SN_CMD_take_time < SN_CMD_start_time)
+            SN_CMD_take_time = MAX_INT - SN_CMD_start_time + SN_CMD_take_time;
+          else
+            SN_CMD_take_time = SN_CMD_take_time - SN_CMD_start_time;
+          if (PRINT_SN_READ_DBG) println("Read SN_CMD_take_time=" + SN_CMD_take_time);
+        }
 
         return;
       }
