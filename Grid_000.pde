@@ -1,5 +1,6 @@
 void grid_draw_rotate_0()
 {
+  final int const_screen_height_d_2 = SCREEN_height / 2;
   final int const_screen_x_start = TEXT_MARGIN;
   final int const_screen_x_end = SCREEN_width - TEXT_MARGIN;
   final int const_screen_y_start = TEXT_MARGIN + FONT_HEIGHT;
@@ -10,7 +11,18 @@ void grid_draw_rotate_0()
   final int const_grid_offset_y = ((SCREEN_height % 100) / 2) + (GRID_OFFSET_Y % 100) + ((((SCREEN_height / 100) % 2) == 0)?0:50);
   final int const_str_offset_ix = GRID_OFFSET_X / 100 * 100;
   final int const_str_offset_iy = SCREEN_height / 100 / 2 * 100 + GRID_OFFSET_Y / 100 * 100;
-  final int const_str_base_ix_y = SCREEN_height / 2 + const_font_height_d_2 + GRID_OFFSET_Y;
+  //final int const_str_base_ix_y = (SCREEN_height / 2) + const_font_height_d_2 + GRID_OFFSET_Y;
+  final int const_str_base_ix_y =
+    (GRID_OFFSET_Y < TEXT_MARGIN + const_font_height_d_2 - const_screen_height_d_2)
+    ?
+    const_screen_y_start
+    :
+    ((GRID_OFFSET_Y > const_screen_height_d_2 - TEXT_MARGIN - const_font_height_d_2)
+      ?
+      const_screen_y_end
+      :
+      (const_screen_height_d_2 + const_font_height_d_2 + GRID_OFFSET_Y)
+    );
   final int const_str_base_iy_x = const_screen_x_start + const_font_height_d_2 + GRID_OFFSET_X;
   int x, y;
   int ix, iy;
@@ -25,12 +37,12 @@ void grid_draw_rotate_0()
   for (iy = -100; iy <= SCREEN_height + 100; iy += 100) {
     line(0,            iy + const_grid_offset_y,
          SCREEN_width, iy + const_grid_offset_y);
-    //println("iy="+iy+":offset_y="+const_grid_offset_y);
+    //println("iy="+iy+":offset_y="+const_grid_offset_y+",y="+(iy + const_grid_offset_y));
   }
   for (ix = 0; ix <= SCREEN_width + 100; ix += 100) {
     line(ix + const_grid_offset_x, 0,
          ix + const_grid_offset_x, SCREEN_height);
-    //println("ix="+ix+":offset_x="+const_grid_offset_x);
+    //println("ix="+ix+":offset_x="+const_grid_offset_x+",x="+(ix + const_grid_offset_x));
   }
 
   // Sets the color used to draw text and borders around shapes.
@@ -50,14 +62,13 @@ void grid_draw_rotate_0()
     y = iy + const_grid_offset_y;
     if(distance == 0.0)
       image_y = y;
-    y += const_font_height_d_2;
-    text(string, x, y);
+    text(string, x, y + const_font_height_d_2);
     //println("iy=" + iy + ":x=" + x + ",y=" + y + "," + string);
   }
 
   y = const_str_base_ix_y;
-  if (y < const_screen_y_start) y = const_screen_y_start;
-  if (y > const_screen_y_end) y = const_screen_y_end;
+  //if (y < const_screen_y_start) y = const_screen_y_start;
+  //if (y > const_screen_y_end) y = const_screen_y_end;
   for (ix = 0; ix <= SCREEN_width + 100; ix += 100) {
     distance = const_zoom_factor_d_100 * float(ix - const_str_offset_ix) / 100.0;
     if (distance >= 0.0) {
@@ -65,8 +76,7 @@ void grid_draw_rotate_0()
       x = ix + const_grid_offset_x;
       if(distance == 0.0)
         image_x = x;
-      x -= int(textWidth(string) / 2.0);
-      text(string, x, y);
+      text(string, x - int(textWidth(string) / 2.0), y);
       //println("ix=" + ix + ":x=" + x + ",y=" + y + "," + string);
     }
   }
