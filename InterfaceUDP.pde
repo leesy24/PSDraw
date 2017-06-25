@@ -77,7 +77,7 @@ void interface_UDP_setup()
   // Create a new datagram connection on local port
   // and wait for incomming message
   //UDP_handle = new UDP(this, UDP_local_port, "10.0.255.255");
-  UDP_handle = new UDP(this, UDP_local_port, true);
+  UDP_handle = new UDP(this, UDP_local_port);
   //UDP_handle.log( true );
   UDP_handle.log( false );
   UDP_handle.setReceiveHandler("UDP_receive_event");
