@@ -45,7 +45,8 @@ void config_settings()
     else if(name.equals("MIRROR_ENABLE"))
       MIRROR_ENABLE = (variable.getString("Value").equals("true"))?true:false; 
     else if(name.equals("ZOOM_FACTOR"))
-      ZOOM_FACTOR = variable.getFloat("Value"); 
+      //ZOOM_FACTOR = variable.getFloat("Value"); 
+      ZOOM_FACTOR = variable.getInt("Value"); 
     else if(name.equals("GRID_OFFSET_X"))
       GRID_OFFSET_X = variable.getInt("Value");
     else if(name.equals("GRID_OFFSET_Y"))
@@ -111,7 +112,8 @@ void config_create()
   
   variable = CONFIG_table.addRow();
   variable.setString("Name", "ZOOM_FACTOR");
-  variable.setFloat("Value", ZOOM_FACTOR);
+  //variable.setFloat("Value", ZOOM_FACTOR);
+  variable.setInt("Value", ZOOM_FACTOR);
   
   variable = CONFIG_table.addRow();
   variable.setString("Name", "GRID_OFFSET_X");
@@ -227,7 +229,8 @@ void config_save()
     else if(name.equals("ZOOM_FACTOR")) {
       value_float = variable.getFloat("Value");
       if(value_float != ZOOM_FACTOR) {
-        variable.setFloat("Value", ZOOM_FACTOR);
+        //variable.setFloat("Value", ZOOM_FACTOR);
+        variable.setInt("Value", ZOOM_FACTOR);
         changed = true;
       }
     }

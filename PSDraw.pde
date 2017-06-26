@@ -10,7 +10,8 @@ final String TITLE = "DASAN-InfoTEK - PSDraw";
 String Title;
 
 // Define zoom factor variables.
-float ZOOM_FACTOR = 100;
+//float ZOOM_FACTOR = 100;
+int ZOOM_FACTOR = 100;
 
 // Define rotate factor variables.
 float ROTATE_FACTOR = 0;/*90;*//*180;*//*270;*/

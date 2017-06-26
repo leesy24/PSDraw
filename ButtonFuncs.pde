@@ -1,5 +1,5 @@
-//final boolean PRINT_ButtonFunc = true; 
-final boolean PRINT_ButtonFunc = false;
+//final static boolean PRINT_BUTTON_ZOOM_DBG = true; 
+final static boolean PRINT_BUTTON_ZOOM_DBG = false;
 
 static color C_BTN_NORMAL = #FFFFFF; // White
 static color C_BTN_HIGHLIGHT = #C0C0C0; //
@@ -249,21 +249,21 @@ void button_update() {
 }
 
 void button_zoom_minus() {
-  if (ZOOM_FACTOR <= 3000.0) {
-    if (ZOOM_FACTOR < 100.0) ZOOM_FACTOR += 10.0;
-    else ZOOM_FACTOR = int(ZOOM_FACTOR + ZOOM_FACTOR / 10.0 + 5.0) / 10 * 10;
+  if (ZOOM_FACTOR <= 3000) {
+    if (ZOOM_FACTOR < 100) ZOOM_FACTOR += 10;
+    else ZOOM_FACTOR = int(float(ZOOM_FACTOR) * 1.1 + 5.0) / 10 * 10;
     config_save();
   }
-  if (PRINT_ButtonFunc) println("ZOOM_FACTOR=" + ZOOM_FACTOR);
+  if (PRINT_BUTTON_ZOOM_DBG) println("ZOOM_FACTOR=" + ZOOM_FACTOR);
 }
 
 void button_zoom_pluse() {
-  if (ZOOM_FACTOR > 10.0) {
-    if (ZOOM_FACTOR < 100.0) ZOOM_FACTOR -= 10.0;
-    else ZOOM_FACTOR = int(ZOOM_FACTOR - ZOOM_FACTOR / 10.0 + 5.0) / 10 * 10;
+  if (ZOOM_FACTOR > 10) {
+    if (ZOOM_FACTOR < 100) ZOOM_FACTOR -= 10;
+    else ZOOM_FACTOR = int(float(ZOOM_FACTOR) / 1.1 + 5.0) / 10 * 10;
     config_save();
   }
-  if (PRINT_ButtonFunc) println("ZOOM_FACTOR=" + ZOOM_FACTOR);
+  if (PRINT_BUTTON_ZOOM_DBG) println("ZOOM_FACTOR=" + ZOOM_FACTOR);
 }
 
 boolean button_check_over(int r_x, int r_y, int r_width, int r_height) {
