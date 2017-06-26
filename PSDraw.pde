@@ -77,12 +77,9 @@ void setup() {
   //frameRate(1);
   //frameRate(30);
 
-  // Titile setting. You MUST change below title change code also. 
+  // Title set to default.
   Title = TITLE;
-  if(CONFIG_instance_number != null)
-    Title = Title + " #" + CONFIG_instance_number + " - ";
-  else
-    Title = Title + " #0" + " - ";
+  config_setup();
   data_setup();
   screen_setup();
   button_setup();
@@ -102,12 +99,9 @@ void draw() {
   background(C_BG);
 
   if (INTERFACE_changed) {
-    // Titile setting. You MUST change below title change code also. 
+    // Title set to default.
     Title = TITLE;
-    if(CONFIG_instance_number != null)
-      Title = Title + " #" + CONFIG_instance_number + " - ";
-    else
-      Title = Title + " #0" + " - ";
+    config_setup();
     data_setup();
     screen_setup();
     button_setup();
@@ -121,7 +115,9 @@ void draw() {
     button_setup();
     interface_setup();
   }
-  button_update();
+
+  // Move to mouseMoved() and mouseDragged().
+  //button_check_update();
 
   grid_draw();
   lines_draw();

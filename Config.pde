@@ -74,6 +74,14 @@ void config_settings()
   }
 }
 
+void config_setup()
+{
+  if(CONFIG_instance_number != null)
+    Title = Title + " #" + CONFIG_instance_number + " - ";
+  else
+    Title = Title + " #0" + " - ";
+}
+
 void config_create()
 {
   TableRow variable;
@@ -108,7 +116,7 @@ void config_create()
   
   variable = CONFIG_table.addRow();
   variable.setString("Name", "MIRROR_ENABLE");
-  variable.setString("Value", ((MIRROR_ENABLE)?"true":"flase"));
+  variable.setString("Value", ((MIRROR_ENABLE)?"true":"false"));
   
   variable = CONFIG_table.addRow();
   variable.setString("Name", "ZOOM_FACTOR");
