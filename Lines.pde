@@ -50,7 +50,7 @@ void lines_settings()
   {
     X = variable.getString("X");
     Y = variable.getString("Y");
-    println("X="+X+",Y="+Y);
+    //println("X="+X+",Y="+Y);
 
     if(X == null || Y == null)
     {
@@ -64,14 +64,14 @@ void lines_settings()
     {
       LINES_points[i][0] = MIN_INT;
       LINES_points[i][1] = MIN_INT;
-      println("LINES_points[" + i + "].x=" + "CUT" + ",LINES_points[" + i + "].y=" + "CUT");
+      //println("LINES_points[" + i + "].x=" + "CUT" + ",LINES_points[" + i + "].y=" + "CUT");
     }
     else
     {
       // You can access the fields via their column name (or index)
       LINES_points[i][0] = variable.getInt("X") * 100;
       LINES_points[i][1] = variable.getInt("Y") * 100;
-      println("LINES_points[" + i + "].x=" + LINES_points[i][0] + ",LINES_points[" + i + "].y=" + LINES_points[i][1]);
+      //println("LINES_points[" + i + "].x=" + LINES_points[i][0] + ",LINES_points[" + i + "].y=" + LINES_points[i][1]);
     }
     i ++;
   }
