@@ -575,10 +575,10 @@ class Data {
         radians = radians(angle);
         if (ROTATE_FACTOR == 0)
         {
-          cx = float(distance) * sin(radians);
-          cy = float(distance) * cos(radians);
-          x_curr = int(cx / ZOOM_FACTOR);
-          y_curr = int(cy / ZOOM_FACTOR);
+          cx = float(distance) * cos(radians);
+          cy = float(distance) * sin(radians);
+          x_curr = int(cy / ZOOM_FACTOR);
+          y_curr = int(cx / ZOOM_FACTOR);
           //if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x_curr=" + x_curr + ",y_curr=", y_curr);
           x_curr += offset_x;
           if (MIRROR_ENABLE)
@@ -601,10 +601,10 @@ class Data {
         }
         else if (ROTATE_FACTOR == 180)
         {
-          cx = float(distance) * sin(radians);
-          cy = float(distance) * cos(radians);
-          x_curr = int(cx / ZOOM_FACTOR);
-          y_curr = int(cy / ZOOM_FACTOR);
+          cx = float(distance) * cos(radians);
+          cy = float(distance) * sin(radians);
+          x_curr = int(cy / ZOOM_FACTOR);
+          y_curr = int(cx / ZOOM_FACTOR);
           //if (PRINT_DATAFUNC_DRAW_DBG) println("point=", j, ",distance=" + distance + ",angle=" + (scan_angle_start + float(j) * scan_angle_size / float(n_points)) + ",x_curr=" + x_curr + ",y_curr=", y_curr);
           x_curr = offset_x - x_curr;
           if (MIRROR_ENABLE)
